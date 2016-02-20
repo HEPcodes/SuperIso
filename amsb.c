@@ -10,7 +10,7 @@
 int main(int argc,char** argv)
 {
 	char name[50];
-	float m0,m32,tanb,A0,sgnmu,mtop,mbot,alphas_mz,delta0;
+	float m0,m32,tanb,A0,sgnmu,mtop,mbot,alphas_mz,delta0,BR;
 
 	if(argc<4) 
 	{ 
@@ -41,11 +41,13 @@ int main(int argc,char** argv)
 	softsusy_amsb(m0, m32, tanb, sgnmu, mtop, mbot, alphas_mz, name);
 	
 	delta0=delta0_calculator(name);
-	if(delta0 !=0.)
+	BR=BRbsgamma_calculator(name);
+	if((delta0 !=0.)&&(BR >0.))
 	{
-		printf("delta0=%f\n",delta0);
-       		printf("BR=%f\n",BRbsgamma_calculator(name));
-		printf("excluded_mass=%d\n\n",excluded_mass_calculator(name));
+		printf("delta0=%.3e\n",delta0);
+       		printf("BR=%.3e\n",BR);
+		printf("excluded_mass=%d\n",excluded_mass_calculator(name));
+		printf("(g-2)=%.3e\n\n",muon_gm2_calculator(name));
 	}
 	else printf("Invalid point\n\n");
 #endif

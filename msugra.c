@@ -1,7 +1,7 @@
 #include "src/include.h"
 
 
-#define USE_ISAJET /* to be commented if ISAJET is unavailable */
+/* #define USE_ISAJET */ /* to be commented if ISAJET is unavailable */
 #define USE_SOFTSUSY /* to be commented if SOFTSUSY is unavailable */
 
 /*--------------------------------------------------------------------*/
@@ -11,7 +11,7 @@
 int main(int argc,char** argv)
 {
 	char name[50];
-	float m0,m12,tanb,A0,sgnmu,mtop,mbot,alphas_mz,delta0;
+	float m0,m12,tanb,A0,sgnmu,mtop,mbot,alphas_mz,delta0,BR;
 
   	if(argc<5) 
   	{ 
@@ -44,12 +44,14 @@ int main(int argc,char** argv)
 	softsusy_sugra(m0, m12, tanb, A0, sgnmu, mtop, mbot, alphas_mz, name);
 
 	delta0=delta0_calculator(name);
-	if(delta0 !=0.)
+	BR=BRbsgamma_calculator(name);
+	if((delta0 !=0.)&&(BR >0.))
 	{
-		printf("delta0_softsusy=%f\n",delta0);
-       		printf("BR_softsusy=%f\n",BRbsgamma_calculator(name));
+		printf("delta0_softsusy=%.3e\n",delta0);
+       		printf("BR_softsusy=%.3e\n",BR);
        		printf("charged_LSP_softsusy=%d\n",charged_LSP_calculator(name));
-       		printf("excluded_masses_softsusy=%d\n\n",excluded_mass_calculator(name));
+       		printf("excluded_masses_softsusy=%d\n",excluded_mass_calculator(name));
+		printf("(g-2)_softsusy=%.3e\n\n",muon_gm2_calculator(name));
 	}
 	else printf("Invalid point\n\n");
 #endif
@@ -58,12 +60,14 @@ int main(int argc,char** argv)
 	isajet_sugra(m0, m12, tanb, A0, sgnmu, mtop, name);
 
 	delta0=delta0_calculator(name);
-	if(delta0 !=0.)
+	BR=BRbsgamma_calculator(name);
+	if((delta0 !=0.)&&(BR >0.))
 	{
-		printf("delta0_isajet=%f\n",delta0);
-       		printf("BR_isajet=%f\n",BRbsgamma_calculator(name));
+		printf("delta0_isajet=%.3e\n",delta0);
+       		printf("BR_isajet=%.3e\n",BR);
        		printf("charged_LSP_isajet=%d\n",charged_LSP_calculator(name));
-		printf("excluded_masses_isajet=%d\n\n",excluded_mass_calculator(name));
+		printf("excluded_masses_isajet=%d\n",excluded_mass_calculator(name));
+		printf("(g-2)_isajet=%.3e\n\n",muon_gm2_calculator(name));
 	}
 	else printf("Invalid point\n\n");
 #endif	

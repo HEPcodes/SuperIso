@@ -31,7 +31,6 @@ int excluded_masses(struct parameters* param)
 int excluded_mass_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and checking if the SUSY point is excluded by the mass contraints */
 {
-	float C0[9],C0spec[9],C1[9],C1spec[9];
 	struct parameters param;
 		
 	Init_param(&param);
@@ -47,19 +46,19 @@ int charged_LSP(struct parameters* param)
 /* tests whether the SUSY point corresponds to a charged LSP (NLSP if the LSP is a gravitino) */
 /* if the LSP is charged, return 1, otherwise 0 */
 {
-	float mass_neutral;
+	float mass_non_chargee;
 	int charged_LSP=0;
 
-	mass_neutral=fabs(param->mass_neut[1]);
+	mass_non_chargee=fabs(param->mass_neut[1]);
 	
-	if(param->mass_nuel!=0.) mass_neutral=min(fabs(param->mass_nuel),mass_neutral);
-	if(param->mass_numl!=0.) mass_neutral=min(fabs(param->mass_numl),mass_neutral);
-	if(param->mass_nutl!=0.) mass_neutral=min(fabs(param->mass_nutl),mass_neutral);
-	if(param->mass_gluino!=0.) mass_neutral=min(fabs(param->mass_gluino),mass_neutral);
+	if(param->mass_nuel!=0.) mass_non_chargee=min(fabs(param->mass_nuel),mass_non_chargee);
+	if(param->mass_numl!=0.) mass_non_chargee=min(fabs(param->mass_numl),mass_non_chargee);
+	if(param->mass_nutl!=0.) mass_non_chargee=min(fabs(param->mass_nutl),mass_non_chargee);
+	if(param->mass_gluino!=0.) mass_non_chargee=min(fabs(param->mass_gluino),mass_non_chargee);
 	
-	if(param->mass_tau1!=0.) charged_LSP=(charged_LSP||(fabs(param->mass_tau1)<mass_neutral));
-	if(param->mass_t1!=0.) charged_LSP=(charged_LSP||(fabs(param->mass_t1)<mass_neutral));
-	if(param->mass_cha1!=0.) charged_LSP=(charged_LSP||(fabs(param->mass_cha1)<mass_neutral));
+	if(param->mass_tau1!=0.) charged_LSP=(charged_LSP||(fabs(param->mass_tau1)<mass_non_chargee));
+	if(param->mass_t1!=0.) charged_LSP=(charged_LSP||(fabs(param->mass_t1)<mass_non_chargee));
+	if(param->mass_cha1!=0.) charged_LSP=(charged_LSP||(fabs(param->mass_cha1)<mass_non_chargee));
 	
 	return charged_LSP;
 }
@@ -69,7 +68,6 @@ int charged_LSP(struct parameters* param)
 int charged_LSP_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and checking if the SUSY point corresponds to a charged LSP */
 {
-	float C0[9],C0spec[9],C1[9],C1spec[9];
 	struct parameters param;
 		
 	Init_param(&param);

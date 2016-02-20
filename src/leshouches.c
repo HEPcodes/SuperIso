@@ -156,6 +156,7 @@ void Init_param(struct parameters* param)
 	param->mass_nut=0.;
 	param->mass_photon=0.;
 	param->mass_Z0=0.;
+	param->mass_b_1S = 0.;
 
 	/* masses and coupling from PDG 2006 */
 	param->mass_u = 2.e-3;
@@ -889,7 +890,15 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 	param->stau_mix[2][1]=-sin(dum);
 	param->stau_mix[1][2]=sin(dum);
 	param->stau_mix[2][2]=param->stau_mix[1][1];
-		
+
+	dum=acos(param->stau_mix[1][1]);
+	param->stau_mix[2][1]=-sin(dum);
+	param->stau_mix[1][2]=sin(dum);
+	param->stau_mix[2][2]=param->stau_mix[1][1];
+	
+ 	param->mass_b_1S=b_mass_1S(param);
+ 	/* param->mass_b_1S=4.68; */
+			
 	if(param->model==-1) return 0;
 	
 	return 1;	

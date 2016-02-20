@@ -2,7 +2,7 @@
 .KEEP_STATE:
 
 #
-VERSION = v1.1
+VERSION = v2.0
 
 # Choose your C compiler here (in general gcc on Linux systems):
 CC = gcc
@@ -14,8 +14,8 @@ CC = gcc
 #Optimisation level, eg: -O3
 OPT= -O3
 #OR debug level: -g(n=1,2,3)
-DEBUG=
-	   
+DEBUG= 
+
 CFLAGS= -I./src -L./src $(DEBUG) $(OPT)
 
 # Add the link to Softsusy and Isajet, if available.
@@ -40,14 +40,14 @@ all: libisospin.a
 	@touch $*.x
 
 clean:
+	rm *.x;
 	@echo > src/FlagsForMake;
-	make -C src/ clean;
-	rm *.x
+	make -C src/ clean
 	
 distclean: 
+	rm *.a *.o *.x;
 	@echo > src/FlagsForMake;
-	make -C src/ distclean;
-	rm *.a *.o *.x
+	make -C src/ distclean
 	
 libisospin.a: 
 	@echo;

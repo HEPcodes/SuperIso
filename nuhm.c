@@ -10,17 +10,17 @@
 int main(int argc,char** argv)
 {
 	char name[50];
-	float m0,m12,tanb,A0,mu,mA,mtop,mbot,alphas_mz,delta0;
+	float m0,m12,tanb,A0,mu,mA,mtop,mbot,alphas_mz,delta0,BR;
 
-	if(argc<7) 
+	if(argc<5) 
 	{ 
 		printf(" This program needs 6 parameters:\n"
 		"   m0      common scalar mass at GUT scale\n"
            	"   m12     common gaugino mass at GUT scale\n"
 		"   A0      trilinear soft breaking parameter at GUT scale\n"
 		"   tanb      tan(beta) \n"
-		"   mu      \n"
-		"   mA      \n");
+		"   mu(mz)      \n"
+		"   mA(Q)      \n");
 		printf(" Auxiliary parameters are:\n"
 		"   mtop     top quark pole mass\n"
 		"   mbot     Mb(Mb) scale independent b-quark mass (SOFTSUSY only)\n"
@@ -44,11 +44,13 @@ int main(int argc,char** argv)
 #ifdef USE_SOFTSUSY
 	softsusy_nuhm(m0, m12, tanb, A0, mu, mA, mtop, mbot, alphas_mz, name);
 	delta0=delta0_calculator(name);
-	if(delta0 !=0.)
+	BR=BRbsgamma_calculator(name);
+	if((delta0 !=0.)&&(BR >0.))
 	{
-		printf("delta0=%f\n",delta0);
-       		printf("BR=%f\n",BRbsgamma_calculator(name));
-		printf("excluded_mass=%d\n\n",excluded_mass_calculator(name));
+		printf("delta0=%.3e\n",delta0);
+       		printf("BR=%.3e\n",BR);
+		printf("excluded_mass=%d\n",excluded_mass_calculator(name));
+		printf("(g-2)=%.3e\n\n",muon_gm2_calculator(name));
 	}
 	else printf("Invalid point\n\n");
 #endif

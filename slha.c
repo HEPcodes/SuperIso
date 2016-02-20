@@ -7,7 +7,7 @@
 int main(int argc,char** argv)
 {
 	char name[50];
-	float delta0;
+	float delta0,BR;
 
   	if(argc<2) 
   	{ 
@@ -21,13 +21,15 @@ int main(int argc,char** argv)
   	}
   
 	delta0=delta0_calculator(name);
-	if(delta0 !=0.)
+	BR=BRbsgamma_calculator(name);
+	if((delta0 !=0.)&&(BR >0.))
 	{
-		printf("delta0=%f\n",delta0);
-       		printf("BR=%f\n",BRbsgamma_calculator(name));
-		printf("excluded_mass=%d\n\n",excluded_mass_calculator(name));
+		printf("delta0=%.3e\n",delta0);
+       		printf("BR=%.3e\n",BR);
+		printf("excluded_mass=%d\n",excluded_mass_calculator(name));
+		printf("(g-2)=%.3e\n\n",muon_gm2_calculator(name));
 	}
-	else printf("Invalid point or invalid SLHA file\n\n");
+	else printf("Invalid point\n\n");
 
 	return 1;
 }

@@ -2,9 +2,7 @@
 
 
 float alphas_running(float Q, float mtop, float mbot, struct parameters* param)
-/* computes the QCD coupling constant alphas at the energy Q */
-/* valid for at least 4 active flavors */
-
+/* computes the QCD coupling constant alphas at the energy Q, using the matching scales between the flavors mtop and mbot */
 {
 	float beta0,beta1,beta2,alphas_running,Lambda4,Lambda5,Lambda6,Lambda_min,Lambda_max,Lambda_moy,alphas_min,alphas_max,alphas_moy;
 	int nf;

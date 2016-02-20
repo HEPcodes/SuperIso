@@ -19,6 +19,7 @@ int isajet_sugra(float m0, float m12, float tanb, float A0, float sgnmu, float m
 	fprintf(tmp,"/\n");
 	fprintf(tmp,"1\n");
 	fprintf(tmp,"%f,%f,%f,%f,%f,%f\n",m0,m12,A0,tanb,sgnmu,mtop);
+	fprintf(tmp,"0\n");
 	fclose(tmp);
 
 	sprintf(tmp_char,"%s < is1_%s > is3_%s",ISAJET,name,name);

@@ -1,11 +1,11 @@
 #include "include.h"
 
 void Init_param(struct parameters* param)
-/* initializes the "param" structure by initializing the parameters with either 0 or a value from the PDG */
+/* initializes the "param" structure by initializing the parameters with either 0 or a value from the PDG2008 */
 {
 	int ie,je;
 	
-	param->model=0; /* this parameter is used to test if the scan of the SLHA file succeeds. */
+	param->model=-3; /* this parameter is used to test whether the scan of the SLHA file succeeds. */
 	param->generator=0;
 	param->Q=0.;
 	param->m0=0.;
@@ -38,6 +38,7 @@ void Init_param(struct parameters* param)
 	}
 	for(ie=1;ie<=5;ie++) for(je=1;je<=5;je++) param->neut_mix[ie][je]=0.;
 	for(ie=1;ie<=5;ie++) param->mass_neut[ie]=0.;
+	for(ie=1;ie<=3;ie++) param->yub[ie]=param->yut[ie]=param->yutau[ie]=0.;
 		
 	param->Min=0.;
 	param->M1_Min=0.;
@@ -104,11 +105,8 @@ void Init_param(struct parameters* param)
 	param->g2=0.;
 	param->g3=0.;
 	param->YU_Q=0.;
-	param->yut=0.;
 	param->YD_Q=0.;
-	param->yub=0.;
 	param->YE_Q=0.;
-	param->yutau=0.;
 	param->HMIX_Q=0.;
 	param->mu_Q=0.;
 	param->tanb_GUT=0.;
@@ -206,24 +204,66 @@ void Init_param(struct parameters* param)
 	param->mupNMSSM=0.;
 	param->mSp2NMSSM=0.;
 	param->mS2NMSSM=0.;
+	param->PMNSU_Q=0.;
+	param->CKM_Q=0.;
+	param->MSE2_Q=0.;
+	param->MSU2_Q=0.;
+	param->MSD2_Q=0.;
+	param->MSL2_Q=0.;
+	param->MSQ2_Q=0.;
+	param->TU_Q=0.;
+	param->TD_Q=0.;
+	param->TE_Q=0.;
 	
-	for(ie=1;ie<=3;ie++) for(je=1;je<=3;je++) param->H0_mix[ie][je]=0.;
+	for(ie=1;ie<=6;ie++) for(je=1;je<=6;je++)
+	{
+		param->sU_mix[ie][je]=0.;
+		param->sD_mix[ie][je]=0.;
+		param->sE_mix[ie][je]=0.;
+	}
+	
+	for(ie=1;ie<=3;ie++) for(je=1;je<=3;je++)
+	{
+		param->H0_mix[ie][je]=0.;
+		param->sNU_mix[ie][je]=0.;
+		param->sCKM_msq2[ie][je]=0.;
+		param->sCKM_msl2[ie][je]=0.;
+		param->sCKM_msd2[ie][je]=0.;
+		param->sCKM_msu2[ie][je]=0.;
+		param->sCKM_mse2[ie][je]=0.;
+		param->PMNS_U[ie][je]=0.;
+		param->CKM[ie][je]=0.;
+		param->TU[ie][je]=0.;
+		param->TD[ie][je]=0.;
+		param->TE[ie][je]=0.;
+	}
 	
 	for(ie=1;ie<=3;ie++) for(je=1;je<=2;je++) param->A0_mix[ie][je]=0.;
 	
 	/* non-SLHA*/
 	param->mass_b_1S=0.;
 	param->mass_b_pole=0.;
+	param->mtmt=0.;
 	param->Lambda5=0.;
 	
+	/* Flavor physics */
+	param->f_B=0.200;
+	param->f_Bs=0.245;
+	param->m_B=5.2795;
+	param->m_Bs=5.3663;
+	param->m_K=0.4937;
+	param->m_Kstar=0.8917;
+	param->m_D=1.86484;
+	param->life_B=1.638e-12;
+	param->life_Bs=1.425e-12;
 	
-	/* masses and coupling from PDG */
-	param->mass_u = 2.e-3;
-	param->mass_d = 5.e-3;
-	param->mass_s = 0.1;
-	param->mass_c = 1.2;
+	/* masses and coupling from PDG 2008 */
+	param->mass_u = 2.55e-3;
+	param->mass_d = 5.04e-3;
+	param->mass_s = 0.104;
+	param->mass_c = 1.27;
 	param->mass_b = 4.20;
-	param->mass_top_pole = 172.5;
+	param->mass_top_pole = 172.4; /* from arXiv:0808.1089 */
 	
 	param->mass_e = 0.511e-3;
 	param->mass_mu= 0.106;
@@ -231,7 +271,7 @@ void Init_param(struct parameters* param)
 	param->mass_tau=param->mass_tau_pole;
 	
 	param->mass_Z=91.1876;
-	param->alphas_MZ=0.1172;
+	param->alphas_MZ=0.1176;
 	param->mass_W=80.403;
 	
 	return;
@@ -243,7 +283,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 /* reads the SLHA file "name" and puts all the values into the "param" structure */
 {
 	FILE *lecture;
-	char dummy[50];
+	char dummy[500];
 	float dum;
 	int ie,je;
 	
@@ -268,7 +308,14 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			}
 		}
 	}
-	fclose(lecture);	
+	fclose(lecture);		
+
+	if(param->NMSSM != 0) param->model=-2;
+	if(param->Rparity != 0) param->model=-2;
+	if(param->CPviolation != 0) param->model=-2;
+	if(param->Flavor != 0) param->model=-2;
+	
+	if(param->model<0) return 0;	
 	
 	lecture = fopen(name,"r");
 	while(EOF != fscanf(lecture,"%s",dummy))
@@ -543,29 +590,17 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 1: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->stop_mix[1][1]); break;
-							case 2: fscanf(lecture,"%f",&param->stop_mix[1][2]); break;
-						}
-						break;
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->stop_mix[ie][je]);
 					}
-					case 2: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->stop_mix[2][1]); break;
-							case 2: fscanf(lecture,"%f",&param->stop_mix[2][2]); break;
-						}
-						break;
-					}
-				}
+				}			
 			}	
 		}
 		else if(!strcasecmp(dummy,"SBOTMIX"))
@@ -573,29 +608,17 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 1: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->sbot_mix[1][1]); break;
-							case 2: fscanf(lecture,"%f",&param->sbot_mix[1][2]); break;
-						}
-						break;
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->sbot_mix[ie][je]);
 					}
-					case 2: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->sbot_mix[2][1]); break;
-							case 2: fscanf(lecture,"%f",&param->sbot_mix[2][2]); break;
-						}
-						break;
-					}
-				}
+				}			
 			}	
 		}
 		else if(!strcasecmp(dummy,"STAUMIX"))
@@ -603,29 +626,16 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 1: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->stau_mix[1][1]); break;
-							case 2: fscanf(lecture,"%f",&param->stau_mix[1][2]); break;
-						}
-						break;
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->stau_mix[ie][je]);
 					}
-					case 2: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->stau_mix[2][1]); break;
-							case 2: fscanf(lecture,"%f",&param->stau_mix[2][2]); break;
-						}
-						break;
-					}
-				}
+				}			
 			}	
 		}
 		else if(!strcasecmp(dummy,"NMIX"))
@@ -633,57 +643,16 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 1: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->neut_mix[1][1]); break;
-							case 2: fscanf(lecture,"%f",&param->neut_mix[1][2]); break;
-							case 3: fscanf(lecture,"%f",&param->neut_mix[1][3]); break;
-							case 4: fscanf(lecture,"%f",&param->neut_mix[1][4]); break;
-						}
-						break;
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->neut_mix[ie][je]);
 					}
-					case 2: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->neut_mix[2][1]); break;
-							case 2: fscanf(lecture,"%f",&param->neut_mix[2][2]); break;
-							case 3: fscanf(lecture,"%f",&param->neut_mix[2][3]); break;
-							case 4: fscanf(lecture,"%f",&param->neut_mix[2][4]); break;
-						}
-						break;
-					}
-					case 3: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->neut_mix[3][1]); break;
-							case 2: fscanf(lecture,"%f",&param->neut_mix[3][2]); break;
-							case 3: fscanf(lecture,"%f",&param->neut_mix[3][3]); break;
-							case 4: fscanf(lecture,"%f",&param->neut_mix[3][4]); break;
-						}
-						break;
-					}
-					case 4: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->neut_mix[4][1]); break;
-							case 2: fscanf(lecture,"%f",&param->neut_mix[4][2]); break;
-							case 3: fscanf(lecture,"%f",&param->neut_mix[4][3]); break;
-							case 4: fscanf(lecture,"%f",&param->neut_mix[4][4]); break;
-						}
-						break;
-					}
-				}
+				}			
 			}	
 		}
 		else if(!strcasecmp(dummy,"NMNMIX"))
@@ -691,74 +660,16 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 1: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->neut_mix[1][1]); break;
-							case 2: fscanf(lecture,"%f",&param->neut_mix[1][2]); break;
-							case 3: fscanf(lecture,"%f",&param->neut_mix[1][3]); break;
-							case 4: fscanf(lecture,"%f",&param->neut_mix[1][4]); break;
-							case 5: fscanf(lecture,"%f",&param->neut_mix[1][5]); break;
-						}
-						break;
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->neut_mix[ie][je]);
 					}
-					case 2: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->neut_mix[2][1]); break;
-							case 2: fscanf(lecture,"%f",&param->neut_mix[2][2]); break;
-							case 3: fscanf(lecture,"%f",&param->neut_mix[2][3]); break;
-							case 4: fscanf(lecture,"%f",&param->neut_mix[2][4]); break;
-							case 5: fscanf(lecture,"%f",&param->neut_mix[2][5]); break;
-						}
-						break;
-					}
-					case 3: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->neut_mix[3][1]); break;
-							case 2: fscanf(lecture,"%f",&param->neut_mix[3][2]); break;
-							case 3: fscanf(lecture,"%f",&param->neut_mix[3][3]); break;
-							case 4: fscanf(lecture,"%f",&param->neut_mix[3][4]); break;
-							case 5: fscanf(lecture,"%f",&param->neut_mix[3][5]); break;
-						}
-						break;
-					}
-					case 4: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->neut_mix[4][1]); break;
-							case 2: fscanf(lecture,"%f",&param->neut_mix[4][2]); break;
-							case 3: fscanf(lecture,"%f",&param->neut_mix[4][3]); break;
-							case 4: fscanf(lecture,"%f",&param->neut_mix[4][4]); break;
-							case 5: fscanf(lecture,"%f",&param->neut_mix[4][5]); break;
-						}
-						break;
-					}
-					case 5: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->neut_mix[5][1]); break;
-							case 2: fscanf(lecture,"%f",&param->neut_mix[5][2]); break;
-							case 3: fscanf(lecture,"%f",&param->neut_mix[5][3]); break;
-							case 4: fscanf(lecture,"%f",&param->neut_mix[5][4]); break;
-							case 5: fscanf(lecture,"%f",&param->neut_mix[5][5]); break;
-						}
-						break;
-					}
-				}
+				}			
 			}	
 		}
 		else if(!strcasecmp(dummy,"UMIX"))
@@ -766,29 +677,19 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 1: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->charg_Umix[1][1]); break;
-							case 2: fscanf(lecture,"%f",&param->charg_Umix[1][2]); break;
-						}
-						break;
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->charg_Umix[ie][je]);
 					}
-					case 2: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->charg_Umix[2][1]); break;
-							case 2: fscanf(lecture,"%f",&param->charg_Umix[2][2]); break;
-						}
-						break;
-					}
-				}
+				}			
 			}	
 		}
 		else if(!strcasecmp(dummy,"VMIX"))
@@ -796,29 +697,17 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 1: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->charg_Vmix[1][1]); break;
-							case 2: fscanf(lecture,"%f",&param->charg_Vmix[1][2]); break;
-						}
-						break;
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->charg_Vmix[ie][je]);
 					}
-					case 2: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->charg_Vmix[2][1]); break;
-							case 2: fscanf(lecture,"%f",&param->charg_Vmix[2][2]); break;
-						}
-						break;
-					}
-				}
+				}			
 			}	
 		}
 		else if(!strcasecmp(dummy,"GAUGE"))
@@ -826,6 +715,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
 				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->GAUGE_Q);
 				else switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
@@ -840,19 +730,18 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
 				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->YU_Q);
-				else switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				else 				
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 3: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 3: fscanf(lecture,"%f",&param->yut); break;	
-						}
-						break;
+						if(ie==atoi(dummy)) fscanf(lecture,"%f",&param->yut[ie]);
 					}
-				}
+				}			
 			}	
 		}
 		else if(!strcasecmp(dummy,"YD"))
@@ -860,19 +749,18 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
 				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->YD_Q);
-				else switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				else
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 3: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 3: fscanf(lecture,"%f",&param->yub); break;	
-						}
-						break;
+						if(ie==atoi(dummy)) fscanf(lecture,"%f",&param->yub[ie]);
 					}
-				}
+				}			
 			}		
 		}
 		else if(!strcasecmp(dummy,"YE"))
@@ -880,19 +768,18 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
 				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->YE_Q);
-				else switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				else
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 3: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 3: fscanf(lecture,"%f",&param->yutau); break;	
-						}
-						break;
+						if(ie==atoi(dummy)) fscanf(lecture,"%f",&param->yutau[ie]);
 					}
-				}
+				}			
 			}		
 		}
 		else if(!strcasecmp(dummy,"HMIX"))
@@ -900,6 +787,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
 				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->HMIX_Q);
 				else switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
@@ -915,42 +803,17 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 1: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->H0_mix[1][1]); break;
-							case 2: fscanf(lecture,"%f",&param->H0_mix[1][2]); break;
-							case 3: fscanf(lecture,"%f",&param->H0_mix[1][3]); break;
-						}
-						break;
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->H0_mix[ie][je]);
 					}
-					case 2: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->H0_mix[2][1]); break;
-							case 2: fscanf(lecture,"%f",&param->H0_mix[2][2]); break;
-							case 3: fscanf(lecture,"%f",&param->H0_mix[2][3]); break;
-						}
-						break;
-					}
-					case 3: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->H0_mix[3][1]); break;
-							case 2: fscanf(lecture,"%f",&param->H0_mix[3][2]); break;
-							case 3: fscanf(lecture,"%f",&param->H0_mix[3][3]); break;
-						}
-						break;
-					}
-				}
+				}			
 			}	
 		}
 		else if(!strcasecmp(dummy,"NMAMIX"))
@@ -958,31 +821,17 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
-					case 1: 
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->A0_mix[1][1]); break;
-							case 2: fscanf(lecture,"%f",&param->A0_mix[1][2]); break;
-							case 3: fscanf(lecture,"%f",&param->A0_mix[1][3]); break;
-						}
-						break;
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->A0_mix[ie][je]);
 					}
-					case 2: 
-					{
-						fscanf(lecture,"%s",dummy);
-						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-						{
-							case 1: fscanf(lecture,"%f",&param->A0_mix[2][1]); break;
-							case 2: fscanf(lecture,"%f",&param->A0_mix[2][2]); break;
-							case 3: fscanf(lecture,"%f",&param->A0_mix[2][3]); break;
-						}
-						break;
-					}
-				}
+				}			
 			}	
 		}
 		else if(!strcasecmp(dummy,"MSOFT"))
@@ -990,6 +839,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
 				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->MSOFT_Q);
 				else switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
@@ -1021,6 +871,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
 				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->AU_Q);
 				else switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
@@ -1059,6 +910,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
 				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->AD_Q);
 				else switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
@@ -1097,6 +949,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
 				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->AE_Q);
 				else switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
@@ -1135,6 +988,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
 				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->NMSSMRUN_Q);
 				else switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
@@ -1151,19 +1005,302 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				}
 			}
 		}
+		else if(!strcasecmp(dummy,"USQMIX"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->sU_mix[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"DSQMIX"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->sD_mix[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"SELMIX"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->sE_mix[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"SELMIX"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->sNU_mix[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"MSQ2"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->MSQ2_Q);
+				else 
 
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->sCKM_msq2[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"MSL2"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->MSL2_Q);
+				else 
+
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->sCKM_msl2[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"MSD2"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->MSD2_Q);
+				else 
+
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->sCKM_msd2[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"MSU2"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->MSU2_Q);
+				else 
+
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->sCKM_msu2[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"MSE2"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->MSE2_Q);
+				else 
+
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->sCKM_mse2[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"VCKM"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->CKM_Q);
+				else 
+
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->CKM[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"UPMNS"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->PMNSU_Q);
+				else 
+
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->PMNS_U[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"TU"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->TU_Q);
+				else 
+
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->TU[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"TD"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->TD_Q);
+				else 
+
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->TD[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"TE"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->TE_Q);
+				else 
+
+				if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%f",&param->TE[ie][je]);
+					}
+				}			
+			}	
+		}
 	}
 	fclose(lecture);
 
-	if(param->MSOFT_Q==0.) param->MSOFT_Q=max(param->NMSSMRUN_Q,max(param->YU_Q,max(param->YD_Q,max(param->YE_Q,max(param->HMIX_Q,max(param->GAUGE_Q,max(param->AU_Q,max(param->AD_Q,param->AE_Q))))))));
+	if(param->mass_Z0==0.) param->mass_Z0=param->mass_Z;
+
+	if(param->MSOFT_Q==0.) param->MSOFT_Q=max(param->TU_Q,max(param->TD_Q,max(param->TE_Q,max(param->PMNSU_Q,max(param->CKM_Q,max(param->MSE2_Q,max(param->MSU2_Q,max(param->MSD2_Q,max(param->MSL2_Q,max(param->MSQ2_Q,max(param->NMSSMRUN_Q,max(param->YU_Q,max(param->YD_Q,max(param->YE_Q,max(param->HMIX_Q,max(param->GAUGE_Q,max(param->AU_Q,max(param->AD_Q,param->AE_Q))))))))))))))))));
 	
 	if(param->Q==0.) param->Q=sqrt(param->mass_t1*param->mass_t2);
 	
-	if(param->MSOFT_Q==0.) param->MSOFT_Q=param->NMSSMRUN_Q=param->YU_Q=param->YD_Q=param->YE_Q=param->HMIX_Q=param->GAUGE_Q=param->AU_Q=param->AD_Q=param->AE_Q=param->Q;
-		
+	if(param->MSOFT_Q==0.) param->TU_Q=param->TD_Q=param->TE_Q=param->PMNSU_Q=param->CKM_Q=param->MSE2_Q=param->MSU2_Q=param->MSD2_Q=param->MSL2_Q=param->MSQ2_Q=param->MSOFT_Q=param->NMSSMRUN_Q=param->YU_Q=param->YD_Q=param->YE_Q=param->HMIX_Q=param->GAUGE_Q=param->AU_Q=param->AD_Q=param->AE_Q=param->Q;
+			
 	if(param->tan_beta==0.) param->tan_beta=param->tanb_GUT;
 	
-	if((param->tan_beta*param->MSOFT_Q)==0.) param->model=-1;
+	if((param->tan_beta*param->MSOFT_Q)==0.) param->model=-3;
 	
 	dum=acos(param->stop_mix[1][1]);
 	param->stop_mix[2][1]=-sin(dum);
@@ -1187,12 +1324,23 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 	
  	param->mass_b_pole=mb_pole(param);
  	param->mass_b_1S=mb_1S(param);
-  			
-	if(param->Rparity != 0) param->model=-1;
-	if(param->CPviolation != 0) param->model=-1;
-	if(param->Flavor != 0) param->model=-1;
-
-	if(param->model==-1) return 0;	
+	
+	param->mtmt=mt_mt(param);
+ 			
+	if(param->model<0) return 0;	
 	
 	return 1;	
+}
+
+/*--------------------------------------------------------------------*/
+
+int test_slha(char name[])
+/* "container" function scanning the SLHA file "name" and checking if it is valid. A negative value indicates a problem with the SLHA file. */
+{
+	struct parameters param;
+		
+	Init_param(&param);
+	if(Les_Houches_Reader(name,&param)) return 1;
+
+	return param.model;
 }

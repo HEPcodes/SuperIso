@@ -31,10 +31,10 @@ float F2C(float x)
 	return -3./2./pow(1.-x,3.)*(3.-4.*x+x*x+2.*log(x));
 }
 
-
 /*--------------------------------------------------------------------*/
 
 float muon_gm2(struct parameters* param)
+/* computes the muon anomalous magnetic moment a_mu */
 {
 #ifdef SMONLY
 	return 0.;
@@ -45,8 +45,11 @@ float muon_gm2(struct parameters* param)
 #endif	
 
 	float mass_smu[3],mass_charg[3];
-	float n_L[5][3],n_R[5][3],xim[5][3],xk[3],c_L[3],c_R[3],X[3][3];
-	int ie,me,ke;
+	float n_L[6][3],n_R[6][3],xim[6][3],xk[3],c_L[3],c_R[3],X[3][3];
+	int ie,me,ke;	
+	int nb_neut;
+	if(param->mass_neut[5]==0.) nb_neut=4; else nb_neut=5;
+
 
 	mass_charg[1]=param->mass_cha1;
 	mass_charg[2]=param->mass_cha2;
@@ -56,18 +59,17 @@ float muon_gm2(struct parameters* param)
 	float M2smu22=pow(param->mass_mur,2.);
 	float M2smu12=(param->A_mu-param->mu_Q*param->tan_beta)*param->mass_mu;
 
-	mass_smu[1]=sqrt((M2smu11+M2smu22-sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu12))/2.);
+mass_smu[1]=sqrt((M2smu11+M2smu22-sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu12))/2.);
 	mass_smu[2]=sqrt((M2smu11+M2smu22+sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu12))/2.);
 
 	X[1][1]=cos(atan2(-2.*M2smu12,-M2smu11+M2smu22)/2.);
 	X[1][2]=sin(atan2(-2.*M2smu12,-M2smu11+M2smu22)/2.);
 	X[2][1]=-X[1][2];
 	X[2][2]=X[1][1];
-
 	
 	float ymu=param->g2*param->mass_mu/sqrt(2.)/param->mass_W/cos(atan(param->tan_beta));
 	
-	for(ie=1;ie<=4;ie++) for(me=1;me<=2;me++)
+	for(ie=1;ie<=nb_neut;ie++) for(me=1;me<=2;me++)
 	{
 		n_L[ie][me]=1./sqrt(2.)*(param->gp*param->neut_mix[ie][1]+param->g2*param->neut_mix[ie][2])*X[me][1]
 		-ymu*param->neut_mix[ie][3]*X[me][2];
@@ -83,7 +85,7 @@ float muon_gm2(struct parameters* param)
 	}
 		
 	float a_neut=0.;
-	for(ie=1;ie<=4;ie++) for(me=1;me<=2;me++)
+	for(ie=1;ie<=nb_neut;ie++) for(me=1;me<=2;me++)
 	{
 		a_neut+=
 		-param->mass_mu/12./pow(mass_smu[me],2.)*(pow(n_L[ie][me],2.)+pow(n_R[ie][me],2.))*F1N(xim[ie][me])
@@ -91,8 +93,7 @@ float muon_gm2(struct parameters* param)
 	}
 	a_neut*=param->mass_mu/16./pi/pi;
 	
-	
-	
+		
 	float a_charg=0.;
 	for(ke=1;ke<=2;ke++)
 	{
@@ -110,7 +111,7 @@ float muon_gm2(struct parameters* param)
 /*--------------------------------------------------------------------*/
 
 float muon_gm2_calculator(char name[])
-/* "container" function scanning the SLHA file "name" and calculating (g-2) */
+/* "container" function scanning the SLHA file "name" and calculating a_mu */
 {
 	struct parameters param;
 		

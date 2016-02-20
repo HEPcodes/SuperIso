@@ -1,5 +1,5 @@
-Supersymmetric Isospin asymmetry (SuperIso) Version 2.2 (26 June 2008)
-------------------------------------------------------------------------
+SuperIso Version 2.3 (25 August 2008)
+-------------------------------------
 By Farvah Nazila Mahmoudi (nazila.mahmoudi@tsl.uu.se)
 
 
@@ -9,9 +9,16 @@ INTRODUCTION
 The most recent version of this program can be obtained from: 
 http://www3.tsl.uu.se/~nazila/superiso/
 
-This C code (in C99 standard) provides the calculation of isospin asymmetry and inclusive branching ratio corresponding to b-> s gamma, as well as some other observables, for a set of supersymmetric parameters which can be either calculated within this program thanks to Isajet or Softsusy, or directly provided by user thanks to a SUSY Les Houches Accord (SLHA) file.
+This C code (in C99 standard) provides the calculation of several flavor physics observables as well as the muon anomalous magnetic moment, for a set of supersymmetric parameters which can be either calculated within this program thanks to Isajet or Softsusy, or directly provided by user thanks to a SUSY Les Houches Accord (SLHA1 or SLHA2) file.
 
-If you use this program to write a paper, please cite F. Mahmoudi, arXiv:0710.2067 [hep-ph], Comput. Phys. Commun. 178 (2008) 745.
+If you use this program to write a paper, please cite: 
+
+F. Mahmoudi, arXiv:0710.2067 [hep-ph], Comput. Phys. Commun. 178 (2008) 745
+
+AND
+
+F. Mahmoudi, arXiv:0808.3144 [hep-ph].
+
 
 The program has been tested on Linux and Mac machines with gcc and icc.
 
@@ -40,22 +47,23 @@ Included Files
 alphas.c: calculation of the strong coupling constant
 bdtaunu.c: calculation of the observables related to B-> D tau nu
 bsgamma.c: calculation of the inclusive branching ratio of B-> Xs gamma
+bsmumu.c: calculation of the branching ratio of Bs-> mu+ mu-
 btaunu.c: calculation of the branching ratio of B-> tau nu
-excluded_masses.c: procedures which check the charge of the LSP, and the agreement with the mass limits
+excluded_masses.c: procedures which check the charge of the LSP, and the agreement with the lower mass limits
 general.c: some useful mathematical functions 
+gmuon.c: calculation of the muon anomalous magnetic moment
 isajet.c: procedures calling Isajet
 isospin.c: calculation of the isospin asymmetry in B-> K* gamma
 kmunu.c: calculation of the observables related to K-> mu nu
 leshouches.c: procedures reading files in the SLHA format
-muon.c: calculation of the muon g-2
-quark_masses.c: calculation of the quark running masses
+quark_masses.c: calculation of the quark masses
 softsusy.c: procedures calling Softsusy
 wilson.c: calculation of the Wilson coefficients
 
 - Main programs
 amsb.c: calculation of the observables for an AMSB point
 gmsb.c: calculation of the observables for a GMSB point
-msugra.c: calculation of the observables for for a mSUGRA point
+msugra.c: calculation of the observables for a mSUGRA point
 nuhm.c: calculation of the observables for a NUHM point
 slha.c: program calculating the observables using a given SLHA file
 
@@ -70,6 +78,11 @@ README
 
 History
 -------
+v2.3 - 08/25/2008 - 	Implementation of the branching ratio of Bs-> mu+ mu-.
+			Update of the numerical inputs (based on PDG 2008).
+			Some minor corrections and improvements.
+			Change of the name of some routines.
+
 v2.2 - 06/26/2008 - Implementation of B-> tau nu, B-> D tau nu and K-> mu nu observables.
 
 v2.1 - 04/15/2008 - SLHA2 compliant.

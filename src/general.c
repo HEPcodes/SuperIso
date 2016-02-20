@@ -30,6 +30,7 @@ float Li2(float x)
 /*--------------------------------------------------------------------*/
 
 float Li3(float x)
+/* calculates the trilogarithm function of x */
 {
 	float pisq6=16.*pow(atan(1.),2.)/6.;
 	float x_0 = -1.;
@@ -79,6 +80,7 @@ float Li3(float x)
 /*--------------------------------------------------------------------*/
 
 complex float CLi2(complex float x)
+/* calculates the dilogarithm function of x, extended to complex numbers */
 {
 	float pisq6=pow((4.*atan(1.)),2.)/6.;
 
@@ -114,6 +116,7 @@ complex float CLi2(complex float x)
 /*--------------------------------------------------------------------*/
 
 float Cl2(float x)
+/* calculates the Cl2 function of x */
 {
 	return cimag(CLi2(cos(x)+I*sin(x)));
 }

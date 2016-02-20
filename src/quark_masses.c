@@ -3,7 +3,6 @@
 
 float running_mass(float quark_mass, float Qinit, float Qfin,  float mtop, float mbot, struct parameters* param)
 /* computes the running quark mass at the energy Qfin, from a given running quark mass quark_mass at energy Qinit */
-/* valid for at least 4 active flavors */
 {
 
 	float alphas_Qinit,alphas_Qfin,running_mass;
@@ -31,6 +30,7 @@ float running_mass(float quark_mass, float Qinit, float Qfin,  float mtop, float
 
 		if(Qfin <= mbot) 
 		{
+		/* if Qinit and Qfin are in the same range, just calculate R_Qfin */
 		/* 4 active flavors at Qinit and Qfin */
 			nf=4;
 
@@ -50,6 +50,7 @@ float running_mass(float quark_mass, float Qinit, float Qfin,  float mtop, float
 		}
 		else if(Qfin <= mtop)
 		{
+		/* if Qinit and Qfin are NOT in the same range, evolve first the running mass towards the range limit(s), then from the limit(s) towards Qfin */
 		/* 4 active flavors at Qinit, 5 active flavors at Qfin */
 			nf=4;
 
@@ -492,10 +493,10 @@ float running_mass(float quark_mass, float Qinit, float Qfin,  float mtop, float
 	return running_mass;
 }
 
-
 /*--------------------------------------------------------------------*/
 
 float mb_pole(struct parameters* param)
+/* computes the b pole mass */
 {
 	
 	float alphas_mb=alphas_running(param->mass_b,param->mass_top_pole,param->mass_b,param);	
@@ -503,9 +504,10 @@ float mb_pole(struct parameters* param)
  	return param->mass_b*(1.+alphas_mb/pi*(4./3.+alphas_mb/pi*((13.4434-1.0414*4.+1.0414*4./3.*((param->mass_u+param->mass_d+param->mass_s+param->mass_c)/param->mass_b))+alphas_mb/pi*(190.595-4.*(26.655-4.*0.6527)))));
 }
 
+/*--------------------------------------------------------------------*/
 
 float mc_pole(struct parameters* param)
-{
+/* computes the c pole mass */{
 	
 	float alphas_mc=alphas_running(param->mass_c,param->mass_top_pole,param->mass_b_pole,param);	
 
@@ -515,6 +517,7 @@ float mc_pole(struct parameters* param)
 /*--------------------------------------------------------------------*/
 
 float mb_1S(struct parameters* param)
+/* computes the 1S b mass */
 {
 	float mb=param->mass_b_pole;
 	float mu=param->mass_b/2.;
@@ -534,6 +537,7 @@ float mb_1S(struct parameters* param)
 /*--------------------------------------------------------------------*/
 
 float mt_mt(struct parameters* param)
+/* computes the top mass mt(mt) */
 {
 	
 	float alphas_mtop=alphas_running(param->mass_top_pole,param->mass_top_pole,param->mass_b,param); 

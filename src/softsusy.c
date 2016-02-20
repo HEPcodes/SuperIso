@@ -129,7 +129,7 @@ int softsusy_amsb(float m0, float m32, float tanb, float sgnmu, float mtop, floa
 /*--------------------------------------------------------------------*/
 
 int softsusy_nuhm(float m0, float m12, float tanb, float A0, float mu, float mA, float mtop, float mbot, float alphas_mz, char name[])
-/* generates a SLHA file for a NUHM parameter space point using SOFTSUSY */
+/* generates a SLHA file for NUHM parameter space point using SOFTSUSY */
 {
 	FILE *tmp;
 	char tmp_char[200];

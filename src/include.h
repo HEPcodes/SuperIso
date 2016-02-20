@@ -15,6 +15,7 @@
 
 /*#define DEBUG*/
 /*#define SMONLY*/
+/*#define SM_ChargedHiggs*/
 
 /*--------------------------------------------------------------------*/
 
@@ -52,6 +53,7 @@ int softsusy_sugra(float m0, float m12, float tanb, float A0, float sgnmu, float
 int isajet_sugra(float m0, float m12, float tanb, float A0, float sgnmu, float mtop, char name[]);
 int softsusy_gmsb(float Lambda, float Mmess, float tanb, int N5, float cGrav, float sgnmu, float mtop, float mbot, float alphas_mz, char name[]);
 int softsusy_amsb(float m0, float m32, float tanb, float sgnmu, float mtop, float mbot, float alphas_mz, char name[]);
+int softsusy_nuhm(float m0, float m12, float tanb, float A0, float mu, float mA, float mtop, float mbot, float alphas_mz, char name[]);
 void Init_param(struct parameters* param);
 float alpha_s_running(float Q, float mtop, float mbot, float alphas_MZ, float MZ);
 float running_mass(float quark_mass, float Qinit, float Qfin,  float mtop, float mbot, float alphas_MZ, float MZ);

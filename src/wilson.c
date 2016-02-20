@@ -193,8 +193,7 @@ void C_calculator(float C0[], float C1[],float mu, struct parameters* param)
 
 	float alpha_s_mb=alpha_s_running(param->mass_b,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);	
 
-	float mass_b_pole=param->mass_b*(1+alpha_s_mb/pi*(4./3.+alpha_s_mb/pi*((13.4434-1.0414*4.+1.0414*4./3.*(1.61/4.62))+alpha_s_mb/pi*(190.595-4.*(26.655-4.*0.6527)))));
-/* pole mass of b, from PDG */
+ 	float mass_b_pole=param->mass_b*(1+alpha_s_mb/pi*(4./3.+alpha_s_mb/pi*((13.4434-1.0414*4.+1.0414*4./3.*((param->mass_u+param->mass_d+param->mass_s+param->mass_c)/param->mass_b))+alpha_s_mb/pi*(190.595-4.*(26.655-4.*0.6527))))); /* pole mass of b, from PDG */
 	
 	float alpha_s_MW=alpha_s_running(param->mass_W,param->mass_top_pole,mass_b_pole,param->alpha_s_MZ,param->mass_Z); 
 	
@@ -202,10 +201,9 @@ void C_calculator(float C0[], float C1[],float mu, struct parameters* param)
 	
 	float mtmt=param->mass_top_pole*(1.-4./3.*alpha_s_mtop/pi);
 	
-	float mass_top=running_mass(mtmt,mtmt,param->mass_W,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);
-/* mt(MW) */
+	float mass_top=running_mass(mtmt,mtmt,param->mass_W,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z); /* mt(MW) */
 
-	float sw=sin(atan(param->gp/param->g2));
+ 	float sw=sin(atan(param->gp/param->g2));
 
 /*----------------------------------------------------------------------*/
 	/* EPSILON_B */
@@ -271,7 +269,7 @@ void C_calculator(float C0[], float C1[],float mu, struct parameters* param)
 /*----------------------------------------------------------------------*/
 /* CHARGED HIGGS */
 /*----------------------------------------------------------------------*/
-		
+
 	float C7H_0=1./3./pow(param->tan_beta,2.)*F7_1(yt) + F7_2(yt);
 	float C8H_0=1./3./pow(param->tan_beta,2.)*F8_1(yt) + F8_2(yt);
 
@@ -333,7 +331,7 @@ void C_calculator(float C0[], float C1[],float mu, struct parameters* param)
 	
  	float eta_MSOFTQ =alpha_s_MSOFT/alpha_s_MW; 
 	
-	float beta0=-7.;
+	float beta0=-7.;  
 	
 	float C7charg_0 = pow(eta_MSOFTQ,-16./3./beta0)*C7charg_0_SUSYscale +8./3.*(pow(eta_MSOFTQ,-14./3./beta0)-pow(eta_MSOFTQ,-16./3./beta0))*C8charg_0_SUSYscale;
 
@@ -355,6 +353,12 @@ void C_calculator(float C0[], float C1[],float mu, struct parameters* param)
 	C7SMeps_0=C7H_0=C7Heps_0=C7charg_0=C7H_1=C7charg_1=0.;
 	C8SMeps_0=C8H_0=C8Heps_0=C8charg_0=C8H_1=C8charg_1=0.;
 	C4H_1=C4charg_1=0.;
+#endif
+
+#ifdef SM_ChargedHiggs
+	C7SMeps_0=C7Heps_0=C7charg_0=C7charg_1=0.;
+	C8SMeps_0=C8Heps_0=C8charg_0=C8charg_1=0.;
+	C4charg_1=0.;
 #endif
 
         float C2_0 = C2SM_0;
@@ -461,7 +465,7 @@ void Cem_calculator(float Cem[], float mu, struct parameters* param)
 		
 	float alpha_s_mb=alpha_s_running(param->mass_b,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);	
 
-	float mass_b_pole=param->mass_b*(1+alpha_s_mb/pi*(4./3. +alpha_s_mb/pi*((13.4434-1.0414*4.+1.0414*4./3.*(1.61/4.62))+alpha_s_mb/pi*(190.595-4.*(26.655-4.*0.6527)))));
+ 	float mass_b_pole=param->mass_b*(1+alpha_s_mb/pi*(4./3.+alpha_s_mb/pi*((13.4434-1.0414*4.+1.0414*4./3.*((param->mass_u+param->mass_d+param->mass_s+param->mass_c)/param->mass_b))+alpha_s_mb/pi*(190.595-4.*(26.655-4.*0.6527)))));
 
 	float alpha_s_MW=alpha_s_running(param->mass_W,param->mass_top_pole,mass_b_pole,param->alpha_s_MZ,param->mass_Z); 
 	
@@ -470,7 +474,7 @@ void Cem_calculator(float Cem[], float mu, struct parameters* param)
 	float mtmt=param->mass_top_pole*(1.-4./3.*alpha_s_mtop/pi);
 	
 	float mass_top=running_mass(mtmt,mtmt,param->mass_W,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);
-
+ 	
 	float sw=sin(atan(param->gp/param->g2));
 
 /*----------------------------------------------------------------------*/
@@ -546,7 +550,6 @@ void Cem_calculator(float Cem[], float mu, struct parameters* param)
 /*----------------------------------------------------------------------*/
 /* CHARGINOS */	
 /*----------------------------------------------------------------------*/	
-	
 	float mass_top_SUSYscale=running_mass(mass_top,mass_top,param->MSOFT_Q,mass_top,param->mass_b,param->alpha_s_MZ,param->mass_Z);			
 	    
  	float r11= param->stop_mix[1][1]*param->charg_Vmix[1][1] + mass_top_SUSYscale/sqrt(2.)/param->mass_W/sin(atan(param->tan_beta))*param->stop_mix[2][1]*param->charg_Vmix[1][2];
@@ -591,11 +594,10 @@ void Cem_calculator(float Cem[], float mu, struct parameters* param)
 				+rt11*rpt11*param->mass_W/param->mass_cha1*F8_3(pow(param->mass_upl/param->mass_cha1,2.))
 				+rt12*rpt12*param->mass_W/param->mass_cha2*F8_3(pow(param->mass_upl/param->mass_cha2,2.)));	
 	
-
  	float eta_MSOFTQ =alpha_s_MSOFT/alpha_s_MW; 
 	
-	float beta0=-7.;
-	
+	float beta0=-7.;    
+
 	float C7charg_0 = pow(eta_MSOFTQ,-16./3./beta0)*C7charg_0_SUSYscale +8./3.*(pow(eta_MSOFTQ,-14./3./beta0)-pow(eta_MSOFTQ,-16./3./beta0))*C8charg_0_SUSYscale;
 
 	float C8charg_0 = pow(eta_MSOFTQ,-14./3./beta0)*C8charg_0_SUSYscale;
@@ -610,6 +612,10 @@ void Cem_calculator(float Cem[], float mu, struct parameters* param)
 	C8SMeps_0=C8H_0=C8Heps_0=C8charg_0=0.;
 #endif
 
+#ifdef SM_ChargedHiggs
+	C7SMeps_0=C7Heps_0=C7charg_0=0.;
+	C8SMeps_0=C8Heps_0=C8charg_0=0.;
+#endif
 
         float C7_0 = C7SM_0 + C7SMeps_0 +C7H_0+C7Heps_0+C7charg_0;
         float C8_0 = C8SM_0 + C8SMeps_0 +C8H_0+C8Heps_0+C8charg_0;

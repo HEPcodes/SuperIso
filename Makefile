@@ -2,7 +2,7 @@
 .KEEP_STATE:
 
 #
-VERSION = v1.0
+VERSION = v1.1
 
 # Choose your C compiler here (in general gcc on Linux systems):
 CC = gcc
@@ -13,7 +13,7 @@ CC = gcc
 
 #Optimisation level, eg: -O3
 OPT= -O3
-#Debug level: -g(n=1,2,3)
+#OR debug level: -g(n=1,2,3)
 DEBUG=
 	   
 CFLAGS= -I./src -L./src $(DEBUG) $(OPT)
@@ -51,7 +51,7 @@ distclean:
 	
 libisospin.a: 
 	@echo;
-	@echo SuperIso $(VERSION) - F. Mahmoudi 2007;
+	@echo SuperIso $(VERSION) - F.N. Mahmoudi 2008;
 	@echo;
 	@echo CC = $(CC) > src/FlagsForMake;\
 	echo CFLAGS = $(CFLAGS) >> src/FlagsForMake;\
@@ -67,6 +67,7 @@ save:
 	cp -p amsb.c superiso_$(VERSION)/;\
 	cp -p gmsb.c superiso_$(VERSION)/;\
 	cp -p msugra.c superiso_$(VERSION)/;\
+	cp -p nuhm.c superiso_$(VERSION)/;\
 	cp -p slha.c superiso_$(VERSION)/;\
 	cp -p main_example.c superiso_$(VERSION)/;\
 	cp -p Makefile superiso_$(VERSION)/;\

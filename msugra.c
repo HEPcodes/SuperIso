@@ -46,7 +46,7 @@ int main(int argc,char** argv)
 	delta0=delta0_calculator(name);
 	if(delta0 !=0.)
 	{
-		printf("delta0_softsusy=%f\n",delta0_calculator(name));
+		printf("delta0_softsusy=%f\n",delta0);
        		printf("BR_softsusy=%f\n",BRbsgamma_calculator(name));
        		printf("charged_LSP_softsusy=%d\n",charged_LSP_calculator(name));
        		printf("excluded_masses_softsusy=%d\n\n",excluded_mass_calculator(name));
@@ -72,3 +72,4 @@ int main(int argc,char** argv)
 	system(name);		
 	return 1;
 }
+

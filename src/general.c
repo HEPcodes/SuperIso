@@ -1,6 +1,5 @@
 #include "include.h"
 
-
 float Li2(float x)
 /* calculates the dilogarithm function of x */
 {

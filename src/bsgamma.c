@@ -78,6 +78,7 @@ float f22(float delta, float z)
 
 float f27(float delta, float z)
 {
+	/* z < 1/4 */
 	float pi=4.*atan(1.);
 	int ie;
 
@@ -113,7 +114,6 @@ float f27(float delta, float z)
 	float f27=-8./9.*z*(int1+int2);
 	return f27;
 }
-/*---------------------------------------------------------------------*/
 
 float BR_bsgamma(float C0[], float C1[], float Cem[], float mu, struct parameters* param)
 /* computes the inclusive branching ratio of B -> Xs gamma */
@@ -125,12 +125,11 @@ float BR_bsgamma(float C0[], float C1[], float Cem[], float mu, struct parameter
 
 	float alpha_s_mb=alpha_s_running(param->mass_b,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);	
 
-	float mass_b_pole=param->mass_b*(1+alpha_s_mb/pi*(4./3.+alpha_s_mb/pi*((13.4434-1.0414*4.+1.0414*4./3.*(1.61/4.62))+alpha_s_mb/pi*(190.595-4.*(26.655-4.*0.6527)))));
+ 	float mass_b_pole=param->mass_b*(1+alpha_s_mb/pi*(4./3.+alpha_s_mb/pi*((13.4434-1.0414*4.+1.0414*4./3.*((param->mass_u+param->mass_d+param->mass_s+param->mass_c)/param->mass_b))+alpha_s_mb/pi*(190.595-4.*(26.655-4.*0.6527)))));
 
 	float alpha_s_mu=alpha_s_running(mu,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);	
 
-	float z0=pow(param->mass_c/param->mass_b,2.);   
-	
+	float z0=pow(param->mass_c/param->mass_b,2.); 	  
 	float z1=pow(param->mass_c/mass_b_pole,2.);   
 	
 	float mbs=mass_b_pole/param->mass_s;	
@@ -191,7 +190,7 @@ float BRbsgamma_calculator(char name[])
 
 	float alpha_s_mb=alpha_s_running(param.mass_b,param.mass_top_pole,param.mass_b,param.alpha_s_MZ,param.mass_Z);	
 
-	float mass_b_pole=param.mass_b*(1+alpha_s_mb/pi*(4./3. +alpha_s_mb/pi*((13.4434-1.0414*4.+1.0414*4./3.*(1.61/4.62))+alpha_s_mb/pi*(190.595-4.*(26.655-4.*0.6527)))));
+ 	float mass_b_pole=param.mass_b*(1+alpha_s_mb/pi*(4./3.+alpha_s_mb/pi*((13.4434-1.0414*4.+1.0414*4./3.*((param.mass_u+param.mass_d+param.mass_s+param.mass_c)/param.mass_b))+alpha_s_mb/pi*(190.595-4.*(26.655-4.*0.6527)))));
 
 	float mu_b=mass_b_pole;
 

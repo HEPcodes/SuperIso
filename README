@@ -1,4 +1,4 @@
-Supersymmetric Isospin asymmetry (SuperIso) v1.0
+Supersymmetric Isospin asymmetry (SuperIso) v1.1
 -------------------------------------------------
 By Farvah Nazila Mahmoudi (nazila.mahmoudi@tsl.uu.se)
 
@@ -23,10 +23,11 @@ Installation and Compilation
 - in Makefile, first define your C compiler, and the path to Isajet or Softsusy, if you want to use them. If not, you should provide your SLHA file as input.
 - compile with: make
 
-5 programs are available:
+6 programs are available:
 - msugra.c: msugra parameter space, linked to isajet or softsusy
 - amsb.c: amsb parameter space, linked to softsusy
 - gmsb.c: gmsb parameter space, linked to softsusy
+- nuhm.c: nuhm parameter space, linked to softsusy
 - main_example.c: test-program
 - slha.c: scans the SLHA file
 
@@ -52,6 +53,7 @@ amsb.c: calculation of isospin asymmetry and BR for an AMSB point
 gmsb.c: calculation of isospin asymmetry and BR for a GMSB point
 msugra.c: calculation of isospin asymmetry and BR for a mSUGRA point
 main_example.c: program example/test 
+nuhm.c: calculation of isospin asymmetry and BR for a NUHM point
 slha.c: program calculating isospin asymmetry and BR from a SLHA file
 
 - Headers in src
@@ -65,6 +67,8 @@ README
 
 History
 -------
+
+v1.1 - 01/14/2008 - NUHM module has been added, as well as some minor corrections.
 
 v1.0 - 09/17/2007 - First public release
 

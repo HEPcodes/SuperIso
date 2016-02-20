@@ -1,5 +1,6 @@
 #include "src/include.h"
 
+/*#define USE_ISAJET*/
 #define USE_SOFTSUSY
 
 /*--------------------------------------------------------------------*/

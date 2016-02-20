@@ -1,14 +1,14 @@
 .KEEP_STATE:
 
 #
-VERSION = v2.6
+VERSION = v2.7
 
 # Choose your compilers here (in general gcc/gfortran on Linux systems):
 CC = gcc
-CFLAGS= -O3 -pipe -fomit-frame-pointer -funsafe-math-optimizations
+CFLAGS= -O2 -pipe -fomit-frame-pointer
 
 #CC = icc
-#CFLAGS = -O3
+#CFLAGS = -O2
 
 MAKE = make
 AR = ar

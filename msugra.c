@@ -34,13 +34,13 @@ int main(int argc,char** argv)
      		sscanf(argv[3],"%lf",&A0);
      		sscanf(argv[4],"%lf",&tanb);
      		if(argc>5) sscanf(argv[5],"%lf",&sgnmu); else sgnmu=1;
-     		if(argc>6) sscanf(argv[6],"%lf",&mtop); else mtop=172.4;   
+     		if(argc>6) sscanf(argv[6],"%lf",&mtop); else mtop=173.1;   
      		if(argc>7) sscanf(argv[7],"%lf",&mbot); else mbot=4.2;
      		if(argc>8) sscanf(argv[8],"%lf",&alphas_mz); else alphas_mz=0.1176;
   	}	
-	sprintf(name,"msugra.lha");
 
 #ifdef USE_SOFTSUSY
+	sprintf(name,"msugra_softsusy.lha");
 	softsusy_sugra(m0, m12, tanb, A0, sgnmu, mtop, mbot, alphas_mz, name);
 
 	delta0=delta0_calculator(name);
@@ -56,6 +56,7 @@ int main(int argc,char** argv)
       		printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
       		printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
 		printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
+     		printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
      		printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
      		printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
 		printf("a_muon=%.3e\n",muon_gm2_calculator(name));
@@ -63,9 +64,12 @@ int main(int argc,char** argv)
 		printf("excluded_mass=%d\n\n",excluded_mass_calculator(name));
 	}
 	else printf("Invalid point\n\n");
+	sprintf(name,"rm msugra_softsusy.lha");
+	system(name);		
 #endif
 
 #ifdef USE_ISAJET
+	sprintf(name,"msugra_isajet.lha");
 	isajet_sugra(m0, m12, tanb, A0, sgnmu, mtop, name);
 
 	delta0=delta0_calculator(name);
@@ -81,6 +85,7 @@ int main(int argc,char** argv)
       		printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
       		printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
 		printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
+     		printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
      		printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
      		printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
 		printf("a_muon=%.3e\n",muon_gm2_calculator(name));
@@ -90,7 +95,7 @@ int main(int argc,char** argv)
 	else printf("Invalid point\n\n");
 #endif	
 
-	sprintf(name,"rm msugra.lha");
+	sprintf(name,"rm msugra_isajet.lha");
 	system(name);		
 	return 1;
 }

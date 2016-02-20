@@ -307,7 +307,7 @@ double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, st
 	double alpha_em=1./137.036;
 	double BR_BXcenu_exp=0.1061;
 	double Cbr=0.580;
-	double VtsVtb_Vcb_2=0.9676;
+	double VtsVtb_Vcb_2=pow(cabs(conj(param->Vts)*param->Vtb/param->Vcb),2.);
 	double E0=1.6;
 	
 	double alphas_mu=alphas_running(mu,param->mass_top_pole,param->mass_b_pole,param);

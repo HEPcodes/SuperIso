@@ -57,9 +57,9 @@ typedef struct parameters
 	double CKM_lambda,CKM_A,CKM_rho,CKM_eta;
 	double PMNS_theta12,PMNS_theta23,PMNS_theta13,PMNS_delta13,PMNS_alpha1,PMNS_alpha2;
 	double lambdaNMSSM_Min,kappaNMSSM_Min,AlambdaNMSSM_Min,AkappaNMSSM_Min,lambdaSNMSSM_Min,xiFNMSSM_Min,xiSNMSSM_Min,mupNMSSM_Min,mSp2NMSSM_Min,mS2NMSSM_Min,mass_H03,mass_A02,NMSSMRUN_Q,lambdaNMSSM,kappaNMSSM,AlambdaNMSSM,AkappaNMSSM,lambdaSNMSSM,xiFNMSSM,xiSNMSSM,mupNMSSM,mSp2NMSSM,mS2NMSSM; /* NMSSM parameters */
-	double PMNSU_Q,CKM_Q,MSE2_Q,MSU2_Q,MSD2_Q,MSL2_Q,MSQ2_Q,TU_Q,TD_Q,TE_Q;
+	double PMNSU_Q,CKM_Q,IMCKM_Q,MSE2_Q,MSU2_Q,MSD2_Q,MSL2_Q,MSQ2_Q,TU_Q,TD_Q,TE_Q;
 	
-	double CKM[4][4]; /* CKM matrix */
+	double CKM[4][4],IMCKM[4][4]; /* CKM matrix */
 	double H0_mix[4][4],A0_mix[4][4]; /* Higgs mixing matrices */
 	double sU_mix[7][7],sD_mix[7][7],sE_mix[7][7], sNU_mix[4][4]; /* mixing matrices */
 	double sCKM_msq2[4][4],sCKM_msl2[4][4],sCKM_msd2[4][4],sCKM_msu2[4][4],sCKM_mse2[4][4]; /* super CKM matrices */
@@ -71,10 +71,15 @@ typedef struct parameters
 	double Lambda5; /* Lambda QCD */
 	
 	/* Flavor constants */
-	double f_B,f_Bs,f_Ds,m_B,m_Bs,m_Ds,m_K,m_Kstar,m_D,life_B,life_Bs,life_Ds;
+	double f_B,f_Bs,f_Ds,f_D,fK_fpi;
+	double m_B,m_Bs,m_pi,m_Ds,m_K,m_Kstar,m_D0,m_D;
+	double life_pi,life_K,life_B,life_Bs,life_D,life_Ds;
 	
 	/* Decay widths */
 	double width_h0,width_H0,width_A0,width_H;
+	
+	/* CKM matrix */
+	complex double Vud,Vus,Vub,Vcd,Vcs,Vcb,Vtd,Vts,Vtb;
 
 	/* 2HDM */
 	int THDM_model;
@@ -87,6 +92,9 @@ parameters;
 
 /* isajet.c */
 int isajet_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, char name[]);
+int isajet_gmsb(double Lambda, double Mmess, double tanb, int N5, double cGrav, double sgnmu, double mtop, char name[]);
+int isajet_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, char name[]);
+int isajet_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, char name[]);
 
 /* softsusy.c */
 int softsusy_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
@@ -258,6 +266,10 @@ double Dstaunu(struct parameters* param);
 double Dstaunu_calculator(char name[]);
 double Dsmunu(struct parameters* param);
 double Dsmunu_calculator(char name[]);
+
+/* dmunu.c */
+double Dmunu(struct parameters* param);
+double Dmunu_calculator(char name[]);
 
 /* 2hdmc.c */
 int thdmc_types(double l1, double l2, double l3, double l4, double l5, double l6, double l7, double m12_2, double tanb, int type, char name[]);

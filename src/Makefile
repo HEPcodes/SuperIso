@@ -31,7 +31,7 @@ libisospin.a: libisospin.a(softsusy.o) libisospin.a(leshouches.o)\
 	  libisospin.a(bsgamma.o) libisospin.a(alphas.o) libisospin.a(general.o)\
 	  libisospin.a(excluded_masses.o) libisospin.a(quark_masses.o) libisospin.a(gmuon.o)\
 	  libisospin.a(btaunu.o) libisospin.a(bdtaunu.o) libisospin.a(bsmumu.o)\
-	  libisospin.a(kmunu.o) libisospin.a(dslnu.o) libisospin.a(2hdmc.o)
+	  libisospin.a(kmunu.o) libisospin.a(dslnu.o) libisospin.a(dmunu.o) libisospin.a(2hdmc.o)
 	$(RANL)
 
 libisospin.a(softsusy.o): softsusy.c include.h softsusy.h
@@ -50,6 +50,7 @@ libisospin.a(bdtaunu.o): bdtaunu.c include.h
 libisospin.a(bsmumu.o): bsmumu.c include.h
 libisospin.a(kmunu.o): kmunu.c include.h
 libisospin.a(dslnu.o): dslnu.c include.h
+libisospin.a(dmunu.o): dmunu.c include.h
 libisospin.a(2hdmc.o): 2hdmc.c include.h 2hdmc.h
 
 softsusy.h:

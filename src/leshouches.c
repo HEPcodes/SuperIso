@@ -207,6 +207,7 @@ void Init_param(struct parameters* param)
 	param->mS2NMSSM=0.;
 	param->PMNSU_Q=0.;
 	param->CKM_Q=0.;
+	param->IMCKM_Q=0.;
 	param->MSE2_Q=0.;
 	param->MSU2_Q=0.;
 	param->MSD2_Q=0.;
@@ -235,6 +236,7 @@ void Init_param(struct parameters* param)
 		param->sCKM_mse2[ie][je]=0.;
 		param->PMNS_U[ie][je]=0.;
 		param->CKM[ie][je]=0.;
+		param->IMCKM[ie][je]=0.;
 		param->TU[ie][je]=0.;
 		param->TD[ie][je]=0.;
 		param->TE[ie][je]=0.;
@@ -262,18 +264,36 @@ void Init_param(struct parameters* param)
 	}
 	
 	/* Flavor physics */
-	param->f_B=0.200;
+	param->f_B=0.1928;
 	param->f_Bs=0.245;
 	param->f_Ds=0.241;
+	param->f_D=0.206;
+	param->fK_fpi=1.189;
 	param->m_B=5.2795;
 	param->m_Bs=5.3663;
+	param->m_pi=0.1396;
 	param->m_K=0.4937;
 	param->m_Kstar=0.8917;
-	param->m_D=1.86484;
+	param->m_D0=1.86484;
+	param->m_D=1.86962;
 	param->m_Ds=1.96849;
+	param->life_pi=2.6033e-8;
+	param->life_K=1.2380e-8;  
 	param->life_B=1.638e-12;
 	param->life_Bs=1.425e-12;
+	param->life_D=1.040e-12;
 	param->life_Ds=5.e-13;
+	
+	/* CKM matrix */
+	param->Vud=0.97419;
+	param->Vus=0.2257;
+	param->Vub=0.00379;
+	param->Vcd=-0.2256;
+	param->Vcs=0.97334;
+	param->Vcb=0.0415;
+	param->Vtd=0.00874;
+	param->Vts=-0.0407;
+	param->Vtb=0.999133;
 	
 	/* masses and coupling from PDG 2008 */
 	param->mass_u = 2.55e-3;
@@ -281,7 +301,7 @@ void Init_param(struct parameters* param)
 	param->mass_s = 0.104;
 	param->mass_c = 1.27;
 	param->mass_b = 4.20;
-	param->mass_top_pole = 172.4; /* from arXiv:0808.1089 */
+	param->mass_top_pole = 173.1; /* from arXiv:0903.2503 */
 	
 	param->mass_e = 0.511e-3;
 	param->mass_mu= 0.106;
@@ -307,6 +327,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 {
 	FILE *lecture;
 	char dummy[500];
+	double version;
 	int ie,je;
 	
 	lecture = fopen(name,"r");
@@ -354,8 +375,14 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				{
 					case 1: 	fscanf(lecture,"%s",dummy); 
 							if(!strncasecmp(dummy,"ISA",3)) param->generator=1; 
-							if(!strncasecmp(dummy,"SOFTSUSY",8)) param->generator=2; 
+							if(!strncasecmp(dummy,"SOFTSUSY",8)) param->generator=3; 
 							break;
+					case 2: if(param->generator==1) 
+						{
+							fscanf(lecture,"%lf",&version); 
+							if(version>=7.80) param->generator=2;
+						}
+						break;
 					case 4: param->model=-1; fclose(lecture); return 0;
 				}
 			}	
@@ -1223,6 +1250,27 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					{
 						je=atoi(dummy);	
 						fscanf(lecture,"%lf",&param->CKM[ie][je]);
+					}
+				}			
+			}	
+		}
+		else if(!strcasecmp(dummy,"IMVCKM"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->CKM_Q);
+				else 
+
+				if(test_integer(dummy))
+				{
+					ie=atoi(dummy);
+					fscanf(lecture,"%s",dummy);
+					if(test_integer(dummy))
+					{
+						je=atoi(dummy);	
+						fscanf(lecture,"%lf",&param->IMCKM[ie][je]);
 					}
 				}			
 			}	

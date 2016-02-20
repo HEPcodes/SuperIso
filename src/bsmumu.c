@@ -244,7 +244,7 @@ double Bsmumu(struct parameters* param)
 /* computes the inclusive branching ratio of Bs -> mu+ mu- */
 {
 	double alpha_em=1./137.036;
-	double VtbVts=0.041;
+	double VtbVts=cabs(param->Vtb*param->Vts);
 	
 	double Ccount_S,Ccount_P,Cbox_S,Cbox_P,Cpeng_S,Cpeng_P,CHp_S,CHp_P;
 	double CA,CS,CP;

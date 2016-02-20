@@ -3,7 +3,7 @@
 double Btaunu(struct parameters* param)
 /* computes the branching ratio of B-> tau nu */
 {
-	double Vub=3.95e-3;
+	double Vub=cabs(param->Vub);
 
 	if(param->SM==1)	return param->life_B/hbar*param->m_B/8./pi*pow(param->Gfermi*Vub*param->mass_tau_pole*param->f_B*(1.-param->mass_tau_pole*param->mass_tau_pole/param->m_B/param->m_B),2.);
 

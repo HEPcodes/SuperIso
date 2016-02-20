@@ -226,8 +226,8 @@ double delta0(double C0[],double C0_spec[],double C1[],double C1_spec[],struct p
 	double r1=(8./3.*C[3]+4./3.*nf*(C[4]+C[6])-8.*(N*C[6]+C[5]))*F_orth(a1_orth,a2_orth)*log(mub/mu0);
 	double r2=(-44./3.*C[3]-4./3.*nf*(C[4]+C[6]))*log(mub/mu0);
 	
-	double lambda_u_lambda_c=0.011;
-
+	double lambda_u_lambda_c=creal((conj(param->Vus)*param->Vub)/(conj(param->Vcs)*param->Vcb));
+	
 	double mass_c_mub=running_mass(param->mass_c,param->mass_c,mub,param->mass_top_pole,param->mass_b_pole,param);
  	double sc=pow(mass_c_mub/mass_b_mub,2.);
 	

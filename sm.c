@@ -35,6 +35,7 @@ int main()
       	printf("BR_BDtaunu=%.3e\n",BDtaunu(&param));
       	printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu(&param));
 	printf("BR_Bsmumu=%.3e\n",Bsmumu(&param));
+     	printf("BR_Dmunu=%.3e\n",Dmunu(&param));
      	printf("BR_Dstaunu=%.3e\n",Dstaunu(&param));
      	printf("BR_Dsmunu=%.3e\n",Dsmunu(&param));
 	

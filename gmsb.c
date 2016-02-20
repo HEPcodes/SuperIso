@@ -46,9 +46,9 @@ int main(int argc,char** argv)
      		sscanf(argv[4],"%lf",&tanb);
      		if(argc>5) sscanf(argv[5],"%lf",&sgnmu); else sgnmu=1.;
      		if(argc>6) sscanf(argv[6],"%lf",&cGrav); else cGrav=1.;   
-     		if(argc>7) sscanf(argv[7],"%lf",&mtop); else mtop=173.3;   
+     		if(argc>7) sscanf(argv[7],"%lf",&mtop); else mtop=172.9;   
      		if(argc>8) sscanf(argv[8],"%lf",&mbot); else mbot=4.19;
-     		if(argc>9) sscanf(argv[9],"%lf",&alphas_mz); else alphas_mz=0.1176;
+     		if(argc>9) sscanf(argv[9],"%lf",&alphas_mz); else alphas_mz=0.1184;
   	}
 
 	
@@ -56,35 +56,35 @@ int main(int argc,char** argv)
 #ifdef USE_ISAJET
 	if(!test_file(ISAJET)) 
 	{
-		printf("\"%s\" absent. Please check the ISAJET path or comment \"#define USE_ISAJET\" in gmsb.c\n",ISAJET);
+		printf("\"%s\" is absent. Please check the ISAJET path or comment \"#define USE_ISAJET\" in gmsb.c\n",ISAJET);
 		filesOK=0;
 	}
 #endif
 #ifdef USE_SOFTSUSY
 	if(!test_file(SOFTSUSY)) 
 	{
-		printf("\"%s\" absent. Please check the SOFTSUSY path or comment \"#define USE_SOFTSUSY\" in gmsb.c\n",SOFTSUSY);
+		printf("\"%s\" is absent. Please check the SOFTSUSY path or comment \"#define USE_SOFTSUSY\" in gmsb.c\n",SOFTSUSY);
 		filesOK=0;
 	}
 #endif
 #ifdef USE_SUSPECT
 	if(!test_file(SUSPECT)) 
 	{
-		printf("\"%s\" absent. Please check the SUSPECT path or comment \"#define USE_SUSPECT\" in gmsb.c\n",SUSPECT);
+		printf("\"%s\" is absent. Please check the SUSPECT path or comment \"#define USE_SUSPECT\" in gmsb.c\n",SUSPECT);
 		filesOK=0;
 	}
 #endif
 #ifdef USE_SPHENO
 	if(!test_file(SPHENO)) 
 	{
-		printf("\"%s\" absent. Please check the SPHENO path or comment \"#define USE_SPHENO\" in gmsb.c\n",SPHENO);
+		printf("\"%s\" is absent. Please check the SPHENO path or comment \"#define USE_SPHENO\" in gmsb.c\n",SPHENO);
 		filesOK=0;
 	}
 #endif
 #ifdef USE_HIGGSBOUNDS
 	if(!test_file(HBwithFH)) 
 	{
-		printf("\"%s\" absent. Please check the HBwithFH path or comment \"#define USE_HIGGSBOUNDS\" in gmsb.c\n",HBwithFH);
+		printf("\"%s\" is absent. Please check the HBwithFH path or comment \"#define USE_HIGGSBOUNDS\" in gmsb.c\n",HBwithFH);
 		filesOK=0;
 	}
 #endif
@@ -109,6 +109,7 @@ int main(int argc,char** argv)
 			printf("delta0=%.3e\n",delta0);
 			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
 			printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
+			printf("BR_Bdmumu=%.3e\n",Bdmumu_calculator(name));
 			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
 			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
 			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
@@ -117,7 +118,7 @@ int main(int argc,char** argv)
 			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
 			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
 			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
-			printf("Rl23=%.3e\n",Rl23_calculator(name));
+			printf("Rmu23=%.3e\n",Rmu23_calculator(name));
 			printf("a_muon=%.3e\n",muon_gm2_calculator(name));
 #ifdef USE_HIGGSBOUNDS
 		printf("excluded_HiggsBounds=%d\n",(higgsbounds_calculator(name)>1.));
@@ -144,6 +145,7 @@ int main(int argc,char** argv)
 			printf("delta0=%.3e\n",delta0);
 			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
 			printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
+			printf("BR_Bdmumu=%.3e\n",Bdmumu_calculator(name));
 			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
 			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
 			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
@@ -152,12 +154,12 @@ int main(int argc,char** argv)
 			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
 			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
 			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
-			printf("Rl23=%.3e\n",Rl23_calculator(name));
+			printf("Rmu23=%.3e\n",Rmu23_calculator(name));
 			printf("a_muon=%.3e\n",muon_gm2_calculator(name));
 #ifdef USE_HIGGSBOUNDS
-		printf("excluded_HiggsBounds=%d\n",higgsbounds_calculator(name));
-#else
 		printf("excluded_HiggsBounds=%d\n",(higgsbounds_calculator(name)>1.));
+#else
+ 		printf("excluded_Higgs_mass=%d\n",excluded_Higgs_mass_calculator(name));
 #endif
  		printf("excluded_SUSY_mass=%d\n",excluded_SUSY_mass_calculator(name));
 		flha_generator(name,"../output2.flha");
@@ -179,6 +181,7 @@ int main(int argc,char** argv)
 			printf("delta0=%.3e\n",delta0);
 			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
 			printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
+			printf("BR_Bdmumu=%.3e\n",Bdmumu_calculator(name));
 			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
 			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
 			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
@@ -187,7 +190,7 @@ int main(int argc,char** argv)
 			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
 			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
 			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
-			printf("Rl23=%.3e\n",Rl23_calculator(name));
+			printf("Rmu23=%.3e\n",Rmu23_calculator(name));
 			printf("a_muon=%.3e\n",muon_gm2_calculator(name));
 #ifdef USE_HIGGSBOUNDS
 		printf("excluded_HiggsBounds=%d\n",(higgsbounds_calculator(name)>1.));
@@ -214,6 +217,7 @@ int main(int argc,char** argv)
 			printf("delta0=%.3e\n",delta0);
 			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
 			printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
+			printf("BR_Bdmumu=%.3e\n",Bdmumu_calculator(name));
 			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
 			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
 			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
@@ -222,7 +226,7 @@ int main(int argc,char** argv)
 			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
 			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
 			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
-			printf("Rl23=%.3e\n",Rl23_calculator(name));
+			printf("Rmu23=%.3e\n",Rmu23_calculator(name));
 			printf("a_muon=%.3e\n",muon_gm2_calculator(name));
 #ifdef USE_HIGGSBOUNDS
 		printf("excluded_HiggsBounds=%d\n",(higgsbounds_calculator(name)>1.));

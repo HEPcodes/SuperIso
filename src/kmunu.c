@@ -21,8 +21,8 @@ H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->MsR_
 
 /*--------------------------------------------------------------------*/
 
-double Rl23(struct parameters* param)
-/* computes the ratio Rl23 */
+double Rmu23(struct parameters* param)
+/* computes the ratio Rmu23 */
 {
 	if(param->SM==1) return 1.;
 	
@@ -53,8 +53,8 @@ double Kmunu_pimunu_calculator(char name[])
 
 /*--------------------------------------------------------------------*/
 
-double Rl23_calculator(char name[])
-/* "container" function scanning the SLHA file "name" and calculating the ratio Rl23 */
+double Rmu23_calculator(char name[])
+/* "container" function scanning the SLHA file "name" and calculating the ratio Rmu23 */
 {
 	struct parameters param;
 		
@@ -62,5 +62,5 @@ double Rl23_calculator(char name[])
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 
-	return Rl23(&param);
+	return Rmu23(&param);
 }

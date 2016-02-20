@@ -285,7 +285,7 @@ double delta0_calculator(char name[])
 
 	double mu_W=2.*param.mass_W;
 	
-	double mu_b=param.mass_b_1S;
+	double mu_b=param.mass_b;
 	
 	double lambda_h=0.5;
 	double mu_spec=sqrt(lambda_h*param.mass_b);

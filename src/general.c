@@ -1,5 +1,137 @@
 #include "include.h"
 
+/*-----------------------------------------------------------------------*/
+/* Exponential integral Ei */
+/*-----------------------------------------------------------------------*/
+
+double Ei1(double x)
+{
+	double epsilon=1.e-10;
+	double Am1=1.;
+	double A0=0.;
+	double Bm1=0.;
+	double B0=1.;
+	double a=exp(x);
+	double b=-x+1.;
+	double Ap1=b*A0+a*Am1;
+	double Bp1=b*B0+a*Bm1;
+	int j=1;
+
+	a=1.;
+	while(fabs(Ap1*B0-A0*Bp1)>epsilon*fabs(A0*Bp1))
+	{
+		if(fabs(Bp1)>1.)
+		{
+			Am1=A0/Bp1;
+			A0=Ap1/Bp1;
+			Bm1=B0/Bp1;
+			B0=1.;
+      		} 
+		else 
+		{
+         		Am1=A0;
+         		A0=Ap1;
+         		Bm1=B0;
+         		B0=Bp1;
+		}
+		a=-j*j;
+		b+=2.;
+		Ap1=b*A0+a*Am1;
+		Bp1=b*B0+a*Bm1;
+		j+=1;
+	}
+	
+	return (-Ap1/Bp1);
+}
+
+double Ei2(double x)
+{ 
+	double epsilon=1.e-10;
+	double xn=-x;
+	double Sn=-x;
+	double Sm1=0.;
+	double hsum =1.;
+	double g=0.5772156649015328606065121;
+	double y=1.;
+	double factorial=1.;
+  
+	while(fabs(Sn-Sm1)>epsilon*fabs(Sm1))
+	{
+		Sm1=Sn;
+		y+=1.;
+		xn*=(-x);
+		factorial*=y;
+		hsum+=1./y;
+		Sn+=hsum*xn/factorial;
+	}
+	
+	return(g+log(fabs(x))-exp(x)*Sn);
+}
+
+double Ei3(double x)
+{
+	double ei[]={
+	1.915047433355013959531e2,  4.403798995348382689974e2,
+	1.037878290717089587658e3,  2.492228976241877759138e3,
+	6.071406374098611507965e3,  1.495953266639752885229e4,
+	3.719768849068903560439e4,  9.319251363396537129882e4,
+	2.349558524907683035782e5,  5.955609986708370018502e5,
+	1.516637894042516884433e6,  3.877904330597443502996e6,
+	9.950907251046844760026e6,  2.561565266405658882048e7,
+	6.612718635548492136250e7,  1.711446713003636684975e8,
+	4.439663698302712208698e8,  1.154115391849182948287e9,
+	3.005950906525548689841e9,  7.842940991898186370453e9,
+	2.049649711988081236484e10, 5.364511859231469415605e10,
+	1.405991957584069047340e11, 3.689732094072741970640e11,
+	9.694555759683939661662e11, 2.550043566357786926147e12,
+	6.714640184076497558707e12, 1.769803724411626854310e13,
+	4.669055014466159544500e13, 1.232852079912097685431e14,
+	3.257988998672263996790e14, 8.616388199965786544948e14,
+	2.280446200301902595341e15, 6.039718263611241578359e15,
+	1.600664914324504111070e16, 4.244796092136850759368e16,
+	1.126348290166966760275e17, 2.990444718632336675058e17,
+	7.943916035704453771510e17, 2.111342388647824195000e18,
+	5.614329680810343111535e18, 1.493630213112993142255e19,
+	3.975442747903744836007e19, 1.058563689713169096306e20
+	};
+	
+	double epsilon=1.e-10;
+	int k=(int)(x+0.5);
+	int j=0;
+	double xx=(double)k;
+	double dx=x-xx;
+	double xxj=xx;
+	double edx=exp(dx);
+	double Sm=1.;
+	double Sn=(edx-1.)/xxj;
+	double term=exp(100.);
+	double factorial=1.;
+	double dxj=1.;
+
+	while (term>epsilon*fabs(Sn))
+	{
+		j++;
+		factorial*=(double)j;
+		xxj*=xx;
+		dxj*=(-dx);
+		Sm+=(dxj/factorial);
+		term=(factorial*(edx*Sm-1.))/xxj;
+		Sn+=term;
+	}
+   
+	return ei[k-7]+Sn*exp(xx); 
+}
+
+
+double Ei(double x)
+{
+	if(x<-5.) return Ei1(x);
+	if(x<6.8)  return Ei2(x);
+	if(x<50.) return Ei3(x);
+	return Ei1(x);
+}
+
+/*--------------------------------------------------------------------*/
 
 double complex polylog(int n, int m, double x)
 {
@@ -441,12 +573,12 @@ double Li3(double x)
 	{
 		double z = - log(1.-x);
 		double temp = z*(1.-3.*z/8.*(1.-17.*z/81.*(1.-15.*z/136.
-						  *(1.-28.*z/1875.*(1.+5.*z/8.*(1.-304.*z/7203.
-						  *(1.+945.*z/2432.*(1.-44.*z/675.*(1.+7.*z/24.
-						  *(1.-26104.*z/307461.*(1.+1925.*z/8023.
-						  *(1.-53598548.*z/524808375.
-						  *(1.+22232925.*z/107197096.
-							)))))))))))));
+		*(1.-28.*z/1875.*(1.+5.*z/8.*(1.-304.*z/7203.
+		*(1.+945.*z/2432.*(1.-44.*z/675.*(1.+7.*z/24.
+		*(1.-26104.*z/307461.*(1.+1925.*z/8023.
+		*(1.-53598548.*z/524808375.
+		*(1.+22232925.*z/107197096.
+		)))))))))))));
 		return temp; 
 	}
 	else if (x < x_3)
@@ -551,6 +683,7 @@ double min(double x, double y)
 /*-----------------------------------------------------------------------*/
 
 double I0(double x)
+/* calculates the Modified Bessel functions of first type and of order 0 of x */
 {
 	double y;
 
@@ -570,6 +703,7 @@ double I0(double x)
 }
 
 double I1(double x)
+/* calculates the Modified Bessel functions of first type and of order 1 of x */
 {
 	double y,tmp;
 	double I1=0.;
@@ -593,6 +727,7 @@ double I1(double x)
 }
 
 double K0(double x)
+/* calculates the Modified Bessel functions of second type and of order 0 of x */
 {
 	double y;
 
@@ -609,6 +744,7 @@ double K0(double x)
 }
 
 double K1(double x)
+/* calculates the Modified Bessel functions of second type and of order 1 of x */
 {
  	double y;
 
@@ -625,12 +761,43 @@ double K1(double x)
 }
 
 double K2(double x)
+/* calculates the Modified Bessel functions of second type and of order 2 of x */
 {
 	return K0(x)+2./x*K1(x);
 }
 
+double K3(double x)
+/* calculates the Modified Bessel functions of second type and of order 3 of x */
+{
+	return K1(x)+4./x*K2(x);
+}
+
+double K4(double x)
+/* calculates the Modified Bessel functions of second type and of order 4 of x */
+{
+	return K2(x)+6./x*K3(x);
+}
+
+double Lbessel(double x)
+/* calculates L(x)=K2(x)/x */
+{
+	return K2(x)/x;
+}
+
+double Mbessel(double x)
+/* calculates M(x)=(3*K3(x)+K1(x))/4x */
+{
+	return (0.75*K3(x)+0.25*K1(x))/x;
+}
+
+double Nbessel(double x)
+/* calculates N(x)=(K4(x)+K2(x))/2x */
+{
+	return (0.5*K4(x)+0.5*K2(x))/x;
+}
 
 double K0exp(double x, double z)
+/* calculates the extended Modified Bessel functions of second type and of order 0 of x and z */
 {
 	double y;
 
@@ -643,10 +810,11 @@ double K0exp(double x, double z)
 	{
 		y=2./x;
 				return (exp(z-x)/sqrt(x/z))*(1.25331414+y*(-0.7832358e-1+y*(0.2189568e-1+y*(-0.1062446e-1+y*(0.587872e-2+y*(-0.251540e-2+y*0.53208e-3))))));
-		}
+	}
 }
 
 double K1exp(double x,double z)
+/* calculates the extended Modified Bessel functions of second type and of order 1 of x and z */
 {
  	double y;
 
@@ -659,12 +827,23 @@ double K1exp(double x,double z)
 	{
 		y=2./x;
 		return (exp(z-x)/sqrt(x/z))*(1.25331414+y*(0.23498619+y*(-0.3655620e-1+y*(0.1504268e-1+y*(-0.780353e-2+y*(0.325614e-2+y*(-0.68245e-3)))))));
-		}
+	}
 }
 
 double K2exp(double x,double z)
+/* calculates the extended Modified Bessel functions of second type and of order 2 of x and z */
 {
 	return K0exp(x,z)+2./x*K1exp(x,z);
+}
+
+/*--------------------------------------------------------------------*/
+
+double expcor(double x)
+/* calculates the exponential of x, with limited extension */
+{
+	if(x>100.) return exp(100.);
+	else if(x<-100.) return 0.;
+	else return exp(x);
 }
 
 /*--------------------------------------------------------------------*/

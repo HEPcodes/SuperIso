@@ -15,7 +15,7 @@ void flha_generator(char name[], char name_output[])
 	fprintf(output,"# SuperIso output in Flavour Les Houches Accord format\n");
 	fprintf(output,"Block FCINFO  # Program information\n");
 	fprintf(output,"     1     SUPERISO         # flavour calculator\n");
-	fprintf(output,"     2     3.0              # version number\n");
+	fprintf(output,"     2     3.2              # version number\n");
 	
 	fprintf(output,"Block MODSEL  # Model selection\n");
 
@@ -121,7 +121,7 @@ void flha_generator(char name[], char name_output[])
 	fprintf(output,"  521    1   %.8e   0     3   421   -15    16  # BR(B+->D0 tau nu)\n",BDtaunu(&param));
 	fprintf(output,"  521   11   %.8e   0     3   421   -15    16  # BR(B+->D0 tau nu)/BR(B+-> D0 e nu)\n",BDtaunu_BDenu(&param));
 	fprintf(output,"  321   11   %.8e   0     2   -13    14        # BR(K->mu nu)/BR(pi->mu nu)\n",Kmunu_pimunu(&param));
-	fprintf(output,"  321   12   %.8e   0     2   -13    14        # R_l23\n",Rl23(&param));
+	fprintf(output,"  321   12   %.8e   0     2   -13    14        # R_mu23\n",Rmu23(&param));
 
 	param.SM=1;
 	
@@ -154,7 +154,7 @@ void flha_generator(char name[], char name_output[])
 	fprintf(output,"  521    1   %.8e   0     3   421   -15    16  # BR(B+->D0 tau nu)\n",BDtaunu(&param));
 	fprintf(output,"  521   11   %.8e   0     3   421   -15    16  # BR(B+->D0 tau nu)/BR(B+-> D0 e nu)\n",BDtaunu_BDenu(&param));
 	fprintf(output,"  321   11   %.8e   0     2   -13    14        # BR(K->mu nu)/BR(pi->mu nu)\n",Kmunu_pimunu(&param));
-	fprintf(output,"  321   12   %.8e   0     2   -13    14        # R_l23\n",Rl23(&param));
+	fprintf(output,"  321   12   %.8e   0     2   -13    14        # R_mu23\n",Rmu23(&param));
 
 	fclose(output);
 	

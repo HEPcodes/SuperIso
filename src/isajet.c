@@ -34,6 +34,7 @@ int isajet_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, do
 	fprintf(tmp,"1\n");
 	fprintf(tmp,"%.5e,%.5e,%.5e,%.5e,%.5e,%.5e\n",m0,m12,A0,tanb,sgnmu,mtop);
 	fprintf(tmp,"0\n");
+	fprintf(tmp,"/\n");
 	fclose(tmp);
 
 	sprintf(tmp_char,"%s < %s.is1 > %s.is3",ISAJET,name,name);
@@ -92,9 +93,10 @@ int isajet_gmsb(double Lambda, double Mmess, double tanb, int N5, double cGrav, 
 	fprintf(tmp,"%s.is2\n",name);
 	fprintf(tmp,"%s\n",name);
 	fprintf(tmp,"/\n");
-	fprintf(tmp,"0\n");
-	fprintf(tmp,"%.5e,%.5e,%d,%.5e,%.5e,%.5e,%.5e\n", Lambda, Mmess, N5, tanb, sgnmu, mtop, cGrav);
 	fprintf(tmp,"2\n");
+	fprintf(tmp,"%.5e,%.5e,%d,%.5e,%.5e,%.5e,%.5e\n", Lambda, Mmess, N5, tanb, sgnmu, mtop, cGrav);
+	fprintf(tmp,"0\n");
+	fprintf(tmp,"/\n");
 	fclose(tmp);
 
 	sprintf(tmp_char,"%s < %s.is1 > %s.is3",ISAJET,name,name);
@@ -156,6 +158,7 @@ int isajet_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, c
 	fprintf(tmp,"7\n");
 	fprintf(tmp,"%.5e,%.5e,%.5e,%.5e,%.5e\n", m0, m32, tanb, sgnmu, mtop);
 	fprintf(tmp,"0\n");
+	fprintf(tmp,"/\n");
 	fclose(tmp);
 
 	sprintf(tmp_char,"%s < %s.is1 > %s.is3",ISAJET,name,name);
@@ -219,6 +222,7 @@ int isajet_nuhm(double m0, double m12, double tanb, double A0, double mu, double
 	fprintf(tmp,"%.5e,%.5e\n",mu,mA);
 	fprintf(tmp,"0\n");
 	fprintf(tmp,"0\n");
+	fprintf(tmp,"/\n");
 	fclose(tmp);
 
 	sprintf(tmp_char,"%s < %s.is1 > %s.is3",ISAJET,name,name);
@@ -282,6 +286,7 @@ int isajet_mmamsb(double alpha, double m32, double tanb, double sgnmu, double mt
 	fprintf(tmp,"/\n");
 	fprintf(tmp,"/\n");
 	fprintf(tmp,"0\n");
+	fprintf(tmp,"/\n");
 	fclose(tmp);
 
 	sprintf(tmp_char,"%s < %s.is1 > %s.is3",ISAJET,name,name);
@@ -343,6 +348,7 @@ int isajet_hcamsb(double alpha, double m32, double tanb, double sgnmu, double mt
 	fprintf(tmp,"10\n");
 	fprintf(tmp,"%.5e,%.5e,%.5e,%.5e,%.5e\n", alpha, m32, tanb, sgnmu, mtop);
 	fprintf(tmp,"0\n");
+	fprintf(tmp,"/\n");
 	fclose(tmp);
 
 	sprintf(tmp_char,"%s < %s.is1 > %s.is3",ISAJET,name,name);

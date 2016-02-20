@@ -16,7 +16,7 @@ int main()
 	double complex CQpb[3],CQ0b[3],CQ1b[3];
 	double obs[2];
 	double mu_W=2.*param.mass_W;
-	double mu_b=param.mass_b_1S;
+	double mu_b=param.mass_b;
 	double lambda_h=0.5;
 	double mu_spec=sqrt(lambda_h*param.mass_b);		
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
@@ -35,6 +35,7 @@ int main()
 	CQ0b[1]=CQ0b[2]=CQ1b[1]=CQ1b[2]=0.;
 	Cpb[10]=CQpb[1]=CQpb[2]=0.;
 	printf("BR_Bsmumu=%.3e\n",Bsmumu(C0b,C1b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b));
+	printf("BR_Bdmumu=%.3e\n",Bdmumu(C0b,C1b,CQ0b,CQ1b,&param,mu_b));
 
       	printf("BR_Btaunu=%.3e\n",Btaunu(&param));
       	printf("Rtaunu=%.3e\n",RBtaunu(&param));
@@ -44,7 +45,7 @@ int main()
      	printf("BR_Dsmunu=%.3e\n",Dsmunu(&param));
      	printf("BR_Dmunu=%.3e\n",Dmunu(&param));
       	printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu(&param));
-     	printf("Rl23=%.3e\n",Rl23(&param));
+     	printf("Rmu23=%.3e\n\n",Rmu23(&param));
 
 	return 1;
 }

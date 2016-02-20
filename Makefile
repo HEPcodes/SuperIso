@@ -1,20 +1,19 @@
 .KEEP_STATE:
 
 #
-VERSION = v3.1
+VERSION = v3.2
 
 # Choose your compilers here (usually gcc/gfortran on Linux systems):
 CC = gcc
 CFLAGS= -O3 -pipe -fomit-frame-pointer
-
-#CC = icc
-#CFLAGS = -O3
+# CC = icc
+# CFLAGS = -O3
 
 MAKE = make
 AR = ar
 
 .SUFFIXES:	.o .c .h
-.PRECIOUS:	.c .h libisospin.a librelic.a
+.PRECIOUS:	.c .h libisospin.a
 
 # Add the link to Softsusy, Isajet, SuSpect, SPheno and NMSSMTools main programs, if available.
 # Otherwise, comment them in the main programs */
@@ -22,7 +21,7 @@ AR = ar
 SOFTSUSY = ~/softsusy/softpoint.x
 ISAJET = ~/isajet/isasugra.x
 SUSPECT = ~/suspect/suspect2
-SPHENO = ~/spheno/bin/SPheno
+SPHENO = ~/spheno/bin/SPheno/bin
 NMSSMTOOLS = ~/nmssmtools/main
 # Add the link to 2HDMC directory, if available.
 THDMC = ~/2HDMC
@@ -101,10 +100,8 @@ save:
 	cp -p nnuhm.c superiso_$(VERSION)/;\
 	cp -p Makefile superiso_$(VERSION)/;\
 	mkdir superiso_$(VERSION)/src;\
-	cp -p src/*.h superiso_$(VERSION)/src/;\
+	cp -p src/include.h superiso_$(VERSION)/src/;\
 	cp -p src/*.c superiso_$(VERSION)/src/;\
-	rm -f superiso_$(VERSION)/src/softsusy.h;\
-	rm -f superiso_$(VERSION)/src/isajet.h;\
 	cp -p src/Makefile superiso_$(VERSION)/src/;\
 	tar czvf superiso_$(VERSION).tgz superiso_$(VERSION);\
 	rm -rf superiso_$(VERSION)

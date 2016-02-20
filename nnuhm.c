@@ -1,6 +1,7 @@
 #include "src/include.h"
 #include "src/nmssmtools.h"
 
+
 #define USE_NMSSMTOOLS /* to be commented if NMSSMTOOLS is unavailable */
 
 /*--------------------------------------------------------------------*/
@@ -40,16 +41,16 @@ int main(int argc,char** argv)
      		sscanf(argv[7],"%lf",&MHUGUT);	
      		if(argc>8) sscanf(argv[8],"%lf",&sgnmu); else sgnmu=1;
      		if(argc>9) sscanf(argv[9],"%lf",&AK); else AK=A0;
-     		if(argc>10) sscanf(argv[10],"%lf",&mtop); else mtop=173.3;   
+     		if(argc>10) sscanf(argv[10],"%lf",&mtop); else mtop=172.9;   
      		if(argc>11) sscanf(argv[11],"%lf",&mbot); else mbot=4.19;
-     		if(argc>12) sscanf(argv[12],"%lf",&alphas_mz); else alphas_mz=0.1176;
+     		if(argc>12) sscanf(argv[12],"%lf",&alphas_mz); else alphas_mz=0.1184;
   	}	
 
 	int filesOK=1;
 #ifdef USE_NMSSMTOOLS
 	if(!test_file(NMSSMTools)) 
 	{
-		printf("\"%s\" absent. Please check the NMSSMTOOLS path or comment \"#define USE_NMSSMTOOLS\" in nnuhm.c\n",NMSSMTools);
+		printf("\"%s\" is absent. Please check the NMSSMTOOLS path or comment \"#define USE_NMSSMTOOLS\" in nnuhm.c\n",NMSSMTools);
 		filesOK=0;
 	}
 #endif
@@ -69,6 +70,7 @@ int main(int argc,char** argv)
 		printf("delta0=%.3e\n",delta0);
        		printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
 		printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
+		printf("BR_Bdmumu=%.3e\n",Bdmumu_calculator(name));
       		printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
       		printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
       		printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
@@ -77,7 +79,7 @@ int main(int argc,char** argv)
      		printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
      		printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
       		printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
-     		printf("Rl23=%.3e\n",Rl23_calculator(name));
+     		printf("Rmu23=%.3e\n",Rmu23_calculator(name));
 		printf("a_muon=%.3e\n",muon_gm2_calculator(name));
        		printf("charged_LSP=%d\n",charged_LSP_calculator(name));
 

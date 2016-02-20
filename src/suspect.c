@@ -161,3 +161,58 @@ int suspect_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, 
 
 	return 1;
 }
+
+/*--------------------------------------------------------------------*/
+
+int suspect_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, double mbot, double alphas_mz, char name[])
+/* generates a SLHA file for a NUHM parameter space point using SUSPECT */
+{
+	FILE *tmp;
+	char tmp_char[300],namedir[300];
+	char *curdir;
+	curdir=getcwd(NULL, 500);
+
+	sprintf(namedir,"%s.sutmp",name);
+
+	sprintf(tmp_char,"rm -rf %s",namedir);
+ 	system(tmp_char);
+	
+	sprintf(tmp_char,"mkdir -p %s",namedir);
+ 	system(tmp_char);
+	
+	chdir(namedir);
+
+	tmp=fopen("suspect2_lha.in","w");
+	
+	fprintf(tmp,"Block MODSEL		     # Select model\n");
+	fprintf(tmp,"    1    1		     # cmssm\n");
+	fprintf(tmp,"Block SMINPUTS		     # Standard Model inputs\n");
+	fprintf(tmp,"    1	1.279340000e+02	     # alpha^(-1) SM MSbar(MZ)\n");
+	fprintf(tmp,"    2      1.166370000e-05	     # G_Fermi\n");
+	fprintf(tmp,"    3      %.10e	     # alphas(MZ) SM MSbar\n",alphas_mz);
+	fprintf(tmp,"    4      9.118760000e+01	     # MZ(pole)\n");
+	fprintf(tmp,"    5	%.10e	     # mb(mb) SM MSbar\n",mbot);
+	fprintf(tmp,"    6      %.10e	     # mtop(pole)\n",mtop);
+	fprintf(tmp,"    7	1.777000000e+00	     # mtau(pole)\n");
+	fprintf(tmp,"Block MINPAR		     # Input parameters\n");
+	fprintf(tmp,"    1      %.10e	     # m0\n",m0);
+	fprintf(tmp,"    2      %.10e	     # m12\n",m12);
+	fprintf(tmp,"    3      %.10e	     # tanb\n",tanb);
+	fprintf(tmp,"    5      %.10e	     # A0\n",A0);
+	fprintf(tmp,"Block EXTPAR		     # External Input parameters\n");
+	fprintf(tmp,"    23     %.10e	     # mu\n",mu);
+	fprintf(tmp,"    26     %.10e	     # mA pole\n",mA);
+	fclose(tmp);
+
+	sprintf(tmp_char,"%s > suspect2.out", SUSPECT);
+	system(tmp_char);
+	
+	sprintf(tmp_char,"mv -f suspect2_lha.out %s/%s",curdir,name);
+	system(tmp_char);
+	
+	chdir(curdir);
+	sprintf(tmp_char,"rm -rf %s",namedir);
+ 	system(tmp_char);
+
+	return 1;
+}

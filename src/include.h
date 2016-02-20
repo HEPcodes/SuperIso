@@ -70,10 +70,10 @@ typedef struct parameters
 	double mass_b_1S,mass_b_pole,mtmt;
 	double Lambda5; /* Lambda QCD */
 	
-	/* Flavor constants */
+	/* Flavour constants */
 	double f_B,f_Bs,f_Ds,f_D,fK_fpi;
-	double m_B,m_Bs,m_pi,m_Ds,m_K,m_Kstar,m_D0,m_D;
-	double life_pi,life_K,life_B,life_Bs,life_D,life_Ds;
+	double m_B,m_Bs,m_Bd,m_pi,m_Ds,m_K,m_Kstar,m_D0,m_D;
+	double life_pi,life_K,life_B,life_Bs,life_Bd,life_D,life_Ds;
 	
 	/* CKM matrix */
 	double complex Vud,Vus,Vub,Vcd,Vcs,Vcb,Vtd,Vts,Vtb;
@@ -89,20 +89,6 @@ parameters;
 
 /*--------------------------------------------------------------------*/
 /* Prototypes */
-
-/* isajet.c */
-int isajet_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, char name[]);
-int isajet_gmsb(double Lambda, double Mmess, double tanb, int N5, double cGrav, double sgnmu, double mtop, char name[]);
-int isajet_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, char name[]);
-int isajet_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, char name[]);
-int isajet_mmamsb(double alpha, double m32, double tanb, double sgnmu, double mtop, char name[]);
-int isajet_hcamsb(double alpha, double m32, double tanb, double sgnmu, double mtop, char name[]);
-
-/* softsusy.c */
-int softsusy_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
-int softsusy_gmsb(double Lambda, double Mmess, double tanb, int N5, double cGrav, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
-int softsusy_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
-int softsusy_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, double mbot, double alphas_mz, char name[]);
 
 /* leshouches.c */ 
 int Les_Houches_Reader(char name[], struct parameters* param);
@@ -123,6 +109,10 @@ double mt_mt(struct parameters* param);
 /* general.c */
 double max(double x, double y);
 double min(double x, double y);
+double Ei1(double x);
+double Ei2(double x);
+double Ei3(double x);
+double Ei(double x);
 double complex polylog(int n, int m, double x);
 double Li2(double x);
 double Li3(double x);
@@ -136,9 +126,15 @@ double I1(double x);
 double K0(double x);
 double K1(double x);
 double K2(double x);
+double K3(double x);
+double K4(double x);
+double Lbessel(double x);
+double Mbessel(double x);
+double Nbessel(double x);
 double K0exp(double x,double z);
 double K1exp(double x,double z);
 double K2exp(double x,double z);
+double expcor(double x);
 double kron(int x, int y);
 int test_integer(char name[]);
 int test_file(char *name);
@@ -206,13 +202,10 @@ double E0t(double x);
 double G1t(double x, double l);
 double E1t(double x, double l);
 double T(double x);
-/* double Ech(double x); */
 double F7_1(double x);
 double F7_2(double x);
-/* double F7_3(double x); */
 double F8_1(double x);
 double F8_2(double x);
-/* double F8_3(double x); */
 double H2(double x, double y);
 double B(double m1, double m2, double Q);
 double G7H(double x, double lu, double ld);
@@ -328,13 +321,15 @@ double BDtaunu_calculator(char name[]);
 
 /* bsmumu.c */
 double Bsmumu(double C0b[], double C1b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[],struct parameters* param, double mu_b);
+double Bdmumu(double C0b[], double C1b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
 double Bsmumu_calculator(char name[]);
+double Bdmumu_calculator(char name[]);
 
 /* kmunu.c */
 double Kmunu_pimunu(struct parameters* param);
 double Kmunu_pimunu_calculator(char name[]);
-double Rl23(struct parameters* param);
-double Rl23_calculator(char name[]);
+double Rmu23(struct parameters* param);
+double Rmu23_calculator(char name[]);
 
 /* dslnu.c */
 double Dstaunu(struct parameters* param);
@@ -346,8 +341,19 @@ double Dsmunu_calculator(char name[]);
 double Dmunu(struct parameters* param);
 double Dmunu_calculator(char name[]);
 
-/* 2hdmc.c */
-int thdmc_types(double l1, double l2, double l3, double l4, double l5, double l6, double l7, double m12_2, double tanb, int type, char name[]);
+/* isajet.c */
+int isajet_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, char name[]);
+int isajet_gmsb(double Lambda, double Mmess, double tanb, int N5, double cGrav, double sgnmu, double mtop, char name[]);
+int isajet_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, char name[]);
+int isajet_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, char name[]);
+int isajet_mmamsb(double alpha, double m32, double tanb, double sgnmu, double mtop, char name[]);
+int isajet_hcamsb(double alpha, double m32, double tanb, double sgnmu, double mtop, char name[]);
+
+/* softsusy.c */
+int softsusy_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int softsusy_gmsb(double Lambda, double Mmess, double tanb, int N5, double cGrav, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int softsusy_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int softsusy_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, double mbot, double alphas_mz, char name[]);
 
 /* spheno.c */
 int spheno_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
@@ -358,6 +364,7 @@ int spheno_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, d
 int suspect_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int suspect_gmsb(double Lambda, double Mmess, double tanb, int N5, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int suspect_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int suspect_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, double mbot, double alphas_mz, char name[]);
 
 /* higgsbounds.c */
 double higgsbounds(char name[], struct parameters* param);
@@ -374,3 +381,6 @@ int NMSSM_collider_excluded(char name[]);
 int NMSSM_theory_excluded(char name[]);
 int NMSSM_upsilon_excluded(char name[]);
 int NMSSM_etab_excluded(char name[]);
+
+/* 2hdmc.c */
+int thdmc_types(double l1, double l2, double l3, double l4, double l5, double l6, double l7, double m12_2, double tanb, int type, char name[]);

@@ -13,7 +13,7 @@ double higgsbounds(char name[], struct parameters* param)
 	curdir=getcwd(NULL, 500);
 
 	sprintf(namemod,"%s.hbtmp",name);
-	sprintf(namemod2,"%s/myfile.slha",namemod);
+	sprintf(namemod2,"%s/tmp.slha",namemod);
 	
 	sprintf(tmp_char,"rm -rf %s",namemod);
  	system(tmp_char);

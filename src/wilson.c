@@ -100,6 +100,8 @@ double f20(double x)
 
 double f30(double x, double y)
 {
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f30(0.9998,1.0002);
+
 	if(fabs(1.-x)<1.e-5) return f30(0.9999,y);
 	if(fabs(1.-y)<1.e-5) return f30(x,0.9999);
 
@@ -112,6 +114,8 @@ double f30(double x, double y)
 
 double f40(double x, double y)
 {
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f40(0.9998,1.0002);
+
 	if(fabs(1.-x)<1.e-5) return f40(0.9999,y);
 	if(fabs(1.-y)<1.e-5) return f40(x,0.9999);
 
@@ -124,9 +128,15 @@ double f40(double x, double y)
 
 double f50(double x, double y, double z)
 {
-	if(fabs(1.-x)<1.e-5) return f50(1.+1.e-4,y,z);
-	if(fabs(1.-y)<1.e-5) return f50(x,1.+1.e-4,z);
-	if(fabs(1.-z)<1.e-5) return f50(x,y,1.+1.e-4);
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f50(0.9996,0.9998,1.0002);
+
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f50(0.9998,1.0002,z);
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f50(0.9998,y,1.0002);
+	if((fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f50(x,0.9998,1.0002);
+
+	if(fabs(1.-x)<1.e-5) return f50(0.9999,y,z);
+	if(fabs(1.-y)<1.e-5) return f50(x,0.9999,z);
+	if(fabs(1.-z)<1.e-5) return f50(x,y,0.9999);
  
 	if(fabs(1.-x/y)<1.e-5) return f50(y*0.9998,y,z);
 	if(fabs(1.-x/y)<1.e-5) return f50(y*0.9998,y,z);
@@ -141,6 +151,12 @@ double f50(double x, double y, double z)
 
 double f60(double x, double y, double z)
 {
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f60(0.9996,0.9998,1.0002);
+
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f60(0.9998,1.0002,z);
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f60(0.9998,y,1.0002);
+	if((fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f60(x,0.9998,1.0002);
+
 	if(fabs(1.-x)<1.e-5) return f60(0.9999,y,z);
 	if(fabs(1.-y)<1.e-5) return f60(x,0.9999,z);
 	if(fabs(1.-z)<1.e-5) return f60(x,y,0.9999);
@@ -157,6 +173,8 @@ double f60(double x, double y, double z)
 
 double f70(double x, double y)
 {
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f70(0.9998,1.0002);
+
 	if(fabs(1.-x)<1.e-5) return f70(0.9999,y);
 	if(fabs(1.-y)<1.e-5) return f70(x,0.9999);
 
@@ -169,7 +187,8 @@ double f70(double x, double y)
 
 double f80(double x)
 {
-	if(fabs(x-1.)<1.e-5) return 0.;
+	if(fabs(x-1.)<1.e-5) return 1.;
+	
 	return x*log(x)/(x-1.);
 }
 
@@ -177,6 +196,20 @@ double f80(double x)
 
 double f90(double w, double x, double y, double z)
 {
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f90(0.9996,0.9998,1.0002,1.0004);
+
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f90(0.9996,0.9998,1.0002,z);
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f90(w,0.9996,0.9998,1.0002);
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f90(0.9996,x,0.9998,1.0002);
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-x)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f90(0.9996,0.9998,y,1.0002);
+
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-x)<1.e-5)) return f90(0.9998,1.0002,y,z);
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f90(0.9998,x,1.0002,z);
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f90(0.9998,x,y,1.0002);
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f90(w,0.9998,1.0002,z);
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f90(w,0.9998,y,1.0002);
+	if((fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f90(w,x,0.9998,1.0002);
+	
 	if(fabs(1.-w)<1.e-5) return f90(0.9999,x,y,z);
 	if(fabs(1.-x)<1.e-5) return f90(w,0.9999,y,z);
 	if(fabs(1.-y)<1.e-5) return f90(w,x,0.9999,z);
@@ -198,6 +231,20 @@ double f90(double w, double x, double y, double z)
 
 double f100(double w, double x, double y, double z)
 {
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f100(0.9996,0.9998,1.0002,1.0004);
+
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f100(0.9996,0.9998,1.0002,z);
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f100(w,0.9996,0.9998,1.0002);
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f100(0.9996,x,0.9998,1.0002);
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-x)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f100(0.9996,0.9998,y,1.0002);
+
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-x)<1.e-5)) return f100(0.9998,1.0002,y,z);
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f100(0.9998,x,1.0002,z);
+	if((fabs(1.-w)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f100(0.9998,x,y,1.0002);
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f100(w,0.9998,1.0002,z);
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f100(w,0.9998,y,1.0002);
+	if((fabs(1.-y)<1.e-5)&&(fabs(1.-z)<1.e-5)) return f100(w,x,0.9998,1.0002);
+
 	if(fabs(1.-w)<1.e-5) return f100(0.9999,x,y,z);
 	if(fabs(1.-x)<1.e-5) return f100(w,0.9999,y,z);
 	if(fabs(1.-y)<1.e-5) return f100(w,x,0.9999,z);
@@ -218,6 +265,8 @@ double f100(double w, double x, double y, double z)
 
 double f110(double x, double y)
 {
+	if((fabs(1.-x)<1.e-5)&&(fabs(1.-y)<1.e-5)) return f110(0.9998,1.0002);
+
 	if(fabs(1.-x)<1.e-5) return f110(0.9999,y);
 	if(fabs(1.-y)<1.e-5) return f110(x,0.9999);
 
@@ -230,10 +279,12 @@ double f110(double x, double y)
 
 double h11(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return h11(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return h11(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return h11(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return h11(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return h11(0.99,y);
+	if(fabs(1.-y)<1.e-3) return h11(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return h11(y*0.98,y);
 
 	return ((-48.*x*x*x-104.*x*x+64.*x)*Li2(1.-1./x)
 	+(-378.*x*x*x-1566.*x*x+850.*x+86.)/9./(x-1.)*log(x)
@@ -245,10 +296,12 @@ double h11(double x, double y)
 
 double h21(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return h21(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return h21(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return h21(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return h21(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return h21(0.99,y);
+	if(fabs(1.-y)<1.e-3) return h21(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return h21(y*0.98,y);
 
 	return ((224.*x*x-96.*x)*Li2(1.-1./x)
 	+(-24.*x*x*x+352.*x*x-128.*x-32.)*log(x)/(x-1.)
@@ -260,10 +313,12 @@ double h21(double x, double y)
 
 double h31(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return h31(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return h31(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return h31(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return h31(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return h31(0.99,y);
+	if(fabs(1.-y)<1.e-3) return h31(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return h31(y*0.98,y);
 
 	return (32.*x*x*x+120.*x*x-384.*x+128.)*Li2(1.-1./x)/81./pow(x-1.,4.)
 	+(-108.*x*x*x*x+1058.*x*x*x-898.*x*x-1098.*x+710.)/81./pow(x-1.,5.)*log(x)
@@ -276,10 +331,12 @@ double h31(double x, double y)
 
 double h41(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return h41(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return h41(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return h41(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return h41(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return h41(0.99,y);
+	if(fabs(1.-y)<1.e-3) return h41(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return h41(y*0.98,y);
 
 	return (-562.*x*x*x+1101.*x*x-420.*x+101.)/54./pow(x-1.,4.)*Li2(1.-1./x)
 	+(-562.*x*x*x+1604.*x*x-799.*x+429.)/54./pow(x-1.,5.)*log(x)
@@ -291,10 +348,12 @@ double h41(double x, double y)
 
 double h51(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return h51(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return h51(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return h51(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return h51(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return h51(0.99,y);
+	if(fabs(1.-y)<1.e-3) return h51(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return h51(y*0.98,y);
 
 	return ((9.*x*x*x+46.*x*x+49.*x)*Li2(1.-1./x)/2.
 	+(81.*x*x*x+594.*x*x+1270.*x+71.)*log(x)/18./(x-1.)
@@ -306,10 +365,12 @@ double h51(double x, double y)
 
 double h61(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return h61(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return h61(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return h61(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return h61(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return h61(0.99,y);
+	if(fabs(1.-y)<1.e-3) return h61(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return h61(y*0.98,y);
 
 	return ((-32.*x*x-24.*x)*Li2(1.-1./x)
 	+(-52.*x*x-109.*x-7.)*log(x)/(x-1.)
@@ -321,10 +382,12 @@ double h61(double x, double y)
 
 double h71(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return h71(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return h71(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return h71(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return h71(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return h71(0.99,y);
+	if(fabs(1.-y)<1.e-3) return h71(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return h71(y*0.98,y);
 	
 	return (-20.*x*x*x+60.*x*x-60.*x-20.)*Li2(1.-1./x)/27./pow(x-1.,4.)
 	+(-60.*x*x+240.*x+4.)/81./pow(x-1.,4.)*log(x)
@@ -336,12 +399,14 @@ double h71(double x, double y)
 
 double f31(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return f31(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return f31(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f31(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return f31(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return f31(0.99,y);
+	if(fabs(1.-y)<1.e-3) return f31(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f31(y*0.98,y);
 	
-	return 28.*y/3./(y-1.)/(x-y)+2.*x*(11.*x+3.*y)/3./(x-1.)/(x-y)/(x-y)*log(x)
+	return -28.*y/3./(y-1.)/(x-y)+2.*x*(11.*x+3.*y)/3./(x-1.)/(x-y)/(x-y)*log(x)
 	+2.*y*(25.*x-11.*x*y-11.*y-3.*y*y)/3./(y-1.)/(y-1.)/(x-y)/(x-y)*log(y)
 	+4.*(1.+y)/(x-1.)/(y-1)*Li2(1.-1./y)+4.*(x+y)/(x-1.)/(x-y)*Li2(1.-x/y);
 }
@@ -350,10 +415,12 @@ double f31(double x, double y)
 
 double f41(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return f41(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return f41(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f41(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return f41(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return f41(0.99,y);
+	if(fabs(1.-y)<1.e-3) return f41(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f41(y*0.98,y);
 	
 	return (59.*x*(1.-y)-y*(59.-3.*y))/6./(y-1.)/(x-y)
 	+4.*x*(7.*x*x-3.*x*y+3.*y*y)/3./(x-1.)/(x-y)/(x-y)*log(x)+2.*log(y)*log(y)
@@ -365,10 +432,12 @@ double f41(double x, double y)
 
 double f51(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return f51(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return f51(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f51(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return f51(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return f51(0.99,y);
+	if(fabs(1.-y)<1.e-3) return f51(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f51(y*0.98,y);
 
 	return (-83.-27.*x*(y-1.)+27.*y)/6./(x-1.)/(y-1.)
 	
@@ -388,13 +457,19 @@ double f51(double x, double y)
 
 double f81(double x, double y, double z)
 {
-	if(fabs(1.-x)<1.e-5) return f81(0.9999,y,z);
-	if(fabs(1.-y)<1.e-5) return f81(x,0.9999,z);
-	if(fabs(1.-z)<1.e-5) return f81(x,y,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f81(0.96,0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return f81(y*0.9998,y,z);
-	if(fabs(1.-y/z)<1.e-5) return f81(x,z*0.9998,z);
-	if(fabs(1.-x/z)<1.e-5) return f81(x,y,x*0.9998);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f81(0.98,1.02,z);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f81(0.98,y,1.02);
+	if((fabs(1.-y)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f81(x,0.98,1.02);
+
+	if(fabs(1.-x)<1.e-3) return f81(0.99,y,z);
+	if(fabs(1.-y)<1.e-3) return f81(x,0.99,z);
+	if(fabs(1.-z)<1.e-3) return f81(x,y,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f81(y*0.98,y,z);
+	if(fabs(1.-y/z)<5.e-3) return f81(x,z*0.98,z);
+	if(fabs(1.-x/z)<5.e-3) return f81(x,y,x*0.98);
 
 	return -28.*y*y/3./(y-1.)/(x-y)/(y-z)
 	+4.*x*(7.*x*x-3.*x*y+3.*y*y)/3./(x-1.)/(x-y)/(x-y)/(x-z)*log(x)
@@ -409,14 +484,20 @@ double f81(double x, double y, double z)
 
 double f91(double x, double y, double z)
 {
-	if(fabs(1.-x)<1.e-5) return f91(0.9999,y,z);
-	if(fabs(1.-y)<1.e-5) return f91(x,0.9999,z);
-	if(fabs(1.-z)<1.e-5) return f91(x,y,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f91(0.96,0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return f91(y*0.9998,y,z);
-	if(fabs(1.-y/z)<1.e-5) return f91(x,z*0.9998,z);
-	if(fabs(1.-x/z)<1.e-5) return f91(x,y,x*0.9998);
-	
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f91(0.98,1.02,z);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f91(0.98,y,1.02);
+	if((fabs(1.-y)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f91(x,0.98,1.02);
+
+	if(fabs(1.-x)<1.e-3) return f91(0.99,y,z);
+	if(fabs(1.-y)<1.e-3) return f91(x,0.99,z);
+	if(fabs(1.-z)<1.e-3) return f91(x,y,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f91(y*0.98,y,z);
+	if(fabs(1.-y/z)<5.e-3) return f91(x,z*0.98,z);
+	if(fabs(1.-x/z)<5.e-3) return f91(x,y,x*0.98);
+		
 	return -28.*y/3./(y-1.)/(x-y)/(y-z)
 	+2.*x*(11.*x+3.*y)/3./(x-1.)/(x-y)/(x-y)/(x-z)*log(x)
 	+2.*z*(11.*z+3.*y)/3./(z-1.)/(z-y)/(z-y)/(z-x)*log(z)
@@ -430,10 +511,12 @@ double f91(double x, double y, double z)
 
 double f111(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return f111(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return f111(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f111(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return f111(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return f111(0.99,y);
+	if(fabs(1.-y)<1.e-3) return f111(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f111(y*0.98,y);
 	
 	return 4.*x*(8.*y+(x-1.)*(x-y)*pi*pi)/3./y/(x-1.)/(x-y)
 	-8.*x*(x*x-7.*y+3.*x*(1.+y))/3./(x-y)/(x-y)/(x-1.)/(x-1.)*log(x)
@@ -446,13 +529,19 @@ double f111(double x, double y)
 
 double f121(double x, double y, double z)
 {
-	if(fabs(1.-x)<1.e-5) return f121(0.9999,y,z);
-	if(fabs(1.-y)<1.e-5) return f121(x,0.9999,z);
-	if(fabs(1.-z)<1.e-5) return f121(x,y,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f121(0.96,0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return f121(y*0.9998,y,z);
-	if(fabs(1.-y/z)<1.e-5) return f121(x,z*0.9998,z);
-	if(fabs(1.-x/z)<1.e-5) return f121(x,y,x*0.9998);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f121(0.98,1.02,z);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f121(0.98,y,1.02);
+	if((fabs(1.-y)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f121(x,0.98,1.02);
+
+	if(fabs(1.-x)<1.e-3) return f121(0.99,y,z);
+	if(fabs(1.-y)<1.e-3) return f121(x,0.99,z);
+	if(fabs(1.-z)<1.e-3) return f121(x,y,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f121(y*0.98,y,z);
+	if(fabs(1.-y/z)<5.e-3) return f121(x,z*0.98,z);
+	if(fabs(1.-x/z)<5.e-3) return f121(x,y,x*0.98);
 	
 	return -28.*y*y/3./(x-y)/(y-1.)/(y-z)
 	+4.*x*x*(6.*x+y)/3./(x-1.)/(x-y)/(x-y)/(x-z)*log(x)
@@ -465,13 +554,19 @@ double f121(double x, double y, double z)
 
 double f131(double x, double y, double z)
 {
-	if(fabs(1.-x)<1.e-5) return f131(0.9999,y,z);
-	if(fabs(1.-y)<1.e-5) return f131(x,0.9999,z);
-	if(fabs(1.-z)<1.e-5) return f131(x,y,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f131(0.96,0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return f131(y*0.9998,y,z);
-	if(fabs(1.-y/z)<1.e-5) return f131(x,z*0.9998,z);
-	if(fabs(1.-x/z)<1.e-5) return f131(x,y,x*0.9998);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f131(0.98,1.02,z);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f131(0.98,y,1.02);
+	if((fabs(1.-y)<1.e-3)&&(fabs(1.-z)<1.e-3)) return f131(x,0.98,1.02);
+
+	if(fabs(1.-x)<1.e-3) return f131(0.99,y,z);
+	if(fabs(1.-y)<1.e-3) return f131(x,0.99,z);
+	if(fabs(1.-z)<1.e-3) return f131(x,y,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f131(y*0.98,y,z);
+	if(fabs(1.-y/z)<5.e-3) return f131(x,z*0.98,z);
+	if(fabs(1.-x/z)<5.e-3) return f131(x,y,x*0.98);
 	
 	return -28.*y/3./(x-y)/(y-1.)/(y-z)
 	+4.*x*(6.*x+y)/3./(x-1.)/(x-y)/(x-y)/(x-z)*log(x)
@@ -483,10 +578,12 @@ double f131(double x, double y, double z)
 
 double f141(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return f141(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return f141(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f141(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return f141(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return f141(0.99,y);
+	if(fabs(1.-y)<1.e-3) return f141(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f141(y*0.98,y);
 	
 	return 32.*x*x/3./(x-1.)/(x-y)
 	-8.*x*x*(7.*x*(1.+y)-11.*y-3.*x*x)/3./(x-1.)/(x-1.)/(x-y)/(x-y)*log(x)
@@ -499,7 +596,7 @@ double f141(double x, double y)
 
 double f151(double x)
 {
-	if(fabs(1.-x)<1.e-5) return f151(0.9999);
+	if(fabs(1.-x)<1.e-3) return f151(0.99);
 
 	return (1.-3.*x)/(x-1.)+2.*x/(x-1.)/(x-1.)*log(x)+2.*x/(x-1.)*Li2(1.-1./x);
 }
@@ -509,7 +606,7 @@ double f151(double x)
 
 double f161(double x)
 {
-	if(fabs(1.-x)<1.e-5) return f161(0.9999);
+	if(fabs(1.-x)<1.e-3) return f161(0.99);
 
 	return 28./3./(x-1.)-4.*x*(13.-6.*x)/3./(x-1.)/(x-1.)*log(x);
 }
@@ -518,10 +615,12 @@ double f161(double x)
 
 double f171(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return f171(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return f171(x,0.9999);
-	
-	if(fabs(1.-x/y)<1.e-5) return f171(y*0.9998,y);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f171(0.98,1.02);
+
+	if(fabs(1.-x)<1.e-3) return f171(0.99,y);
+	if(fabs(1.-y)<1.e-3) return f171(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f171(y*0.98,y);
 	
 	return -28./3./(x-1.)/(y-1.)
 	+4.*y*(10.-3.*y)/3./(x-y)/(y-1.)/(y-1.)*log(y)
@@ -533,10 +632,12 @@ double f171(double x, double y)
 
 double f181(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return f191(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return f191(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f181(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return f181(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return f181(0.99,y);
+	if(fabs(1.-y)<1.e-3) return f181(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f181(y*0.98,y);
 	
 	return -28.*y/3./(x-y)/(y-1.)
 	+4.*x*(6.*x+y)/3./(x-1.)/(x-y)/(x-y)*log(x)
@@ -547,10 +648,12 @@ double f181(double x, double y)
 
 double f191(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return f191(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return f191(x,0.9999);
-	
-	if(fabs(1.-x/y)<1.e-5) return f191(y*0.9998,y);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return f191(0.98,1.02);
+
+	if(fabs(1.-x)<1.e-3) return f191(0.99,y);
+	if(fabs(1.-y)<1.e-3) return f191(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return f191(y*0.98,y);
 	
 	return -28.*(x*(y-1.)+y)/3./(x-y)/(y-1.)
 	+4.*x*x*(6.*x+y)/3./(x-1.)/(x-y)/(x-y)*log(x)
@@ -561,10 +664,12 @@ double f191(double x, double y)
 
 double q11(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return q11(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return q11(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return q11(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return q11(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return q11(0.99,y);
+	if(fabs(1.-y)<1.e-3) return q11(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return q11(y*0.98,y);
 
 	return 4./3./(x-y)*(x*x*log(x)/pow(x-1.,4.)-y*y*log(y)/pow(y-1.,4.)) +(4.*x*x*y*y+10.*x*y*y-2.*y*y+10.*x*x*y-44.*x*y+10.*y-2.*x*x+10.*x+4.)/9./pow(x-1.,3.)/pow(y-1.,3.);
 }
@@ -573,10 +678,12 @@ double q11(double x, double y)
 
 double q21(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return q21(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return q21(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return q21(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return q21(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return q21(0.99,y);
+	if(fabs(1.-y)<1.e-3) return q21(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return q21(y*0.98,y);
 	
 	return 4./3./(x-y)*(x*log(x)/pow(x-1.,4.)-y*log(y)/pow(y-1.,4.)) +(-2.*x*x*y*y+10.*x*y*y+4.*y*y+10.*x*x*y-20.*x*y-14.*y+4.*x*x-14.*x+22.)/9./pow(x-1.,3.)/pow(y-1.,3.);
 }
@@ -585,10 +692,12 @@ double q21(double x, double y)
 
 double q31(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return q31(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return q31(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return q31(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return q31(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return q31(0.99,y);
+	if(fabs(1.-y)<1.e-3) return q31(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return q31(y*0.98,y);
 
 	return 8./3./(x-y)*(-x*x*log(x)/pow(x-1.,3.)+y*y*log(y)/pow(y-1.,3.)) +(-12.*x*y+4.*y+4.*x+4.)/3./pow(x-1.,2.)/pow(y-1.,2.);
 }
@@ -597,10 +706,12 @@ double q31(double x, double y)
 
 double q41(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return q41(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return q41(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return q41(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return q41(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return q41(0.99,y);
+	if(fabs(1.-y)<1.e-3) return q41(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return q41(y*0.98,y);
 
 	return 8./3./(x-y)*(-x*log(x)/pow(x-1.,3.)+y*log(y)/pow(y-1.,3.)) +(-4.*x*y-4.*y-4.*x+12.)/3./pow(x-1.,2.)/pow(y-1.,2.);
 }
@@ -609,10 +720,12 @@ double q41(double x, double y)
 
 double q51(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return q51(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return q51(x,0.9999);
-	
-	if(fabs(1.-x/y)<1.e-5) return q51(y*0.9998,y);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return q51(0.98,1.02);
+
+	if(fabs(1.-x)<1.e-3) return q51(0.99,y);
+	if(fabs(1.-y)<1.e-3) return q51(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return q51(y*0.98,y);
 	
 	return 4./27./(x-y)*((6.*x*x*x-9.*x*x+2.)*log(x)/pow(x-1.,4.)-(6.*y*y*y-9.*y*y+2.)*log(y)/pow(y-1.,4.))
 	+(104.*x*x*y*y-202.*x*y*y+86.*y*y-202.*x*x*y+380.*x*y-154.*y+86.*x*x-154.*x+56.)/81./pow(x-1.,3.)/pow(y-1.,3.);
@@ -622,10 +735,12 @@ double q51(double x, double y)
 
 double q61(double x, double y)
 {
-	if(fabs(1.-x)<1.e-5) return q61(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return q61(x,0.9999);
+	if((fabs(1.-x)<1.e-3)&&(fabs(1.-y)<1.e-3)) return q61(0.98,1.02);
 
-	if(fabs(1.-x/y)<1.e-5) return q61(y*0.9998,y);
+	if(fabs(1.-x)<1.e-3) return q61(0.99,y);
+	if(fabs(1.-y)<1.e-3) return q61(x,0.99);
+
+	if(fabs(1.-x/y)<5.e-3) return q61(y*0.98,y);
 
 	return 4./9./(x-y)*(log(x)/pow(x-1.,4.)-log(y)/pow(y-1.,4.))
 	+(4.*x*x*y*y-14.*x*y*y+22.*y*y-14.*x*x*y+52.*x*y-62.*y+22.*x*x-62.*x+52.)/27./pow(x-1.,3.)/pow(y-1.,3.);
@@ -688,7 +803,7 @@ double C1t(double x, double l)
 double D1t(double x, double l)
 {
 	return (380.*pow(x,4.)-1352.*pow(x,3.)+1656.*x*x-784.*x+256.)/81./pow(1.-x,4.)*Li2(1.-1./x) +(304.*pow(x,4.)+1716.*pow(x,3.)-4644.*x*x+2768.*x-720.)/81./pow(1.-x,5.)*log(x) +(-6175.*pow(x,4.)+41608.*pow(x,3.)-66723.*x*x+33106.*x-7000.)/729./pow(1.-x,4.) +((648.*pow(x,4.)-720.*pow(x,3.)-232.*x*x-160.*x+32.)/81./pow(1.-x,5.)*log(x)
-	+(-352.*pow(x,4.)+4912.*pow(x,3.)-8280.*x*x+3304*x-880.)/243./pow(1.-x,4.))*l;	
+	+(-352.*pow(x,4.)+4912.*pow(x,3.)-8280.*x*x+3304.*x-880.)/243./pow(1.-x,4.))*l;	
 }
 
 /*----------------------------------------------------------------------*/
@@ -794,7 +909,7 @@ double B(double m1, double m2, double Q)
 double G7H(double x, double lu, double ld)
 {
 	return lu*(ld*4.*x*(4.*(-3.+7.*x-2.*x*x)*Li2(1.-1./x)+(8.-14.*x-3.*x*x)*log(x)*log(x)/(x-1.)
-	+2.*(-3.-x+12.*x*x-2*x*x*x)*log(x)/(x-1.)+3.*(7.-13.*x+2*x*x))/9./pow((x-1.),3.)
+	+2.*(-3.-x+12.*x*x-2.*x*x*x)*log(x)/(x-1.)+3.*(7.-13.*x+2.*x*x))/9./pow((x-1.),3.)
 	+lu*2.*x*(x*(18.-37.*x+8.*x*x)*Li2(1.-1./x)+x*(-14.+23.*x+3.*x*x)*log(x)*log(x)/(x-1.)+
 	(-50.+251.*x-174.*x*x-192.*x*x*x+21.*x*x*x*x)*log(x)/9./(x-1.)+(797.-5436.*x+7569.*x*x-1202.*x*x*x)/108.)/pow((x-1.),4.)/9.);
 }
@@ -812,7 +927,7 @@ double Delta7H(double x, double lu, double ld)
 
 double G8H(double x, double lu, double ld)
 {
-	return lu*(ld*x*(0.5*(-36.+25.*x-17*x*x)*Li2(1.-1./x)+(19.+17.*x)*log(x)*log(x)/(x-1.)
+	return lu*(ld*x*(0.5*(-36.+25.*x-17.*x*x)*Li2(1.-1./x)+(19.+17.*x)*log(x)*log(x)/(x-1.)
 	+0.25*(-3.-187.*x+12.*x*x-14.*x*x*x)*log(x)/(x-1.)+3.*(143.-44.*x+29.*x*x)/8.)/3./pow((x-1.),3.)
 	+ lu*x*(x*(30.-17.*x+13.*x*x)*Li2(1.-1./x)-x*(31.+17.*x)*log(x)*log(x)/(x-1.)+
 	(-226.+817.*x+1353.*x*x+318.*x*x*x+42.*x*x*x*x)*log(x)/36./(x-1.)+(1130.-18153.*x+7650.*x*x-4451.*x*x*x)/216.)/pow((x-1.),4.)/6.);
@@ -931,9 +1046,9 @@ double C7c2MW(double x)
 	
 	if(y<0.4) return 1.525-0.1165*z+0.01975*z*log(z)+0.06283*z*z+0.005349*z*z*log(z)
 	+0.01005*pow(z*log(z),2.)-0.04202*pow(z,3.)+0.01535*pow(z,3.)*log(z)-0.00329*z*pow(z*log(z),2.)
-	+0.0002372*pow(z,4.)-0.0007910*pow(z,4.)*log(z);
+	+0.002372*pow(z,4.)-0.0007910*pow(z,4.)*log(z);
 		
-	else return 1.432+0.06709*w+0.01257*w*w+0.004710*pow(w,3.)+0.0002373*pow(w,4.)
+	else return 1.432+0.06709*w+0.01257*w*w+0.004710*pow(w,3.)+0.002373*pow(w,4.)
 	+0.001406*pow(w,5.)+0.0009216*pow(w,6.)+0.00064730*pow(w,7.)+0.0004779*pow(w,8.);
 }
 
@@ -978,7 +1093,7 @@ double epsilon_0(struct parameters* param)
 	return 0.;
 #endif
 
-	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
+ 	double sw2=pow(sin(atan(param->gp/param->g2)),2.);	
 	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
 
 	return 2./3.*alphas_MSOFT/pi*((param->A_b/param->tan_beta-param->mu_Q)/param->mass_gluino*
@@ -997,8 +1112,7 @@ double epsilon_2(struct parameters* param)
 	return 0.;
 #endif
 
-	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
-
+ 	double sw2=pow(sin(atan(param->gp/param->g2)),2.);	
 	return param->yut[3]*param->yut[3]/16./pi/pi*(param->mu_Q/param->tan_beta-param->A_t)*(param->charg_Umix[1][2]*param->charg_Vmix[1][2]/param->mass_cha1 *H2(param->mass_t1*param->mass_t1/param->mass_cha1/param->mass_cha1,param->mass_t2*param->mass_t2/param->mass_cha1/param->mass_cha1) +param->charg_Umix[2][2]*param->charg_Vmix[2][2]/param->mass_cha2*H2(param->mass_t1*param->mass_t1/param->mass_cha2/param->mass_cha2,param->mass_t2*param->mass_t2/param->mass_cha2/param->mass_cha2))	+1./param->inv_alpha_em/sw2/4./pi*(param->mu_Q*param->M2_Q)*(param->stop_mix[1][1]*param->stop_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_t1/param->mass_t1,param->mu_Q*param->mu_Q/param->mass_t1/param->mass_t1)/param->mass_t1/param->mass_t1 +param->stop_mix[1][2]*param->stop_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_t2/param->mass_t2,param->mu_Q*param->mu_Q/param->mass_t2/param->mass_t2)/param->mass_t2/param->mass_t2);
 }
 
@@ -1018,7 +1132,7 @@ double epsilon_bp(struct parameters* param)
 #ifdef SM_ChargedHiggs
 	return 0.;
 #endif
-	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
+ 	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
 	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
 	int ie;
 	int nb_neut;
@@ -1093,7 +1207,7 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 /*----------------------------------------------------------------------*/
 
 	double L=log(mu_W*mu_W/param->mass_W/param->mass_W);
-	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
+ 	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
 
 	double xt= pow(mass_top_muW/param->mass_W,2.);
 	double yt= pow(mass_top_muW/param->mass_H,2.);
@@ -1457,7 +1571,7 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 		+4.*(f50(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.),pow(Msn[be]/Mch[ie],2.))
 			+(f50(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.)*1.0001,pow(Msn[be]/Mch[ie],2.))-f50(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.)*0.9999,pow(Msn[be]/Mch[ie],2.)))/0.0002
 		)*log(pow(mu_W/MsqU[ae],2.))));
-		B1c1+=X_UL[je][ae][2]*X_UL[ie][ae][3]/Mch[ie]/Mch[ie]*(X_NR[ie][be][2]*X_NR[je][be][2]*fabs(Mch[je]/Mch[ie])*(
+		B1c2+=X_UL[je][ae][2]*X_UL[ie][ae][3]/Mch[ie]/Mch[ie]*(X_NR[ie][be][2]*X_NR[je][be][2]*fabs(Mch[je]/Mch[ie])*(
 		f91(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.),pow(Msn[be]/Mch[ie],2.))
 		+4.*(f60(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.),pow(Msn[be]/Mch[ie],2.))						+(f60(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.)*1.0001,pow(Msn[be]/Mch[ie],2.))-f60(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.)*0.9999,pow(Msn[be]/Mch[ie],2.)))/0.0002
 		)*log(pow(mu_W/MsqU[ae],2.))));
@@ -1487,7 +1601,6 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 
 		C9charg_1=(1.-4.*sw2)/sw2*C91c-B91c/sw2-D91c;
 		C10charg_1=(B101c-C91c)/sw2;
-
 
 		C7four_1=0.;
 		for(ie=1;ie<=2;ie++) for(ae=1;ae<=6;ae++) for(be=1;be<=6;be++) for(ce=1;ce<=6;ce++) C7four_1+=pow(param->mass_W/Mch[ie],2.)*P_U[ae][be]*MsqU[be]/Mch[ie]*P_U[be][ce]*(1.+log(pow(mu_W/MsqU[be],2.)))*
@@ -1592,11 +1705,6 @@ f50(pow(MsqU[ae]/Mch[ie],2.),pow(MsqU[ce]/Mch[ie],2.),pow(MsqU[de]/Mch[ie],2.))*
 			}
 		}
 		else C1squark_2=0.;
-
-/*----------------------------------------------------------------------*/
-/* GLUINOS */	
-/*----------------------------------------------------------------------*/	
-		
 	}
 
 /*----------------------------------------------------------------------*/
@@ -1630,27 +1738,26 @@ f50(pow(MsqU[ae]/Mch[ie],2.),pow(MsqU[ce]/Mch[ie],2.),pow(MsqU[de]/Mch[ie],2.))*
 
 	double alphas_mu=alphas_running(mu_W,param->mass_top_pole,param->mass_b_pole,param);
 
-	if(cabs(C7H_1)*alphas_mu/4./pi>0.1*cabs(C0w[7])) C7H_1=0.;
-	if(cabs(C7charg_1)*alphas_mu/4./pi>0.1*cabs(C0w[7])) C7charg_1=0.;
-	if(cabs(C7four_1)*alphas_mu/4./pi>0.1*cabs(C0w[7])) C7four_1=0.; 
+	if(cabs(C7H_1)*alphas_mu/4./pi>cabs(C0w[7])) C7H_1=0.;
+	if(cabs(C7charg_1)*alphas_mu/4./pi>cabs(C0w[7])) C7charg_1=0.;
+	if(cabs(C7four_1)*alphas_mu/4./pi>cabs(C0w[7])) C7four_1=0.; 
 
-	if(cabs(C8H_1)*alphas_mu/4./pi>0.1*cabs(C0w[8])) C8H_1=0.;
-	if(cabs(C8charg_1)*alphas_mu/4./pi>0.1*cabs(C0w[8])) C8charg_1=0.;
-	if(cabs(C8four_1)*alphas_mu/4./pi>0.1*cabs(C0w[8])) C8four_1=0.;   
+	if(cabs(C8H_1)*alphas_mu/4./pi>cabs(C0w[8])) C8H_1=0.;
+	if(cabs(C8charg_1)*alphas_mu/4./pi>cabs(C0w[8])) C8charg_1=0.;
+	if(cabs(C8four_1)*alphas_mu/4./pi>cabs(C0w[8])) C8four_1=0.;   
 
-	if(cabs(C9H_1)*alphas_mu/4./pi>0.1*cabs(C0w[9])) C9H_1=0.;
-	if(cabs(C9charg_1)*alphas_mu/4./pi>0.1*cabs(C0w[9])) C9charg_1=0.;
-	if(cabs(C9four_1)*alphas_mu/4./pi>0.1*cabs(C0w[9])) C9four_1=0.; 
+	if(cabs(C9H_1)*alphas_mu/4./pi>cabs(C0w[9])) C9H_1=0.;
+	if(cabs(C9charg_1)*alphas_mu/4./pi>cabs(C0w[9])) C9charg_1=0.;
+	if(cabs(C9four_1)*alphas_mu/4./pi>cabs(C0w[9])) C9four_1=0.; 
 
-	if(cabs(C10H_1)*alphas_mu/4./pi>0.1*cabs(C0w[10])) C10H_1=0.;
-	if(cabs(C10charg_1)*alphas_mu/4./pi>0.1*cabs(C0w[10])) C10charg_1=0.;
-	if(cabs(C10four_1)*alphas_mu/4./pi>0.1*cabs(C0w[10])) C10four_1=0.;   
+	if(cabs(C10H_1)*alphas_mu/4./pi>cabs(C0w[10])) C10H_1=0.;
+	if(cabs(C10charg_1)*alphas_mu/4./pi>cabs(C0w[10])) C10charg_1=0.;
+	if(cabs(C10four_1)*alphas_mu/4./pi>cabs(C0w[10])) C10four_1=0.;    
 	
 	if(param->THDM_model==0)
 	{
 		C0w[2]= C2SM_0;
 		C0w[7]= C7SM_0+C7SMeps_0+C7H_0+C7Heps_0+C7Heps2_0+C7charg_0+C7_chargeps_0;
-				
 		C0w[8]= C8SM_0+C8SMeps_0+C8H_0+C8Heps_0+C8Heps2_0+C8charg_0+C8_chargeps_0;
 		C0w[9]= C9SM_0+C9H_0+C9charg_0;
 		C0w[10]= C10SM_0+C10H_0+C10charg_0;
@@ -1705,12 +1812,18 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	for(ie=1;ie<=10;ie++) C0b[ie]=C1b[ie]=C2b[ie]=0.;
 
 	double alphas_muW=alphas_running(mu_W,param->mass_top_pole,param->mass_b_pole,param);
-	
 	double alphas_mu=alphas_running(mu,param->mass_top_pole,param->mass_b_pole,param);	
-	
 	double eta_mu=alphas_muW/alphas_mu;
-		
- 	C0b[1]= C0w[2]* (pow(eta_mu,6./23.) - pow(eta_mu,-12./23.));
+
+	double C0w7= C0w[7]-1./3.*C0w[3]-4./9.*C0w[4]-20./3.*C0w[5]-80./9.*C0w[6]; 
+	double C1w7= C1w[7]-1./3.*C1w[3]-4./9.*C1w[4]-20./3.*C1w[5]-80./9.*C1w[6]; 
+	double C2w7= C2w[7]-1./3.*C2w[3]-4./9.*C2w[4]-20./3.*C2w[5]-80./9.*C2w[6]; 
+
+	double C0w8= C0w[8]+C0w[3]-1./6.*C0w[4]+20.*C0w[5]-10./3.*C0w[6]; 
+	double C1w8= C1w[8]+C1w[3]-1./6.*C1w[4]+20.*C1w[5]-10./3.*C1w[6]; 
+	double C2w8= C2w[8]+C2w[3]-1./6.*C2w[4]+20.*C2w[5]-10./3.*C2w[6]; 
+
+	C0b[1]= C0w[2]* (pow(eta_mu,6./23.) - pow(eta_mu,-12./23.));
 	
  	C0b[2]= C0w[2]* (0.6667*pow(eta_mu,6./23.) + 0.3333*pow(eta_mu,-12./23.));
 	
@@ -1724,19 +1837,19 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	+0.0094*pow(eta_mu,0.4086)-0.0100*pow(eta_mu,-0.4230)+0.0010*pow(eta_mu,-0.8994)-0.0017*pow(eta_mu,0.1456));
 
 	C0b[6]= C0w[2]* (-0.0119*pow(eta_mu,6./23.) - 0.0278*pow(eta_mu,-12./23.)
-	+0.0108*pow(eta_mu,0.4086)+0.0163*pow(eta_mu,-0.4230)+0.0103*pow(eta_mu,-0.8994)+0.00023*pow(eta_mu,0.1456));
+	+0.0108*pow(eta_mu,0.4086)+0.0163*pow(eta_mu,-0.4230)+0.0103*pow(eta_mu,-0.8994)+0.0023*pow(eta_mu,0.1456));
  
 	C0b[7]= C0w[2]*(2.2996*pow(eta_mu,14./23.) - 1.0880*pow(eta_mu,16./23.)
 	-0.4286*pow(eta_mu,6./23.) - 0.0714*pow(eta_mu,-12./23.)
 	-0.6494*pow(eta_mu,0.4086)-0.0380*pow(eta_mu,-0.4230)
 	-0.0185*pow(eta_mu,-0.8994)-0.0057*pow(eta_mu,0.1456))
-	+C0w[7]*pow(eta_mu,16./23.)
-	+C0w[8]*(2.6667*pow(eta_mu,14./23.) - 2.6667*pow(eta_mu,16./23.));
+	+C0w7*pow(eta_mu,16./23.)
+	+C0w8*(2.6667*pow(eta_mu,14./23.) - 2.6667*pow(eta_mu,16./23.));
 	
 	C0b[8]= C0w[2]*(0.8623*pow(eta_mu,14./23.) 
 	-0.9135*pow(eta_mu,0.4086)+0.0873*pow(eta_mu,-0.4230)
 	-0.0571*pow(eta_mu,-0.8994)+0.0209*pow(eta_mu,0.1456))
-	+C0w[8]*pow(eta_mu,14./23.);
+	+C0w8*pow(eta_mu,14./23.);
 			
 	
 	C1b[1]=eta_mu*(
@@ -1776,7 +1889,7 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	-1.8215*pow(eta_mu,-0.8994-1.)+0.7996*pow(eta_mu,0.1456-1.)));
 	
 	C1b[5]= eta_mu*(
-	C1w[1]*(-0.00026*pow(eta_mu,6./23.) -0.0062*pow(eta_mu,-12./23.)
+	C1w[1]*(-0.0026*pow(eta_mu,6./23.) -0.0062*pow(eta_mu,-12./23.)
 	+0.0018*pow(eta_mu,0.4086)+0.0083*pow(eta_mu,-0.4230)
 	-0.0004*pow(eta_mu,-0.8994)-0.0009*pow(eta_mu,0.1456))
 	+C1w[4]*(0.0274*pow(eta_mu,0.4086)-0.0264*pow(eta_mu,-0.4230)
@@ -1790,7 +1903,7 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	
 	C1b[6]= eta_mu*(
 	C1w[1]*(-0.0040*pow(eta_mu,6./23.) +0.0185*pow(eta_mu,-12./23.)
-	+0.00021*pow(eta_mu,0.4086)-0.0136*pow(eta_mu,-0.4230)
+	+0.0021*pow(eta_mu,0.4086)-0.0136*pow(eta_mu,-0.4230)
 	-0.0043*pow(eta_mu,-0.8994)+0.0012*pow(eta_mu,0.1456))
 	+C1w[4]*(0.0317*pow(eta_mu,0.4086)+0.0432*pow(eta_mu,-0.4230)
 	-0.0675*pow(eta_mu,-0.8994)-0.0074*pow(eta_mu,0.1456))
@@ -1809,8 +1922,8 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	+C1w[4]*(5.7064*pow(eta_mu,14./23.) - 3.8412*pow(eta_mu,16./23.)
 	-1.9043*pow(eta_mu,0.4086)-0.1008*pow(eta_mu,-0.4230)
 	+0.1216*pow(eta_mu,-0.8994)+0.0183*pow(eta_mu,0.1456))
-	+C1w[7]*pow(eta_mu,16./23.)
-	+C1w[8]*(2.6667*pow(eta_mu,14./23.) - 2.6667*pow(eta_mu,16./23.))
+	+C1w7*pow(eta_mu,16./23.)
+	+C1w8*(2.6667*pow(eta_mu,14./23.) - 2.6667*pow(eta_mu,16./23.))
 	+C0w[2]*(9.9372*pow(eta_mu,14./23.) - 7.4878*pow(eta_mu,16./23.)
 	+1.2688*pow(eta_mu,6./23.) -0.2925*pow(eta_mu,-12./23.)
 	-2.2923*pow(eta_mu,0.4086)-0.1461*pow(eta_mu,-0.4230)
@@ -1819,8 +1932,8 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	+4.5508*pow(eta_mu,6./23.-1.)+0.7519*pow(eta_mu,-12./23.-1.)
 	+2.0040*pow(eta_mu,0.4086-1.)+0.7476*pow(eta_mu,-0.4230-1.)
 	-0.5385*pow(eta_mu,-0.8994-1.)+0.0914*pow(eta_mu,0.1456-1.))
-	+C0w[7]*(7.8152*pow(eta_mu,16./23.)-7.8152*pow(eta_mu,16./23.-1))
-	+C0w[8]*(17.9842*pow(eta_mu,14./23.) - 18.7604*pow(eta_mu,16./23.)
+	+C0w7*(7.8152*pow(eta_mu,16./23.)-7.8152*pow(eta_mu,16./23.-1))
+	+C0w8*(17.9842*pow(eta_mu,14./23.) - 18.7604*pow(eta_mu,16./23.)
 	-20.0642*pow(eta_mu,14./23.-1.) +20.8404*pow(eta_mu,16./23.-1.)));
 	
 	C1b[8]=eta_mu*(
@@ -1830,7 +1943,7 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	+C1w[4]*(2.1399*pow(eta_mu,14./23.)
 	-2.6788*pow(eta_mu,0.4086)+0.2318*pow(eta_mu,-0.4230)
 	+0.3741*pow(eta_mu,-0.8994)-0.0670*pow(eta_mu,0.1456))
-	+C1w[8]*pow(eta_mu,14./23.)
+	+C1w8*pow(eta_mu,14./23.)
 	+C0w[2]*(3.7264*pow(eta_mu,14./23.)
 	-3.2247*pow(eta_mu,0.4086)+0.3359*pow(eta_mu,-0.4230)
 	+0.3812*pow(eta_mu,-0.8994)-0.2968*pow(eta_mu,0.1456)
@@ -1838,7 +1951,7 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	+1.4062*pow(eta_mu,6./23.-1.)-3.9895*pow(eta_mu,-12./23.-1.)
 	+3.2850*pow(eta_mu,0.4086-1.)+3.6851*pow(eta_mu,-0.4230-1.)
 	-0.1424*pow(eta_mu,-0.8994-1.)+0.6492*pow(eta_mu,0.1456-1.))
-	+C0w[8]*(6.7441*pow(eta_mu,14./23.) - 6.7441*pow(eta_mu,14./23.-1.)));
+	+C0w8*(6.7441*pow(eta_mu,14./23.) - 6.7441*pow(eta_mu,14./23.-1.)));
 	
 			
 	C2b[7]=eta_mu*eta_mu*(
@@ -1863,10 +1976,10 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	+C2w[6]*(86.4618*pow(eta_mu,14./23.) - 59.6604*pow(eta_mu,16./23.)
 	-25.4430*pow(eta_mu,0.4086)-1.2894*pow(eta_mu,-0.4230)
 	+0.0228*pow(eta_mu,-0.8994)-0.0917*pow(eta_mu,0.1456))
-	+C2w[7]*pow(eta_mu,16./23.)
-	+C2w[8]*(2.6667*pow(eta_mu,14./23.) - 2.6667*pow(eta_mu,16./23.))
+	+C2w7*pow(eta_mu,16./23.)
+	+C2w8*(2.6667*pow(eta_mu,14./23.) - 2.6667*pow(eta_mu,16./23.))
 	
-	+C1w[1]*(0.00021*pow(eta_mu,14./23.)-1.4498*pow(eta_mu,16./23.)
+	+C1w[1]*(0.0021*pow(eta_mu,14./23.)-1.4498*pow(eta_mu,16./23.)
 	+0.8515*pow(eta_mu,6./23.) +0.0521*pow(eta_mu,-12./23.)
 	+0.6707*pow(eta_mu,0.4086)+0.1220*pow(eta_mu,-0.4230)
 	-0.0578*pow(eta_mu,-0.8994)+0.0355*pow(eta_mu,0.1456)
@@ -1880,8 +1993,8 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	-42.9356*pow(eta_mu,14./23.-1.) +30.0198*pow(eta_mu,16./23.-1.)
 	+5.8768*pow(eta_mu,0.4086-1.)+1.9845*pow(eta_mu,-0.4230-1.)
 	+3.5291*pow(eta_mu,-0.8994-1.)-0.2929*pow(eta_mu,0.1456-1.))
-	+C1w[7]*(7.8152*pow(eta_mu,16./23.)-7.8152*pow(eta_mu,16./23.-1))
-	+C1w[8]*(17.9842*pow(eta_mu,14./23.) - 18.7604*pow(eta_mu,16./23.)
+	+C1w7*(7.8152*pow(eta_mu,16./23.)-7.8152*pow(eta_mu,16./23.-1))
+	+C1w8*(17.9842*pow(eta_mu,14./23.) - 18.7604*pow(eta_mu,16./23.)
 	-20.0642*pow(eta_mu,14./23.-1.) +20.8404*pow(eta_mu,16./23.-1.))
 	
 	+C0w[2]*(-212.4136*pow(eta_mu,14./23.)+167.6577*pow(eta_mu,16./23.)
@@ -1896,11 +2009,12 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	+23.2117*pow(eta_mu,6./23.-2.) +13.2771*pow(eta_mu,-12./23.-2.)
 	-19.8699*pow(eta_mu,0.4086-2.)+4.0279*pow(eta_mu,-0.4230-2.)
 	-8.6259*pow(eta_mu,-0.8994-2.)+2.6149*pow(eta_mu,0.1456-2.))
-	+C0w[7]*(44.4252*pow(eta_mu,16./23.)-61.0768*pow(eta_mu,16./23.-1)+16.6516*pow(eta_mu,16./23.-2.))
-	+C0w[8]*(15.4051*pow(eta_mu,14./23.)-18.7662*pow(eta_mu,16./23.)
+	+C0w7*(44.4252*pow(eta_mu,16./23.)-61.0768*pow(eta_mu,16./23.-1)+16.6516*pow(eta_mu,16./23.-2.))
+	+C0w8*(15.4051*pow(eta_mu,14./23.)-18.7662*pow(eta_mu,16./23.)
 	-135.3141*pow(eta_mu,14./23.-1.)+146.6159*pow(eta_mu,16./23.-1.)
 	+36.4636*pow(eta_mu,14./23.-2.)-44.4043*pow(eta_mu,16./23.-2.)));
 	
+
 	C0b[10]=C0w[10];
 	C1b[10]=C1w[10];
 	
@@ -1916,25 +2030,25 @@ void C_calculator_base2(double C0w[], double C1w[], double mu_W, double C0b[], d
 	for(ie=1;ie<=10;ie++) C0b[ie]=C1b[ie]=0.;
 
 	double alphas_muW=alphas_running(mu_W,param->mass_top_pole,param->mass_b_pole,param);
-	
 	double alphas_mu=alphas_running(mu,param->mass_top_pole,param->mass_b_pole,param);	
-
 	double eta_mu=alphas_muW/alphas_mu;
 	
-	C1w[7]-=-4./9.*C1w[4];
-	C1w[8]-=-C1w[4]/6.;
-			
+	double C0w7= C0w[7]-1./3.*C0w[5]-C0w[6]; 
+	double C1w7= C1w[7]-1./3.*C1w[5]-C1w[6]; 
+
+	double C0w8= C0w[8]+C0w[5]; 
+	double C1w8= C1w[8]+C1w[5]; 
 
  	C0b[1]= (1./2.*pow(eta_mu,6./23.) -1./2.*pow(eta_mu,-12./23.))*C0w[2];
 	C0b[2]= (1./2.*pow(eta_mu,6./23.) +1./2.*pow(eta_mu,-12./23.))*C0w[2];
 	C0b[3]= (-1./14.*pow(eta_mu,6./23.) +1./6.*pow(eta_mu,-12./23.) +0.0509*pow(eta_mu,0.4086) -0.1403*pow(eta_mu,-0.4230) -0.01126*pow(eta_mu,-0.8994) +0.0054*pow(eta_mu,0.1456))*C0w[2];
-	C0b[4]= (-1./14.*pow(eta_mu,6./23.) -1./6.*pow(eta_mu,-12./23.) +0.0984*pow(eta_mu,0.4086) +0.1214*pow(eta_mu,-0.4230) +0.0156*pow(eta_mu,-0.8994) +0.00026*pow(eta_mu,0.1456))*C0w[2];
-	C0b[5]= (-0.0397*pow(eta_mu,0.4086) +0.0117*pow(eta_mu,-0.4230) -0.00025*pow(eta_mu,-0.8994) +0.0304*pow(eta_mu,0.1456))*C0w[2];
+	C0b[4]= (-1./14.*pow(eta_mu,6./23.) -1./6.*pow(eta_mu,-12./23.) +0.0984*pow(eta_mu,0.4086) +0.1214*pow(eta_mu,-0.4230) +0.0156*pow(eta_mu,-0.8994) +0.0026*pow(eta_mu,0.1456))*C0w[2];
+	C0b[5]= (-0.0397*pow(eta_mu,0.4086) +0.0117*pow(eta_mu,-0.4230) -0.0025*pow(eta_mu,-0.8994) +0.0304*pow(eta_mu,0.1456))*C0w[2];
 	C0b[6]= (0.0335*pow(eta_mu,0.4086) +0.0239*pow(eta_mu,-0.4230) -0.0462*pow(eta_mu,-0.8994) -0.0112*pow(eta_mu,0.1456))*C0w[2];
  
 	C0b[7]= pow(eta_mu,16./23.)*C0w[7] + 8./3.*(pow(eta_mu,14./23.)-pow(eta_mu,16./23.))*C0w[8] + C0w[2] * (2.2996*pow(eta_mu,14./23.) -1.0880*pow(eta_mu,16./23.) -3./7.*pow(eta_mu,6./23.) -1./14.*pow(eta_mu,-12./23.) -0.6494*pow(eta_mu,0.4086) -0.0380*pow(eta_mu,-0.4230) -0.0185*pow(eta_mu,-0.8994) -0.0057*pow(eta_mu,0.1456));
 
-	C0b[8]= pow(eta_mu,14./23.)*C0w[7] + C0w[2] * (0.8623*pow(eta_mu,14./23.) -0.9135*pow(eta_mu,0.4086) +0.0873*pow(eta_mu,-0.4230) -0.0571*pow(eta_mu,-0.8994) +0.0209*pow(eta_mu,0.1456));
+	C0b[8]= pow(eta_mu,14./23.)*C0w[8] + C0w[2] * (0.8623*pow(eta_mu,14./23.) -0.9135*pow(eta_mu,0.4086) +0.0873*pow(eta_mu,-0.4230) -0.0571*pow(eta_mu,-0.8994) +0.0209*pow(eta_mu,0.1456));
 	
 	C0b[9]=C0w[9]+4.*pi/alphas_muW*(-4./33.*(1.-pow(eta_mu,11./23.))+8./87.*(1.-pow(eta_mu,29./23.)))*C0w[2];
 	C0b[10]=C0w[10];
@@ -1967,7 +2081,7 @@ void C_calculator_base2(double C0w[], double C1w[], double mu_W, double C0b[], d
 		+(0.3026*eta_mu*C1w[4]-0.2744*C0w[2]+0.3983*eta_mu*C1w[1]/15.)*pow(eta_mu,-0.8994)
 		+(0.0358*eta_mu*C1w[4]+0.3568*C0w[2]+0.0440*eta_mu*C1w[1]/15.)*pow(eta_mu,0.1456);
 
-	C1b[7]= pow(eta_mu,39./23.)*C1w[7] *+8./3.*(pow(eta_mu,37./23.)-pow(eta_mu,39./23.))*C1w[8] *    
+	C1b[7]= pow(eta_mu,39./23.)*C1w7 +8./3.*(pow(eta_mu,37./23.)-pow(eta_mu,39./23.))*C1w8
 		+(297664./14283.*pow(eta_mu,16./23.)-7164416./357075.*pow(eta_mu,14./23.)+256868./14283.*pow(eta_mu,37./23.)-6698884./357075.*pow(eta_mu,39./23.))*C0w[8]
 		+37208./4761.*(pow(eta_mu,39./23.)-pow(eta_mu,16./23.))*C0w[7]
 		+(4661194./816831.*eta_mu*C1w[4]-17.3023*C0w[2]+14.8088*eta_mu*C1w[1]/15.)*pow(eta_mu,14./23.)
@@ -1994,7 +2108,7 @@ void Cprime_calculator(double Cpb[], double complex CQpb[], double mu_W, double 
 	
 	if((param->SM==1)||(param->THDM_model>0)||(param->mass_A02!=0.)||(param->mass_H03!=0.)) return;
 
-	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
+ 	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
 	double MU[4];
 	
 	double mass_c_muW=running_mass(param->mass_c,param->mass_c,mu_W,param->mass_top_pole,param->mass_b_pole,param);
@@ -2177,6 +2291,8 @@ void Cprime_calculator(double Cpb[], double complex CQpb[], double mu_W, double 
 	
 	Cpb[10]=C10pH+C10pcharg;
 
+	/* printf("C10p=%.5e\n",Cpb[10]); */
+
 
 	double NQ1pH=-param->mass_mu*param->tan_beta*param->tan_beta/4./param->mass_W/param->mass_W*xt*f30(xt,z);
 	
@@ -2243,6 +2359,9 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 	int nf=5;
 	double beta0 = 11.-2./3.*nf;
 
+	/* printf("CQ1p=%.5e\n",CQpb[1]);
+	printf("CQ2p=%.5e\n",CQpb[2]); */
+
 	CQpb[1]*=pow(eta,-4./beta0);
 	CQpb[2]*=pow(eta,-4./beta0);
 
@@ -2259,8 +2378,7 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 	
 	if(param->SM==1) return;
 
-	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
-
+ 	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
 	double MU[4];
 	
 	double mass_c_muW=running_mass(param->mass_c,param->mass_c,mu_W,param->mass_top_pole,param->mass_b_pole,param);
@@ -2542,11 +2660,7 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 	
 	CQ0b[1]=CQ1H_0+CQ1charg_0;
 	CQ0b[1]/=epsfac;
-	
-	/* printf("MSSM CQ1H=%.5e\n",creal(CQ1H_0)); */
-	/* printf("MSSM CQ1charg=%.5e\n",creal(CQ1charg_0)); */
-	/* printf("MSSM CQ2charg=%.5e\n",creal(CQ2charg_0)); */
-	
+		
 	CQ0b[2]=CQ2H_0+CQ2charg_0;
 	CQ0b[2]/=epsfac;
 	
@@ -2602,16 +2716,16 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 	
 	double complex CQ1charg_1=NQ11c+BQ11c;
 
-	if(cabs(CQ1charg_1)*alphas_mu/4./pi>0.1*cabs(CQ0b[1])) CQ1charg_1=0.;
-	if(cabs(CQ1H_1)*alphas_mu/4./pi>0.1*cabs(CQ0b[1])) CQ1H_1=0.;
+	if(cabs(CQ1charg_1)*alphas_mu/4./pi>cabs(CQ0b[1])) CQ1charg_1=0.;
+	if(cabs(CQ1H_1)*alphas_mu/4./pi>cabs(CQ0b[1])) CQ1H_1=0.; 
 	CQ1b[1]=CQ1H_1+CQ1charg_1;
 	
 	CQ1b[1]/=epsfac;
 	
 	double complex CQ2charg_1=NQ21c+BQ21c;
 	
-	if(cabs(CQ2charg_1)*alphas_mu/4./pi>0.1*cabs(CQ0b[1])) CQ2charg_1=0.;
-	if(cabs(CQ2H_1)*alphas_mu/4./pi>0.1*cabs(CQ0b[1])) CQ2H_1=0.; 
+	if(cabs(CQ2charg_1)*alphas_mu/4./pi>cabs(CQ0b[1])) CQ2charg_1=0.;
+	if(cabs(CQ2H_1)*alphas_mu/4./pi>cabs(CQ0b[1])) CQ2H_1=0.;  
 	CQ1b[2]=CQ2H_1+CQ2charg_1;
 		
 	CQ1b[2]/=epsfac;
@@ -2691,27 +2805,29 @@ NQ21f*=4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param-
 
 	double complex CQ1four_1=NQ11f+BQ11f;
 
-	if(cabs(CQ1four_1)*alphas_mu/4./pi>0.1*cabs(CQ0b[1])) CQ1four_1=0.; 
-	CQ1b[1]+=0.*CQ1four_1;
+	if(cabs(CQ1four_1)*alphas_mu/4./pi>cabs(CQ0b[1])) CQ1four_1=0.;  
+	CQ1b[1]+=CQ1four_1;
 
 	double complex CQ2four_1=NQ21f+BQ21f;
 	
-	if(cabs(CQ2four_1)*alphas_mu/4./pi>0.1*cabs(CQ0b[2])) CQ2four_1=0.; 
+	if(cabs(CQ2four_1)*alphas_mu/4./pi>cabs(CQ0b[2])) CQ2four_1=0.;  
 	CQ1b[2]+=CQ2four_1;
 
 	CQ0b[1]*=pow(eta,-4./beta0);
 	CQ0b[2]*=pow(eta,-4./beta0);
 	CQ1b[1]*=pow(eta,-4./beta0);
-	CQ1b[2]*=pow(eta,-4./beta0);
+	CQ1b[2]*=pow(eta,-4./beta0);	
 	}
 	
 /* NMSSM */
 
 	if((param->mass_A02!=0.)||(param->mass_H03!=0.))
 	{
-
-		double v_deltam_x=param->tan_beta*(atan(param->A0_mix[1][3]/param->A0_mix[2][3])-pi/2.);
-
+		double s=param->lambdaSNMSSM/param->lambdaNMSSM;
+		double v=sqrt(1./sqrt(2.)/param->Gfermi);
+		
+		double v_deltam_s=v/s*(sqrt(2.)*param->AlambdaNMSSM-2.*param->kappaNMSSM*s)/(sqrt(2.)*param->AlambdaNMSSM+param->kappaNMSSM*s);
+		
 		CQ0b[1]=0.;
 		CQ0b[2]=0.;
 		CQ1b[1]=0.;
@@ -2738,7 +2854,6 @@ NQ21f*=4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param-
 		for(ie=1;ie<=2;ie++) for(je=1;je<=2;je++) TU[ie+1][je+1]=param->stop_mix[ie][je];
 
 		
-		double s=param->lambdaSNMSSM/param->lambdaNMSSM;
 		double vu=sqrt(pow(sin(atan(param->tan_beta)),2.)/sqrt(2.)/param->Gfermi);
 		double vd=vu/param->tan_beta;
 		int le;
@@ -2787,14 +2902,14 @@ NQ21f*=4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param-
 		CQ2c*=-param->mass_mu/4.*param->tan_beta*param->tan_beta;		
 				
 		double complex CAc=0.;
-		for(ie=1;ie<=3;ie++) for(je=1;je<=2;je++) for(le=1;le<=2;le++) CAc+=I*param->tan_beta/sqrt(2.)*G1[ie][ie][je][le]*(v_deltam_x*kron(le,je)*fabs(Mch[je]/param->mass_W)*f80(pow(mstop[ie-1]/Mch[je],2.))-(Ralj[1][je][le]*fabs(Mch[je]/Mch[le])*f30(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))-Ralj[1][le][je]*f40(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))));
+		for(ie=1;ie<=3;ie++) for(je=1;je<=2;je++) for(le=1;le<=2;le++) CAc+=I*param->tan_beta/sqrt(2.)*G1[ie][ie][je][le]*(v_deltam_s*kron(le,je)*fabs(Mch[je]/param->mass_W)*f80(pow(mstop[ie-1]/Mch[je],2.))-(Ralj[1][je][le]*fabs(Mch[je]/Mch[le])*f30(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))-Ralj[1][le][je]*f40(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))));
 				
 		CQ0b[1]=(CQ1H+CQ1c)*mass_b_muW/sw2/epsfac;
 		CQ0b[2]=(CQ2H+CQ2c)*mass_b_muW/sw2/epsfac;
 
 		double complex CA=CAH+CAc;
 
-		if(param->mass_A0>mu_W) CQ0b[2]+=-v_deltam_x/2.*mass_b_muW/sw2*param->mass_mu*CA/param->mass_A0/param->mass_A0;
+		if(param->mass_A0>mu_W) CQ0b[2]+=-v_deltam_s/2.*mass_b_muW/sw2*param->mass_mu*CA/param->mass_A0/param->mass_A0;
 
 		CQ0b[1]*=pow(eta,-4./beta0);
 		CQ0b[2]*=pow(eta,-4./beta0);
@@ -2806,15 +2921,15 @@ NQ21f*=4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param-
 			double alphas_Ma1=alphas_running(param->mass_A0,param->mass_top_pole,param->mass_b_pole,param);	
 			double eta_a1=alphas_Ma1/alphas_mu;
 			double mass_b_ma1=running_mass(param->mass_b,param->mass_b,param->mass_A0,param->mass_top_pole,param->mass_b,param);
-	CQ0b[2]+=-v_deltam_x/2.*mass_b_ma1/sw2*param->mass_mu*CA/param->mass_A0/param->mass_A0*pow(eta_a1,-4./beta0);		
+			CQ0b[2]+=-v_deltam_s/2.*mass_b_ma1/sw2*param->mass_mu*CA/param->mass_A0/param->mass_A0*pow(eta_a1,-4./beta0);
 		}
 		
 		if(param->mass_A0<param->mass_b_pole)
-		{
+		{	
 			double width_A0=1.e-6;	
-CQ0b[2]+=v_deltam_x/2.*param->mass_b/sw2*param->mass_mu*CA/(param->m_Bs*param->m_Bs-param->mass_A0*param->mass_A0+I*param->mass_A0*width_A0);
+CQ0b[2]+=v_deltam_s/2.*param->mass_b/sw2*param->mass_mu*CA/(param->m_Bs*param->m_Bs-param->mass_A0*param->mass_A0+I*param->mass_A0*width_A0);
 		}
 	}
-		
+			
 	return;
 }

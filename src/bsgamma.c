@@ -307,7 +307,6 @@ double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, st
 	double alpha_em=1./137.036;
 	double BR_BXcenu_exp=0.1061;
 	double Cbr=0.580;
-	double VtsVtb_Vcb_2=pow(cabs(conj(param->Vts)*param->Vtb/param->Vcb),2.);
 	double E0=1.6;
 	
 	double alphas_mu=alphas_running(mu,param->mass_top_pole,param->mass_b_pole,param);
@@ -664,7 +663,7 @@ double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, st
 
 	double N_E0= -1./18.*(Kc0+r*Kt0)*(pow(eta_mu,6./23.)+pow(eta_mu,-12./23.))*lambda2/param->mass_c/param->mass_c;
 	
-	if((P2_1==0.)&&(P2_2==0.)&&(P2_3==0.)) N_E0=0.;
+	/* if((P2_1==0.)&&(P2_2==0.)&&(P2_3==0.)) N_E0=0.; */
 
 
 
@@ -682,7 +681,7 @@ double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, st
 	printf("C2[7]=%f\n\n",C2[7]);
 #endif
 
-	double BRinc=BR_BXcenu_exp*VtsVtb_Vcb_2*6.*alpha_em/pi/Cbr*(P_E0+P_em+N_E0);
+	double BRinc=BR_BXcenu_exp*pow(cabs(conj(param->Vts)*param->Vtb/param->Vcb),2.)*6.*alpha_em/pi/Cbr*(P_E0+P_em+N_E0);
 
 	return BRinc;
 }

@@ -269,6 +269,7 @@ void Init_param(struct parameters* param)
 	param->fK_fpi=1.193;
 	param->m_B=5.27917;
 	param->m_Bs=5.3663;
+	param->m_Bd=5.27950;
 	param->m_pi=0.1396;
 	param->m_K=0.4937;
 	param->m_Kstar=0.8917;
@@ -279,6 +280,7 @@ void Init_param(struct parameters* param)
 	param->life_K=1.2380e-8;  
 	param->life_B=1.638e-12;
 	param->life_Bs=1.425e-12;
+	param->life_Bd=1.519e-12;
 	param->life_D=1.040e-12;
 	param->life_Ds=5.e-13;
 	
@@ -302,21 +304,21 @@ void Init_param(struct parameters* param)
 	param->CKM[3][2]=param->Vts;
 	param->CKM[3][3]=param->Vtb;
 	
-	/* masses and coupling from PDG 2010 */
+	/* masses and coupling from PDG 2011 */
 	param->mass_u = 2.49e-3;
 	param->mass_d = 5.05e-3;
 	param->mass_s = 0.101;
 	param->mass_c = 1.27;
 	param->mass_b = 4.19;
-	param->mass_top_pole = 173.3; /* from arXiv:1007.3178 */
+	param->mass_top_pole = 172.9;
 	
 	param->mass_e = 0.511e-3;
-	param->mass_mu= 0.1056;
+	param->mass_mu= 0.105658;
 	param->mass_tau_pole=1.7768;
 	param->mass_tau=param->mass_tau_pole;
 	
 	param->mass_Z=91.1876;
-	param->alphas_MZ=0.1176;
+	param->alphas_MZ=0.1184;
 	param->mass_W=80.399;
 
 	param->gp=3.58051564e-1;

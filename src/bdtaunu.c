@@ -1,43 +1,43 @@
 #include "include.h"
 
 
-float GBDlnu(float w)
+double GBDlnu(double w)
 {
-	float G1=1.03;
-	float rho2=1.17;
-	float zw=(sqrt(w+1.)-sqrt(2.))/(sqrt(w+1.)+sqrt(2.));
+	double G1=1.03;
+	double rho2=1.17;
+	double zw=(sqrt(w+1.)-sqrt(2.))/(sqrt(w+1.)+sqrt(2.));
 	
 	return G1*(1.-8.*rho2*zw+(51.*rho2-10.)*zw*zw-(252.*rho2-84.)*zw*zw*zw);
 }
 
 /*--------------------------------------------------------------------*/
 
-float tBDlnu(float w, float m_B, float m_D)
+double tBDlnu(double w, double m_B, double m_D)
 {
 	return m_B*m_B+m_D*m_D-2.*w*m_D*m_B;
 }
 
 /*--------------------------------------------------------------------*/
 
-float rhoV(float w, float ml, float m_B, float m_D)
+double rhoV(double w, double ml, double m_B, double m_D)
 {
 	return 4.*pow(1.+m_D/m_B,2.)*pow(m_D/m_B,3.)*pow(w*w-1.,1.5)*pow(1.-ml*ml/tBDlnu(w,m_B,m_D),2.)*(1.+ml*ml/2./tBDlnu(w,m_B,m_D))*pow(GBDlnu(w),2.);
 }
 
 /*--------------------------------------------------------------------*/
 
-float rhoS(float w, float ml, float m_B, float m_D)
+double rhoS(double w, double ml, double m_B, double m_D)
 {
-	float Deltaw=0.46;
+	double Deltaw=0.46;
 	
 	return 1.5*m_B*m_B/tBDlnu(w,m_B,m_D)/(1.+ml*ml/2./tBDlnu(w,m_B,m_D))*(1.+w)/(1.-w)*Deltaw*Deltaw;
 }
 
 /*--------------------------------------------------------------------*/
 
-float dGammaBDlnu_dw(float w, float ml, struct parameters* param)
+double dGammaBDlnu_dw(double w, double ml, struct parameters* param)
 {
-	float Vcb=4.17e-2;
+	double Vcb=4.17e-2;
 
 #ifdef SMONLY
 	return param->Gfermi*param->Gfermi*Vcb*Vcb*pow(param->m_B,5.)/192./pow(pi,3.)*rhoV(w,ml,param->m_B,param->m_D)*(1.-ml*ml/param->m_B/param->m_B*rhoS(w,ml,param->m_B,param->m_D));
@@ -48,14 +48,14 @@ float dGammaBDlnu_dw(float w, float ml, struct parameters* param)
 
 /*--------------------------------------------------------------------*/
 
-float GammaBDlnu(float ml, struct parameters* param)
+double GammaBDlnu(double ml, struct parameters* param)
 {
 	int ie;
 	int nmax=100.;
-	float Gamma=0.;
-	float w;
-	float wmin=1.;
-	float wmax=(1.+param->m_D*param->m_D/param->m_B/param->m_B-ml*ml/param->m_B/param->m_B)/2./(param->m_D/param->m_B);
+	double Gamma=0.;
+	double w;
+	double wmin=1.;
+	double wmax=(1.+param->m_D*param->m_D/param->m_B/param->m_B-ml*ml/param->m_B/param->m_B)/2./(param->m_D/param->m_B);
 	
 	for(ie=1;ie<=nmax;ie++)
 	{
@@ -69,7 +69,7 @@ float GammaBDlnu(float ml, struct parameters* param)
 
 /*--------------------------------------------------------------------*/
 
-float BDtaunu(struct parameters* param)
+double BDtaunu(struct parameters* param)
 /* computes the branching ratio of B-> D0 tau nu */
 {
 	return param->life_B/hbar*GammaBDlnu(param->mass_tau_pole,param);
@@ -77,7 +77,7 @@ float BDtaunu(struct parameters* param)
 
 /*--------------------------------------------------------------------*/
 
-float BDtaunu_BDenu(struct parameters* param)
+double BDtaunu_BDenu(struct parameters* param)
 /* computes the ratio BR(B-> D0 tau nu)/BR(B-> D0 e nu) */
 {
 
@@ -87,7 +87,7 @@ float BDtaunu_BDenu(struct parameters* param)
 
 /*--------------------------------------------------------------------*/
 
-float BDtaunu_calculator(char name[])
+double BDtaunu_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(B-> D0 tau nu) */
 {
 	struct parameters param;
@@ -101,7 +101,7 @@ float BDtaunu_calculator(char name[])
 
 /*--------------------------------------------------------------------*/
 
-float BDtaunu_BDenu_calculator(char name[])
+double BDtaunu_BDenu_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(B-> D0 tau nu)/BR(B-> D0 e nu) */
 {
 	struct parameters param;

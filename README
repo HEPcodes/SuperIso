@@ -1,5 +1,5 @@
-SuperIso Version 2.4 (15 February 2009)
--------------------------------------
+SuperIso Version 2.5 (29 March 2009)
+------------------------------------
 By Farvah Nazila Mahmoudi (mahmoudi@in2p3.fr)
 
 
@@ -10,6 +10,7 @@ The most recent version of this program can be obtained from:
 http://superiso.in2p3.fr
 
 This C code (in C99 standard) provides the calculation of several flavor physics observables as well as the muon anomalous magnetic moment, for a set of supersymmetric parameters which can be either calculated within this program thanks to Isajet or Softsusy, or directly provided by user thanks to a SUSY Les Houches Accord (SLHA1 or SLHA2) file.
+
 
 If you use this program to write a paper, please cite: 
 
@@ -27,7 +28,7 @@ Installation and Compilation
 ----------------------------
 - tar xzvf superiso_vX.X.tgz
 - cd superiso_vX.X
-- in Makefile, first define your C compiler, and the path to Isajet or Softsusy, if you want to use them. If not, you should provide your SLHA file as input.
+- in Makefile, first define your C compiler, and the path to Isajet or Softsusy, if you want to use them. If not, you must provide your SLHA file as input.
 - compile with: make
 
 5 programs are available:
@@ -35,9 +36,12 @@ Installation and Compilation
 - amsb.c: amsb parameter space, linked to softsusy
 - gmsb.c: gmsb parameter space, linked to softsusy
 - nuhm.c: nuhm parameter space, linked to softsusy
-- slha.c: scans the SLHA file
+- slha.c: scans the user provided SLHA file
 
 They can be compiled with: make name, where "name" stands for msugra, amsb, gmsb, nuhm or slha.
+
+They can be run with: ./name.x
+Note that an example of SLHA file is also provided: example.lha
 
 
 Included Files
@@ -66,7 +70,7 @@ amsb.c: calculation of the observables for an AMSB point
 gmsb.c: calculation of the observables for a GMSB point
 msugra.c: calculation of the observables for a mSUGRA point
 nuhm.c: calculation of the observables for a NUHM point
-slha.c: program calculating the observables using a given SLHA file
+slha.c: calculation of the observables using a given SLHA file
 
 - Headers in src
 include.h: definitions and prototypes
@@ -79,6 +83,9 @@ README
 
 History
 -------
+v2.5 - 03/29/2009 - 	Replacement of "float" type by "double" to match the relic version conventions.
+			Minor improvements.
+			
 v2.4 - 02/15/2009 - 	Implementation of the branching ratios of Ds-> tau nu and Ds-> mu nu.
 			Bug fixed in the SLHA2 reader.
 

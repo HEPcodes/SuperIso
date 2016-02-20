@@ -11,7 +11,7 @@
 int main(int argc,char** argv)
 {
 	char name[50];
-	float m0,m12,tanb,A0,sgnmu,mtop,mbot,alphas_mz,delta0;
+	double m0,m12,tanb,A0,sgnmu,mtop,mbot,alphas_mz,delta0;
 
   	if(argc<5) 
   	{ 
@@ -29,14 +29,14 @@ int main(int argc,char** argv)
   	} 
 	else  
   	{  
-		sscanf(argv[1],"%f",&m0);
-     		sscanf(argv[2],"%f",&m12);
-     		sscanf(argv[3],"%f",&A0);
-     		sscanf(argv[4],"%f",&tanb);
-     		if(argc>5) sscanf(argv[5],"%f",&sgnmu); else sgnmu=1;
-     		if(argc>6) sscanf(argv[6],"%f",&mtop); else mtop=172.4;   
-     		if(argc>7) sscanf(argv[7],"%f",&mbot); else mbot=4.2;
-     		if(argc>8) sscanf(argv[8],"%f",&alphas_mz); else alphas_mz=0.1176;
+		sscanf(argv[1],"%lf",&m0);
+     		sscanf(argv[2],"%lf",&m12);
+     		sscanf(argv[3],"%lf",&A0);
+     		sscanf(argv[4],"%lf",&tanb);
+     		if(argc>5) sscanf(argv[5],"%lf",&sgnmu); else sgnmu=1;
+     		if(argc>6) sscanf(argv[6],"%lf",&mtop); else mtop=172.4;   
+     		if(argc>7) sscanf(argv[7],"%lf",&mbot); else mbot=4.2;
+     		if(argc>8) sscanf(argv[8],"%lf",&alphas_mz); else alphas_mz=0.1176;
   	}	
 	sprintf(name,"msugra.lha");
 

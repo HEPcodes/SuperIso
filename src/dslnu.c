@@ -1,17 +1,17 @@
 #include "include.h"
 
-float Dstaunu(struct parameters* param)
+double Dstaunu(struct parameters* param)
 /* computes the branching ratio of Ds -> tau nu */
 {
-	float Vcs=0.97334;
+	double Vcs=0.97334;
 
 #ifdef SMONLY
 	return 
 param->m_Ds/8./pi*pow(param->Gfermi*Vcs*param->mass_tau_pole*param->f_Ds*(1.-param->mass_tau_pole*param->mass_tau_pole/param->m_Ds/param->m_Ds),2.)*param->life_Ds/hbar;
 #endif
 	
-	float alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
-	float epsilon0=-2./3.*alphas_MSOFT/pi*param->mu_Q/param->mass_gluino*
+	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
+	double epsilon0=-2./3.*alphas_MSOFT/pi*param->mu_Q/param->mass_gluino*
 H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->McR_Q*param->McR_Q/param->mass_gluino/param->mass_gluino);
 
 	
@@ -20,7 +20,7 @@ H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->McR_
 
 /*--------------------------------------------------------------------*/
 
-float Dstaunu_calculator(char name[])
+double Dstaunu_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(Ds -> tau nu) */
 {
 	struct parameters param;
@@ -34,18 +34,18 @@ float Dstaunu_calculator(char name[])
 
 /*--------------------------------------------------------------------*/
 
-float Dsmunu(struct parameters* param)
+double Dsmunu(struct parameters* param)
 /* computes the branching ratio of Ds -> mu nu */
 {
-	float Vcs=0.97334;
+	double Vcs=0.97334;
 
 #ifdef SMONLY
 	return 
 param->m_Ds/8./pi*pow(param->Gfermi*Vcs*param->mass_mu*param->f_Ds*(1.-param->mass_mu*param->mass_mu/param->m_Ds/param->m_Ds),2.)*param->life_Ds/hbar;
 #endif
 	
-	float alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
-	float epsilon0=-2./3.*alphas_MSOFT/pi*param->mu_Q/param->mass_gluino*
+	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
+	double epsilon0=-2./3.*alphas_MSOFT/pi*param->mu_Q/param->mass_gluino*
 H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->McR_Q*param->McR_Q/param->mass_gluino/param->mass_gluino);
 
 	
@@ -54,7 +54,7 @@ H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->McR_
 
 /*--------------------------------------------------------------------*/
 
-float Dsmunu_calculator(char name[])
+double Dsmunu_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(Ds -> mu nu) */
 {
 	struct parameters param;

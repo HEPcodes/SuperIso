@@ -1,7 +1,7 @@
 #include "include.h"
 
 
-float D3(float x)
+double D3(double x)
 {
 	if(x<1.e-3) return 0.;
 	if(fabs(x-1.)<1.e-3) return -1.;
@@ -11,7 +11,7 @@ float D3(float x)
 
 /*---------------------------------------------------------------------*/
 
-float D2(float x, float y)
+double D2(double x, double y)
 {
 	if(fabs(x-y)<1.e-3)
 	{
@@ -24,14 +24,14 @@ float D2(float x, float y)
 
 /*---------------------------------------------------------------------*/
 
-float D1(float x, float y, float z)
+double D1(double x, double y, double z)
 {
 	return (D3(x)/(x-z)-D3(y)/(y-z))/(x-y) + D3(z)/(z-x)/(z-y);
 }
 
 /*---------------------------------------------------------------------*/
 
-void C_SUSY(struct parameters* param, float *Ccount_S, float *Ccount_P, float *Cbox_S, float *Cbox_P, float *Cpeng_S, float *Cpeng_P, float *CHp_S, float *CHp_P)
+void C_SUSY(struct parameters* param, double *Ccount_S, double *Ccount_P, double *Cbox_S, double *Cbox_P, double *Cpeng_S, double *Cpeng_P, double *CHp_S, double *CHp_P)
 {
 
 #ifdef SMONLY
@@ -40,8 +40,8 @@ void C_SUSY(struct parameters* param, float *Ccount_S, float *Ccount_P, float *C
 #endif
 
 	
-	float sw=sin(atan(param->gp/param->g2));
-	float MU[4];
+	double sw=sin(atan(param->gp/param->g2));
+	double MU[4];
 	
 	MU[1]=param->mass_u;
 	MU[2]=param->mass_c;
@@ -54,10 +54,10 @@ void C_SUSY(struct parameters* param, float *Ccount_S, float *Ccount_P, float *C
 	return;
 #endif
 
-	float C,Ctmp,Ca,Cb,Dtmp;
-	float m_cha[3], m_squ[7], m_snu[4], GammaULT[4][7], GammaURT[4][7], G_aimn[7][3][4][4], lmn[4][4];
+	double C,Ctmp,Ca,Cb,Dtmp;
+	double m_cha[3], m_squ[7], m_snu[4], GammaULT[4][7], GammaURT[4][7], G_aimn[7][3][4][4], lmn[4][4];
 	
-	float mA=param->mass_A0;
+	double mA=param->mass_A0;
 	
 	if((param->mass_A02!=0.)&&(param->mass_H03!=0.)) mA=param->mass_A02;
 	
@@ -118,7 +118,7 @@ void C_SUSY(struct parameters* param, float *Ccount_S, float *Ccount_P, float *C
 		C += Ctmp;
 	}
 	
-	float cfac=param->mass_mu*pow(param->tan_beta/param->mass_W/mA,2.);
+	double cfac=param->mass_mu*pow(param->tan_beta/param->mass_W/mA,2.);
 	
 	*Ccount_P = cfac*param->tan_beta/sqrt(2.)*C;
 	*Ccount_S = - *Ccount_P;
@@ -182,18 +182,18 @@ void C_SUSY(struct parameters* param, float *Ccount_S, float *Ccount_P, float *C
 
 /*---------------------------------------------------------------------*/
 
-float Bsmumu(struct parameters* param)
+double Bsmumu(struct parameters* param)
 /* computes the inclusive branching ratio of Bs -> mu+ mu- */
 {
-	float alpha_em=1./137.036;
-	float VtbVts=0.041;
+	double alpha_em=1./137.036;
+	double VtbVts=0.041;
 	
-	float Ccount_S,Ccount_P,Cbox_S,Cbox_P,Cpeng_S,Cpeng_P,CHp_S,CHp_P;
-	float CA,CS,CP;
+	double Ccount_S,Ccount_P,Cbox_S,Cbox_P,Cpeng_S,Cpeng_P,CHp_S,CHp_P;
+	double CA,CS,CP;
 	
 	C_SUSY(param,&Ccount_S,&Ccount_P,&Cbox_S,&Cbox_P,&Cpeng_S,&Cpeng_P,&CHp_S,&CHp_P);
 	
-	float epsfac=pow((1.+epsilon_b(param)*param->tan_beta),2.);
+	double epsfac=pow((1.+epsilon_b(param)*param->tan_beta),2.);
 
 	CS=(CHp_S+Ccount_S+Cbox_S+Cpeng_S);
 	CP=(CHp_P+Ccount_P+Cbox_P+Cpeng_P);
@@ -211,7 +211,7 @@ float Bsmumu(struct parameters* param)
 
 	CA=1.033*pow(mt_mt(param)/170.,1.55)/pow(sin(atan(param->gp/param->g2)),2.);
 	
-	float BRmumu=param->Gfermi*param->Gfermi*alpha_em*alpha_em*pow(param->m_Bs,5.)*param->f_Bs*param->f_Bs*param->life_Bs/hbar/64./pi/pi/pi*VtbVts*VtbVts*sqrt(1.-4.*param->mass_mu*param->mass_mu/param->m_Bs/param->m_Bs)
+	double BRmumu=param->Gfermi*param->Gfermi*alpha_em*alpha_em*pow(param->m_Bs,5.)*param->f_Bs*param->f_Bs*param->life_Bs/hbar/64./pi/pi/pi*VtbVts*VtbVts*sqrt(1.-4.*param->mass_mu*param->mass_mu/param->m_Bs/param->m_Bs)
 	*( (1.-4.*param->mass_mu*param->mass_mu/param->m_Bs/param->m_Bs)*CS*CS + pow(CP-2.*CA*param->mass_mu/param->m_Bs/param->m_Bs,2.) );
 	
 	return BRmumu;
@@ -219,7 +219,7 @@ float Bsmumu(struct parameters* param)
 
 /*--------------------------------------------------------------------*/
 
-float Bsmumu_calculator(char name[])
+double Bsmumu_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(Bs-> mu+ mu-) */
 {
 	struct parameters param;

@@ -1,7 +1,7 @@
 #include "include.h"
 #include "softsusy.h"
 
-int softsusy_sugra(float m0, float m12, float tanb, float A0, float sgnmu, float mtop, float mbot, float alphas_mz, char name[])
+int softsusy_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[])
 /* generates a SLHA file for a mSUGRA parameter space point using SOFTSUSY */
 {
 	FILE *tmp;
@@ -41,7 +41,7 @@ int softsusy_sugra(float m0, float m12, float tanb, float A0, float sgnmu, float
 
 /*--------------------------------------------------------------------*/
 
-int softsusy_gmsb(float Lambda, float Mmess, float tanb, int N5, float cGrav, float sgnmu, float mtop, float mbot, float alphas_mz, char name[])
+int softsusy_gmsb(double Lambda, double Mmess, double tanb, int N5, double cGrav, double sgnmu, double mtop, double mbot, double alphas_mz, char name[])
 /* generates a SLHA file for a GMSB parameter space point using SOFTSUSY */
 {
 	FILE *tmp;
@@ -89,7 +89,7 @@ int softsusy_gmsb(float Lambda, float Mmess, float tanb, int N5, float cGrav, fl
 
 /*--------------------------------------------------------------------*/
 
-int softsusy_amsb(float m0, float m32, float tanb, float sgnmu, float mtop, float mbot, float alphas_mz, char name[])
+int softsusy_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, double mbot, double alphas_mz, char name[])
 /* generates a SLHA file for an AMSB parameter space point using SOFTSUSY */
 {
 	FILE *tmp;
@@ -128,7 +128,7 @@ int softsusy_amsb(float m0, float m32, float tanb, float sgnmu, float mtop, floa
 
 /*--------------------------------------------------------------------*/
 
-int softsusy_nuhm(float m0, float m12, float tanb, float A0, float mu, float mA, float mtop, float mbot, float alphas_mz, char name[])
+int softsusy_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, double mbot, double alphas_mz, char name[])
 /* generates a SLHA file for NUHM parameter space point using SOFTSUSY */
 {
 	FILE *tmp;

@@ -2,7 +2,7 @@
 #include "isajet.h"
 
 
-int isajet_sugra(float m0, float m12, float tanb, float A0, float sgnmu, float mtop, char name[])
+int isajet_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, char name[])
 /* generates a SLHA file for a mSUGRA parameter space point using ISAJET */
 {
 	FILE *tmp;
@@ -18,7 +18,7 @@ int isajet_sugra(float m0, float m12, float tanb, float A0, float sgnmu, float m
 	fprintf(tmp,"%s\n",name);
 	fprintf(tmp,"/\n");
 	fprintf(tmp,"1\n");
-	fprintf(tmp,"%f,%f,%f,%f,%f,%f\n",m0,m12,A0,tanb,sgnmu,mtop);
+	fprintf(tmp,"%.5e,%.5e,%.5e,%.5e,%.5e,%.5e\n",m0,m12,A0,tanb,sgnmu,mtop);
 	fprintf(tmp,"0\n");
 	fclose(tmp);
 

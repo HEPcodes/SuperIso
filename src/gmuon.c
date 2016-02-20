@@ -1,7 +1,7 @@
 #include "include.h"
 
 
-float F1N(float x)
+double F1N(double x)
 {
 	if(x==1.) return 1.;
 	return 2./pow(1.-x,4.)*(1.-6.*x+3.*x*x+2.*pow(x,3.)-6.*x*x*log(x));
@@ -9,7 +9,7 @@ float F1N(float x)
 
 /*--------------------------------------------------------------------*/
 
-float F2N(float x)
+double F2N(double x)
 {
 	if(x==1.) return 1.;
 	return 3./pow(1.-x,3.)*(1.-x*x+2.*x*log(x));
@@ -17,7 +17,7 @@ float F2N(float x)
 
 /*--------------------------------------------------------------------*/
 
-float F1C(float x)
+double F1C(double x)
 {
 	if(x==1.) return 1.;
 	return 2./pow(1.-x,4.)*(2.+3.*x-6.*x*x+pow(x,3.)+6.*x*log(x));
@@ -25,7 +25,7 @@ float F1C(float x)
 
 /*--------------------------------------------------------------------*/
 
-float F2C(float x)
+double F2C(double x)
 {
 	if(x==1.) return 1.;
 	return -3./2./pow(1.-x,3.)*(3.-4.*x+x*x+2.*log(x));
@@ -33,7 +33,7 @@ float F2C(float x)
 
 /*--------------------------------------------------------------------*/
 
-float muon_gm2(struct parameters* param)
+double muon_gm2(struct parameters* param)
 /* computes the muon anomalous magnetic moment a_mu */
 {
 #ifdef SMONLY
@@ -44,8 +44,8 @@ float muon_gm2(struct parameters* param)
 	return 0.;
 #endif	
 
-	float mass_smu[3],mass_charg[3];
-	float n_L[6][3],n_R[6][3],xim[6][3],xk[3],c_L[3],c_R[3],X[3][3];
+	double mass_smu[3],mass_charg[3];
+	double n_L[6][3],n_R[6][3],xim[6][3],xk[3],c_L[3],c_R[3],X[3][3];
 	int ie,me,ke;	
 	int nb_neut;
 	if(param->mass_neut[5]==0.) nb_neut=4; else nb_neut=5;
@@ -55,9 +55,9 @@ float muon_gm2(struct parameters* param)
 	mass_charg[2]=param->mass_cha2;
 
 
-	float M2smu11=pow(param->mass_mul,2.);
-	float M2smu22=pow(param->mass_mur,2.);
-	float M2smu12=(param->A_mu-param->mu_Q*param->tan_beta)*param->mass_mu;
+	double M2smu11=pow(param->mass_mul,2.);
+	double M2smu22=pow(param->mass_mur,2.);
+	double M2smu12=(param->A_mu-param->mu_Q*param->tan_beta)*param->mass_mu;
 
 mass_smu[1]=sqrt((M2smu11+M2smu22-sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu12))/2.);
 	mass_smu[2]=sqrt((M2smu11+M2smu22+sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu12))/2.);
@@ -67,7 +67,7 @@ mass_smu[1]=sqrt((M2smu11+M2smu22-sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu1
 	X[2][1]=-X[1][2];
 	X[2][2]=X[1][1];
 	
-	float ymu=param->g2*param->mass_mu/sqrt(2.)/param->mass_W/cos(atan(param->tan_beta));
+	double ymu=param->g2*param->mass_mu/sqrt(2.)/param->mass_W/cos(atan(param->tan_beta));
 	
 	for(ie=1;ie<=nb_neut;ie++) for(me=1;me<=2;me++)
 	{
@@ -84,7 +84,7 @@ mass_smu[1]=sqrt((M2smu11+M2smu22-sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu1
 		xk[ke]=pow(mass_charg[ke]/param->mass_numl,2.);
 	}
 		
-	float a_neut=0.;
+	double a_neut=0.;
 	for(ie=1;ie<=nb_neut;ie++) for(me=1;me<=2;me++)
 	{
 		a_neut+=
@@ -94,7 +94,7 @@ mass_smu[1]=sqrt((M2smu11+M2smu22-sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu1
 	a_neut*=param->mass_mu/16./pi/pi;
 	
 		
-	float a_charg=0.;
+	double a_charg=0.;
 	for(ke=1;ke<=2;ke++)
 	{
 		a_charg+=
@@ -103,14 +103,14 @@ mass_smu[1]=sqrt((M2smu11+M2smu22-sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu1
 	}
 	a_charg*=param->mass_mu/16./pi/pi;
 
-	float a_SUSYQED=(a_neut+a_charg)*(1.-4./param->inv_alpha_em/pi*log(param->MSOFT_Q/param->mass_mu));
+	double a_SUSYQED=(a_neut+a_charg)*(1.-4./param->inv_alpha_em/pi*log(param->MSOFT_Q/param->mass_mu));
 	
 	return a_SUSYQED;
 }
 
 /*--------------------------------------------------------------------*/
 
-float muon_gm2_calculator(char name[])
+double muon_gm2_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating a_mu */
 {
 	struct parameters param;

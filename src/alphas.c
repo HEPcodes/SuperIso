@@ -1,14 +1,14 @@
 #include "include.h"
 
 
-float alphas_running(float Q, float mtop, float mbot, struct parameters* param)
+double alphas_running(double Q, double mtop, double mbot, struct parameters* param)
 /* computes the QCD coupling constant alphas at the energy Q, using the matching scales between the flavors mtop and mbot */
 {
-	float beta0,beta1,beta2,alphas_running,Lambda4,Lambda5,Lambda6,Lambda_min,Lambda_max,Lambda_moy,alphas_min,alphas_max,alphas_moy;
+	double beta0,beta1,beta2,alphas_running,Lambda4,Lambda5,Lambda6,Lambda_min,Lambda_max,Lambda_moy,alphas_min,alphas_max,alphas_moy;
 	int nf;
 
-	float MZ=param->mass_Z;
-	float alphas_MZ=param->alphas_MZ;
+	double MZ=param->mass_Z;
+	double alphas_MZ=param->alphas_MZ;
 
 	nf=5;
 	beta0 = 11.-2./3.*nf;

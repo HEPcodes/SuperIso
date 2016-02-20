@@ -1,9 +1,9 @@
 #include "include.h"
 
-float Btaunu(struct parameters* param)
+double Btaunu(struct parameters* param)
 /* computes the branching ratio of B-> tau nu */
 {
-	float Vub=3.95e-3;
+	double Vub=3.95e-3;
 
 #ifdef SMONLY
 	return param->life_B/hbar*param->m_B/8./pi*pow(param->Gfermi*Vub*param->mass_tau_pole*param->f_B*(1.-param->mass_tau_pole*param->mass_tau_pole/param->m_B/param->m_B),2.);
@@ -15,7 +15,7 @@ float Btaunu(struct parameters* param)
 
 /*--------------------------------------------------------------------*/
 
-float Btaunu_calculator(char name[])
+double Btaunu_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(B-> tau nu) */
 {
 	struct parameters param;
@@ -29,7 +29,7 @@ float Btaunu_calculator(char name[])
 
 /*--------------------------------------------------------------------*/
 
-float RBtaunu(struct parameters* param)
+double RBtaunu(struct parameters* param)
 /* computes the ratio of BR(B-> tau nu)_MSSM/BR(B-> tau nu)_SM */
 {
 
@@ -43,7 +43,7 @@ float RBtaunu(struct parameters* param)
 
 /*--------------------------------------------------------------------*/
 
-float RBtaunu_calculator(char name[])
+double RBtaunu_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(B-> tau nu)_MSSM/BR(B-> tau nu)_SM */
 {
 	struct parameters param;

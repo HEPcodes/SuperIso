@@ -22,8 +22,9 @@ int main(int argc,char** argv)
   
 	test=test_slha(name);
 	
-	if(test==1)
+	if(test>0)
 	{
+		if(test==2) printf("WARNING: only tested in the MFV scenario!\n");
 		printf("delta0=%.3e\n",delta0_calculator(name));
        		printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
       		printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));

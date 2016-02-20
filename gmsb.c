@@ -9,7 +9,7 @@
 int main(int argc,char** argv)
 {
 	char name[50];
-	float Lambda,Mmess,tanb,cGrav,sgnmu,mtop,mbot,alphas_mz,delta0;
+	double Lambda,Mmess,tanb,cGrav,sgnmu,mtop,mbot,alphas_mz,delta0;
 	int N5;
 
   	if(argc<5) 
@@ -29,15 +29,15 @@ int main(int argc,char** argv)
   	} 
 	else  
   	{  
-		sscanf(argv[1],"%f",&Lambda);
-     		sscanf(argv[2],"%f",&Mmess);
+		sscanf(argv[1],"%lf",&Lambda);
+     		sscanf(argv[2],"%lf",&Mmess);
      		sscanf(argv[3],"%d",&N5);
-     		sscanf(argv[4],"%f",&tanb);
-     		if(argc>5) sscanf(argv[5],"%f",&sgnmu); else sgnmu=1.;
-     		if(argc>6) sscanf(argv[6],"%f",&cGrav); else cGrav=1.;   
-     		if(argc>7) sscanf(argv[7],"%f",&mtop); else mtop=172.4;   
-     		if(argc>8) sscanf(argv[8],"%f",&mbot); else mbot=4.2;
-     		if(argc>9) sscanf(argv[9],"%f",&alphas_mz); else alphas_mz=0.1176;
+     		sscanf(argv[4],"%lf",&tanb);
+     		if(argc>5) sscanf(argv[5],"%lf",&sgnmu); else sgnmu=1.;
+     		if(argc>6) sscanf(argv[6],"%lf",&cGrav); else cGrav=1.;   
+     		if(argc>7) sscanf(argv[7],"%lf",&mtop); else mtop=172.4;   
+     		if(argc>8) sscanf(argv[8],"%lf",&mbot); else mbot=4.2;
+     		if(argc>9) sscanf(argv[9],"%lf",&alphas_mz); else alphas_mz=0.1176;
   	}	
 
 	if(Lambda>Mmess) printf("Lambda=%.0f must be smaller than Mmess=%.0f\n\n",Lambda,Mmess);
@@ -61,8 +61,8 @@ int main(int argc,char** argv)
 			printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
      			printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
      			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
-			printf("a_muon=%.3e\n",muon_gm2_calculator(name));
-			printf("excluded_mass=%d\n\n",excluded_mass_calculator(name));
+			printf("a_muon=%.3e\n\n",muon_gm2_calculator(name));
+			printf("excluded_mass=%d\n",excluded_mass_calculator(name));
 		}
 		else printf("Invalid point\n\n");
 #endif

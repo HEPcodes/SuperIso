@@ -1,7 +1,7 @@
 #include "include.h"
 
 
-float phi77(float delta)
+double phi77(double delta)
 {
 	return -2./3.*log(delta)*log(delta)-7./3.*log(delta)-31./9.+10./3.*delta+1./3.*delta*delta
 	-2./9.*delta*delta*delta+1./3.*delta*(delta-4.)*log(delta);
@@ -9,14 +9,14 @@ float phi77(float delta)
 
 /*---------------------------------------------------------------------*/
 
-float phi78(float delta)
+double phi78(double delta)
 {
 	return 8./9.*(Li2(1.-delta)-pi*pi/6.-delta*log(delta)+9.*delta/4.-delta*delta/4.+delta*delta*delta/12.);
 }
 
 /*---------------------------------------------------------------------*/
 
-float phi88(float delta, float b)
+double phi88(double delta, double b)
 {
 	return (4.*Li2(1.-delta)-2.*pi*pi/3.+8.*log(1.-delta)-delta*(2.+delta)*log(delta)+
 	+7.*delta+3.*delta*delta-2.*delta*delta*delta/3.-2.*(2.*delta+delta*delta+4.*log(1.-delta))*log(b))/27.;
@@ -24,7 +24,7 @@ float phi88(float delta, float b)
 
 /*---------------------------------------------------------------------*/
 
-float G1(float t)
+double G1(double t)
 {
 /* G1(t)=|G(t)/t+1/2|^2 */
 
@@ -35,7 +35,7 @@ float G1(float t)
 
 /*---------------------------------------------------------------------*/
 
-float phi22(float delta, float z)
+double phi22(double delta, double z)
 {
 	if (z==0.) return 0.;
 
@@ -44,8 +44,8 @@ float phi22(float delta, float z)
 	int n1=500;
 	int n2=500;
 
-	float t=0.;
-	float int1=(1.-z*t)*G1(t);
+	double t=0.;
+	double int1=(1.-z*t)*G1(t);
 	
 	for(ie=1;ie<=n1;ie++)
 	{
@@ -55,7 +55,7 @@ float phi22(float delta, float z)
 	int1 *= delta*(1.-delta)/z/n1;
 	
 	t=(1.-delta)/z;
-	float int2=pow(1.-z*t,2.)*G1(t);
+	double int2=pow(1.-z*t,2.)*G1(t);
 
 	for(ie=1;ie<=n2;ie++)
 	{
@@ -69,21 +69,21 @@ float phi22(float delta, float z)
 
 /*---------------------------------------------------------------------*/
 
-float phi11(float delta, float z)
+double phi11(double delta, double z)
 {
 	return phi22(delta,z)/36.;
 }
 
 /*---------------------------------------------------------------------*/
 
-float phi12(float delta, float z)
+double phi12(double delta, double z)
 {
 	return -phi22(delta,z)/3.;
 }
 
 /*---------------------------------------------------------------------*/
 
-float G2(float t)
+double G2(double t)
 {
 /* G2(t)=Re(G(t)+t/2) */
 	
@@ -93,7 +93,7 @@ float G2(float t)
 
 /*---------------------------------------------------------------------*/
 
-float phi27(float delta, float z)
+double phi27(double delta, double z)
 {
 	if (z==0.) return 0.;
 		
@@ -101,8 +101,8 @@ float phi27(float delta, float z)
 	int n1=500;
 	int n2=500;
 
-	float t=0.;
-	float int1=G2(t);
+	double t=0.;
+	double int1=G2(t);
 	
 	for(ie=1;ie<=n1;ie++)
 	{
@@ -112,7 +112,7 @@ float phi27(float delta, float z)
 	int1 *= delta*(1.-delta)/z/n1;
 	
 	t=(1.-delta)/z;
-	float int2=pow(1.-z*t,2.)*G2(t);
+	double int2=pow(1.-z*t,2.)*G2(t);
 
 	for(ie=1;ie<=n2;ie++)
 	{
@@ -126,44 +126,44 @@ float phi27(float delta, float z)
 
 /*---------------------------------------------------------------------*/
 
-float phi17(float delta, float z)
+double phi17(double delta, double z)
 {
 	return -phi27(delta,z)/6.;
 }
 
 /*---------------------------------------------------------------------*/
 
-float phi18(float delta, float z)
+double phi18(double delta, double z)
 {
 	return phi27(delta,z)/18.;
 }
 
 /*---------------------------------------------------------------------*/
 
-float phi28(float delta, float z)
+double phi28(double delta, double z)
 {
 	return -phi27(delta,z)/3.;
 }
 
 /*---------------------------------------------------------------------*/
 
-float phi47(float delta)
+double phi47(double delta)
 {
 	return -1./54.*delta*(1.-delta+delta*delta/3.) + phi27(delta,1.)/12.;
 }
 
 /*---------------------------------------------------------------------*/
 
-float phi48(float delta)
+double phi48(double delta)
 {
 	return -phi47(delta)/3.;
 }
 
 /*---------------------------------------------------------------------*/
 
-float F2_nf(float z)
+double F2_nf(double z)
 {
-	float F2_nf;
+	double F2_nf;
 	
 	if (z==0.) return 0.;
 	F2_nf=-log(1.-z)*log(1.-z)/(1.-z)/2.-13./36.*log(1.-z)/(1.-z)+(-pi*pi/18.+85./72.)/(1.-z)
@@ -174,17 +174,17 @@ float F2_nf(float z)
 
 /*---------------------------------------------------------------------*/
 
-float phi77_2beta(float delta,float mu, struct parameters* param)
+double phi77_2beta(double delta,double mu, struct parameters* param)
 {
-	float Lb=log(mu*mu/param->mass_b_1S/param->mass_b_1S);
+	double Lb=log(mu*mu/param->mass_b_1S/param->mass_b_1S);
 	int nf=5;
-	float beta0=11.-2./3.*nf;
+	double beta0=11.-2./3.*nf;
 
 	int ie;
 	int n1=500;
 
-	float t=0.;
-	float int1=F2_nf(t);
+	double t=0.;
+	double int1=F2_nf(t);
 	
 	for(ie=1;ie<=n1;ie++)
 	{
@@ -198,9 +198,9 @@ float phi77_2beta(float delta,float mu, struct parameters* param)
 
 /*---------------------------------------------------------------------*/
 
-float F2_a(float z)
+double F2_a(double z)
 {
-	float F2_a;
+	double F2_a;
 	if(z==0.) return 0.;
 
 	F2_a=0.5*pow(log(1.-z),3.)/(1.-z)+21./8.*pow(log(1.-z),2.)/(1.-z)
@@ -220,9 +220,9 @@ float F2_a(float z)
 
 /*---------------------------------------------------------------------*/
 
-float F2_na(float z)
+double F2_na(double z)
 {
-	float F2_na;
+	double F2_na;
 	if(z==0.) return 0.;
 
 	F2_na=11./8.*pow(log(1.-z),2.)/(1.-z)+(pi*pi/12.+95./144.)*log(1.-z)/(1.-z)+(zeta3/4.-905./288.+17.*pi*pi/72.)/(1.-z)
@@ -241,16 +241,16 @@ float F2_na(float z)
 
 /*---------------------------------------------------------------------*/
 
-float phi77_2rem(float delta, struct parameters* param)
+double phi77_2rem(double delta, struct parameters* param)
 {
 	int ie;
 	int n1=500;
-	float alphas_upsilon=alphas_running(param->mass_b_1S,param->mass_top_pole,param->mass_b_pole,param);
+	double alphas_upsilon=alphas_running(param->mass_b_1S,param->mass_top_pole,param->mass_b_pole,param);
 
-	float t=0.;
-	float int1=F2_a(t);
-	float int2=F2_na(t);
-	float int3=F2_nf(t);
+	double t=0.;
+	double int1=F2_a(t);
+	double int2=F2_na(t);
+	double int3=F2_nf(t);
 	
 	for(ie=1;ie<=n1;ie++)
 	{
@@ -268,12 +268,12 @@ float phi77_2rem(float delta, struct parameters* param)
 
 /*---------------------------------------------------------------------*/
 
-float Re_a(float z)
+double Re_a(double z)
 {
 	if(z==1.) return 4.0859;
 	if (z==0.) return 0.;
 		
-	float Lz=log(z);
+	double Lz=log(z);
 
 	return 16./9.*((5./2.-pi*pi/3.-3.*zeta3+(5./2.-3./4.*pi*pi)*Lz+Lz*Lz/4.+Lz*Lz*Lz/12.)*z
 	+(7./4.+2./3.*pi*pi-0.5*pi*pi*Lz-Lz*Lz/4.+Lz*Lz*Lz/12.)*z*z+(-7./6.-pi*pi/4.+2.*Lz-3./4.*Lz*Lz)*z*z*z
@@ -283,13 +283,13 @@ float Re_a(float z)
 
 /*---------------------------------------------------------------------*/
 
-float Re_b(float z)
+double Re_b(double z)
 {
 
 	if(z==1.) return 0.0316;
 	if (z==0.) return 0.;
 		
-		float Lz=log(z);
+		double Lz=log(z);
 
 	return -8./9.*((-3.+pi*pi/6.-Lz)*z-2./3.*pi*pi*pow(z,1.5)+(0.5+pi*pi-2.*Lz-0.5*Lz*Lz)*z*z
 	+(-25./12.-pi*pi/9.-19./18.*Lz+2.*Lz*Lz)*z*z*z+(-1376./225.+137./30.*Lz+2.*Lz*Lz+2./3.*pi*pi)*pow(z,4.)
@@ -299,26 +299,26 @@ float Re_b(float z)
 /*----------------------------------------------------------------------*/
 /*----------------------------------------------------------------------*/
 
-float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct parameters* param)
+double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, struct parameters* param)
 /* computes the inclusive branching ratio of B -> Xs gamma */
 /* C0, C1, C2: respectively LO, NLO and NNLO contributions of the Wilson coefficients at scale mu=O(mb) */
 {
 	int ie,je;	
-	float alpha_em=1./137.036;
-	float BR_BXcenu_exp=0.1061;
-	float Cbr=0.580;
-	float VtsVtb_Vcb_2=0.9676;
-	float E0=1.6;
+	double alpha_em=1./137.036;
+	double BR_BXcenu_exp=0.1061;
+	double Cbr=0.580;
+	double VtsVtb_Vcb_2=0.9676;
+	double E0=1.6;
 	
-	float alphas_mu=alphas_running(mu,param->mass_top_pole,param->mass_b_pole,param);
+	double alphas_mu=alphas_running(mu,param->mass_top_pole,param->mass_b_pole,param);
 
 
-	float P0 = C0[7]*C0[7];
-	float P1_1 = 2.*C0[7]*C1[7];
-	float P2_1 = C1[7]*C1[7] + 2.*C0[7]*C2[7];
+	double P0 = C0[7]*C0[7];
+	double P1_1 = 2.*C0[7]*C1[7];
+	double P2_1 = C1[7]*C1[7] + 2.*C0[7]*C2[7];
 	
 
-	float K1[9][9], phi1[9][9], gamma0eff[9][9];
+	double K1[9][9], phi1[9][9], gamma0eff[9][9];
 	for (ie=1;ie<=8;ie++) for (je=1;je<=8;je++) K1[ie][je]=phi1[ie][je]=gamma0eff[ie][je]=0.;
 	
 	gamma0eff[1][7]=-208./243.; 
@@ -331,9 +331,9 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 	gamma0eff[8][7]=-32./9.;
 	
 	
-	float z=(param->mass_c/param->mass_b_1S)*(param->mass_c/param->mass_b_1S);
+	double z=(param->mass_c/param->mass_b_1S)*(param->mass_c/param->mass_b_1S);
 		
-	float delta=1.-2.*E0/param->mass_b_1S;
+	double delta=1.-2.*E0/param->mass_b_1S;
 
 	phi1[2][2]=phi22(delta,z);
 	phi1[1][1]=phi11(delta,z);
@@ -348,13 +348,13 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 	phi1[7][8]=phi78(delta);
 	phi1[8][8]=phi88(delta,param->mass_b_1S/param->mass_s);
 	
-	float Lb=log(mu*mu/param->mass_b_1S/param->mass_b_1S);
+	double Lb=log(mu*mu/param->mass_b_1S/param->mass_b_1S);
 	
-	float Re_r1[7];
+	double Re_r1[7];
 	for (ie=1;ie<=6;ie++) Re_r1[ie]=0.;
 	Re_r1[2]=-1666./243.+2.*(Re_a(z)+Re_b(z));
 	Re_r1[1]=-Re_r1[2]/6.;
-	float Xb = -0.1684;
+	double Xb = -0.1684;
 	Re_r1[3]=2392./243.+8.*pi/3./sqrt(3.)+32./9.*Xb-Re_a(1.)+2.*Re_b(1.);
 	Re_r1[4]=-761./729.-4.*pi/9./sqrt(3.)-16./27.*Xb+Re_a(1.)/6.+5./3.*Re_b(1.)+2.*Re_b(z);
 	Re_r1[5]=56680./243.+32.*pi/3./sqrt(3.)+128./9.*Xb-16.*Re_a(1.)+32.*Re_b(1.);
@@ -369,8 +369,8 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 	
 	for(je=1;je<=8;je++) for(ie=1;ie<=8;ie++) K1[ie][je]=K1[je][ie];
 		
-	float P1_2=0.;
-	float P2_3=0.;
+	double P1_2=0.;
+	double P2_3=0.;
 	for (ie=1;ie<=8;ie++) for (je=1;je<=8;je++)
 	{ 
 		P1_2+=C0[ie]*C0[je]*K1[ie][je];
@@ -379,9 +379,9 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 	
 	
 
-	float Lz=log(z);
+	double Lz=log(z);
 
-	float Re_r2=
+	double Re_r2=
 	67454./6561.-124./729.*pi*pi-4./1215.*(11280.-1520.*pi*pi-171.*pow(pi,4.)-5760.*zeta3+6840.*Lz
 	-1440.*pi*pi*Lz-2520.*zeta3*Lz+120.*Lz*Lz+100.*pow(Lz,3.)-30.*pow(Lz,4.))*z
 	-64./243.*pi*pi*(43.-12.*log(2.)-3.*Lz)*pow(z,1.5)-2./1215.*(11475.-380.*pi*pi+96.*pow(pi,4.)+7200.*zeta3
@@ -391,9 +391,9 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 	+147038./6075.*Lz+352./243.*pi*pi*Lz+88./243.*Lz*Lz-512./243.*pow(Lz,3.))*pow(z,4.);
 
 	int nf=5;
-	float beta0=11.-2./3.*nf;
+	double beta0=11.-2./3.*nf;
 
-	float K2_beta[9][9], K2_rem[9][9],phi2_beta[9][9];
+	double K2_beta[9][9], K2_rem[9][9],phi2_beta[9][9];
 	for (ie=1;ie<=8;ie++) for (je=1;je<=8;je++) K2_beta[ie][je]=K2_rem[ie][je]=phi2_beta[ie][je]=0.;
 	
 	phi2_beta[7][7]=phi77_2beta(delta,mu,param);
@@ -410,12 +410,12 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 
 	for(je=1;je<=8;je++) for(ie=1;ie<=8;ie++) K2_beta[ie][je]=K2_beta[je][ie];
    
-	float P2_2_beta=0.;
+	double P2_2_beta=0.;
 	for (ie=1;ie<=8;ie++) for (je=1;je<=8;je++) P2_2_beta+=C0[ie]*C0[je]*K2_beta[ie][je];
 	
 	
 
-	float x1,x2,x3,x4,x5;
+	double x1,x2,x3,x4,x5;
 	
 	x1=C0[2]*C0[2]+C0[1]*C0[1]/36.-C0[1]*C0[2]/3.;
 	
@@ -424,41 +424,41 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 	
 
 	x5=0.;
-	float z0=1.e10;
+	double z0=1.e10;
 	
-	float Lz0=log(z0);
-	float LD=Lb-Lz0;
-	float Lc=0.;
+	double Lz0=log(z0);
+	double LD=Lb-Lz0;
+	double Lc=0.;
 	
-	float phi77_2=phi77_2rem(delta,param);
-	float alphas_upsilon=alphas_running(param->mass_b_1S,param->mass_top_pole,param->mass_b_pole,param);
+	double phi77_2=phi77_2rem(delta,param);
+	double alphas_upsilon=alphas_running(param->mass_b_1S,param->mass_top_pole,param->mass_b_pole,param);
 	
-	float K22rem=pow(218./243.-208./81.*LD,2.);
-	float K11rem=K22rem/36.;
-	float K12rem=-K22rem/6.;
-	float K27rem=(218./243.-208./81.*LD)*K1[7][7]+(127./324.-35./27.*LD)*K1[7][8]+2./3.*(1.-LD)*(K1[4][7]-beta0*(26./81.-4./27.*Lb))
+	double K22rem=pow(218./243.-208./81.*LD,2.);
+	double K11rem=K22rem/36.;
+	double K12rem=-K22rem/6.;
+	double K27rem=(218./243.-208./81.*LD)*K1[7][7]+(127./324.-35./27.*LD)*K1[7][8]+2./3.*(1.-LD)*(K1[4][7]-beta0*(26./81.-4./27.*Lb))
 	-4736./729.*LD*LD+1150./729.*LD-1617980./19683.+20060./243.*zeta3+1664./81.*Lc;
-	float K28rem=(218./243.-208./81.*LD)*K1[7][8]+(127./324.-35./27.*LD)*K1[8][8]+2./3.*(1.-LD)*K1[4][8];
-	float K17rem=-1./6.*K27rem+(5./16.-3./4.*LD)*K1[7][8]-1237./729.+232./27.*zeta3+70./27.*LD*LD-20./27.*LD;
-	float K18rem=-1./6.*K28rem+(5./16.-3./4.*LD)*K1[8][8];
-	float K77rem=(K1[7][7]-4.*phi77(delta)+2./3.*Lz)*K1[7][7]-32./9.*LD*LD+224./27.*LD-628487./729.-628./405.*pow(pi,4.)
+	double K28rem=(218./243.-208./81.*LD)*K1[7][8]+(127./324.-35./27.*LD)*K1[8][8]+2./3.*(1.-LD)*K1[4][8];
+	double K17rem=-1./6.*K27rem+(5./16.-3./4.*LD)*K1[7][8]-1237./729.+232./27.*zeta3+70./27.*LD*LD-20./27.*LD;
+	double K18rem=-1./6.*K28rem+(5./16.-3./4.*LD)*K1[8][8];
+	double K77rem=(K1[7][7]-4.*phi77(delta)+2./3.*Lz)*K1[7][7]-32./9.*LD*LD+224./27.*LD-628487./729.-628./405.*pow(pi,4.)
 	+31823./729.*pi*pi+428./27.*pi*pi*log(2.)+26590./81.*zeta3-160./3.*Lb*Lb-2720./9.*Lb+256./27.*pi*pi*Lb
 	+512./27.*pi*alphas_upsilon+4.*phi77_2;
 	
-	float K78rem=(-50./3.+8./3.*pi*pi-2./3.*LD)*K1[7][8]+16./27.*LD*LD-112./81.*LD+364./243.;
-	float K88rem=(-50./3.+8./3.*pi*pi-2./3.*LD)*K1[8][8];
+	double K78rem=(-50./3.+8./3.*pi*pi-2./3.*LD)*K1[7][8]+16./27.*LD*LD-112./81.*LD+364./243.;
+	double K88rem=(-50./3.+8./3.*pi*pi-2./3.*LD)*K1[8][8];
 	
-	float P22rem_z0 = C0[2]*C0[2]*K22rem + C0[1]*C0[1]*K11rem + 2.*C0[1]*C0[2]*K12rem + 2.* C0[2]*C0[7]*K27rem + 2.*C0[2]*C0[8]*K28rem + 2.*C0[1]*C0[7]*K17rem + 2.*C0[1]*C0[8]*K18rem + C0[7]*C0[7]*K77rem + 2.* C0[7]*C0[8]*K78rem + C0[8]*C0[8]*K88rem;
+	double P22rem_z0 = C0[2]*C0[2]*K22rem + C0[1]*C0[1]*K11rem + 2.*C0[1]*C0[2]*K12rem + 2.* C0[2]*C0[7]*K27rem + 2.*C0[2]*C0[8]*K28rem + 2.*C0[1]*C0[7]*K17rem + 2.*C0[1]*C0[8]*K18rem + C0[7]*C0[7]*K77rem + 2.* C0[7]*C0[8]*K78rem + C0[8]*C0[8]*K88rem;
 
-	float Re_r12_z0 = -1666./243.+2.*(4./3.*Lz0+34./9.-4./81.*Lz0+8./81.); 
-	float Im_r1_2_z0 = -80./81.*pi+2.*(4./9.+4./81.)*pi;
-	float Re_r2_z0 = 8./9.*Lz0*Lz0+112./243.*Lz0+27650./6561.;
-	float z0_dRe_r1_2_dz0=2.*(4./3.-4./81.);
+	double Re_r12_z0 = -1666./243.+2.*(4./3.*Lz0+34./9.-4./81.*Lz0+8./81.); 
+	double Im_r1_2_z0 = -80./81.*pi+2.*(4./9.+4./81.)*pi;
+	double Re_r2_z0 = 8./9.*Lz0*Lz0+112./243.*Lz0+27650./6561.;
+	double z0_dRe_r1_2_dz0=2.*(4./3.-4./81.);
 
 
-	float z1=1.e20;
+	double z1=1.e20;
 	
-	float Lz1=log(z1);
+	double Lz1=log(z1);
 	LD=Lb-Lz1;
 	
 	K22rem=pow(218./243.-208./81.*LD,2.);
@@ -475,25 +475,25 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 	K78rem=(-50./3.+8./3.*pi*pi-2./3.*LD)*K1[7][8]+16./27.*LD*LD-112./81.*LD+364./243.;
 	K88rem=(-50./3.+8./3.*pi*pi-2./3.*LD)*K1[8][8];
 	
-	float P22rem_z1 = C0[2]*C0[2]*K22rem + C0[1]*C0[1]*K11rem + 2.*C0[1]*C0[2]*K12rem + 2.* C0[2]*C0[7]*K27rem + 2.*C0[2]*C0[8]*K28rem + 2.*C0[1]*C0[7]*K17rem + 2.*C0[1]*C0[8]*K18rem + C0[7]*C0[7]*K77rem + 2.* C0[7]*C0[8]*K78rem + C0[8]*C0[8]*K88rem;
+	double P22rem_z1 = C0[2]*C0[2]*K22rem + C0[1]*C0[1]*K11rem + 2.*C0[1]*C0[2]*K12rem + 2.* C0[2]*C0[7]*K27rem + 2.*C0[2]*C0[8]*K28rem + 2.*C0[1]*C0[7]*K17rem + 2.*C0[1]*C0[8]*K18rem + C0[7]*C0[7]*K77rem + 2.* C0[7]*C0[8]*K78rem + C0[8]*C0[8]*K88rem;
 
-	float Re_r12_z1 = -1666./243.+2.*(4./3.*Lz1+34./9.-4./81.*Lz1+8./81.);
-	float Im_r1_2_z1 = -80./81.*pi+2.*(4./9.+4./81.)*pi;
-	float Re_r2_z1 = 8./9.*Lz1*Lz1+112./243.*Lz1+27650./6561.;
-	float z1_dRe_r1_2_dz1=2.*(4./3.-4./81.);
+	double Re_r12_z1 = -1666./243.+2.*(4./3.*Lz1+34./9.-4./81.*Lz1+8./81.);
+	double Im_r1_2_z1 = -80./81.*pi+2.*(4./9.+4./81.)*pi;
+	double Re_r2_z1 = 8./9.*Lz1*Lz1+112./243.*Lz1+27650./6561.;
+	double z1_dRe_r1_2_dz1=2.*(4./3.-4./81.);
 
-	float a= P22rem_z0- (x1*(Re_r12_z0*Re_r12_z0-(1666./243.)*(1666./243.)+Im_r1_2_z0*Im_r1_2_z0-(80./81.*pi*80./81.*pi))
+	double a= P22rem_z0- (x1*(Re_r12_z0*Re_r12_z0-(1666./243.)*(1666./243.)+Im_r1_2_z0*Im_r1_2_z0-(80./81.*pi*80./81.*pi))
 	+x2*(Re_r2_z0-(67454./6561.-124./729.*pi*pi))
 	+x5);
-	float b= P22rem_z1- (x1*(Re_r12_z1*Re_r12_z1-(1666./243.)*(1666./243.)+Im_r1_2_z1*Im_r1_2_z1-(80./81.*pi*80./81.*pi))
+	double b= P22rem_z1- (x1*(Re_r12_z1*Re_r12_z1-(1666./243.)*(1666./243.)+Im_r1_2_z1*Im_r1_2_z1-(80./81.*pi*80./81.*pi))
 	+x2*(Re_r2_z1-(67454./6561.-124./729.*pi*pi))
 	+x5);
 	
-	float a3=(Re_r12_z0-(-1666./243.));
-	float b3=(Re_r12_z1-(-1666./243.));
+	double a3=(Re_r12_z0-(-1666./243.));
+	double b3=(Re_r12_z1-(-1666./243.));
 	
-	float a4=z0_dRe_r1_2_dz0;
-	float b4=z1_dRe_r1_2_dz1;
+	double a4=z0_dRe_r1_2_dz0;
+	double b4=z1_dRe_r1_2_dz1;
 	
 	x3=(a*b4-a4*b)/(a3*b4-b3*a4);
 	x4=(a*b3-a3*b)/(a4*b3-b4*a3);
@@ -506,11 +506,11 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 #endif
 
 
-	float Im_r1_2 = -80./81.*pi+2.*pi*(16./9.*((4.-pi*pi/3.+Lz+Lz*Lz)*z/2.+(0.5-pi*pi/6.-Lz-0.5*Lz*Lz)*z*z+pow(z,3.)+5./9.*pow(z,4.))-8./9.*(-z+(1.-2.*Lz)*z*z+(-10./9.+4./3.*Lz)*pow(z,3.)+pow(z,4.)));
+	double Im_r1_2 = -80./81.*pi+2.*pi*(16./9.*((4.-pi*pi/3.+Lz+Lz*Lz)*z/2.+(0.5-pi*pi/6.-Lz-0.5*Lz*Lz)*z*z+pow(z,3.)+5./9.*pow(z,4.))-8./9.*(-z+(1.-2.*Lz)*z*z+(-10./9.+4./3.*Lz)*pow(z,3.)+pow(z,4.)));
 	
-	float dRe_r1_2_dz=2.*(Re_a(z+z*1.e-4)-Re_a(z-z*1.e-4)+Re_b(z+z*1.e-4)-Re_b(z-z*1.e-4))/(z*2.e-4);
+	double dRe_r1_2_dz=2.*(Re_a(z+z*1.e-4)-Re_a(z-z*1.e-4)+Re_b(z+z*1.e-4)-Re_b(z-z*1.e-4))/(z*2.e-4);
 
-	float P2_2_rem1=x1*(Re_r1[2]*Re_r1[2]-(1666./243.)*(1666./243.)+Im_r1_2*Im_r1_2-(80./81.*pi*80./81.*pi))
+	double P2_2_rem1=x1*(Re_r1[2]*Re_r1[2]-(1666./243.)*(1666./243.)+Im_r1_2*Im_r1_2-(80./81.*pi*80./81.*pi))
 	+x2*(Re_r2-(67454./6561.-124./729.*pi*pi))
 	+x3*(Re_r1[2]-(-1666./243.))
 	+x4*z*dRe_r1_2_dz
@@ -519,7 +519,7 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 	
 /* --------------------------------------------- */
 
-	float K1z0[9][9], phi1z0[9][9];
+	double K1z0[9][9], phi1z0[9][9];
 	for (ie=1;ie<=8;ie++) for (je=1;je<=8;je++) K1z0[ie][je]=phi1z0[ie][je]=0.;
 		
 	phi1z0[2][2]=phi22(delta,0.);
@@ -534,7 +534,7 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 	phi1z0[7][8]=phi1[7][8];
 	phi1z0[8][8]=phi1[8][8];
 	
-	float Re_r1z0[7];
+	double Re_r1z0[7];
 	for (ie=1;ie<=6;ie++) Re_r1z0[ie]=0.;
 	Re_r1z0[2]=-1666./243.+2.*(Re_a(0.)+Re_b(0.));
 	Re_r1z0[1]=-1./6.*Re_r1z0[2];
@@ -552,7 +552,7 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 	
 	for(je=1;je<=8;je++) for(ie=1;ie<=8;ie++) K1z0[ie][je]=K1z0[je][ie];
 		
-	float P2_3z0=0.;
+	double P2_3z0=0.;
 	for (ie=1;ie<=8;ie++) for (je=1;je<=8;je++) P2_3z0+=2.*C0[ie]*C1[je]*K1z0[ie][je];
 	
 
@@ -629,43 +629,40 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 #endif
 
 
-	float P2_2_rem2=x1*(Re_r1[2]*Re_r1[2]-(1666./243.)*(1666./243.)+Im_r1_2*Im_r1_2-(80./81.*pi*80./81.*pi))
+	double P2_2_rem2=x1*(Re_r1[2]*Re_r1[2]-(1666./243.)*(1666./243.)+Im_r1_2*Im_r1_2-(80./81.*pi*80./81.*pi))
 	+x2*(Re_r2-(67454./6561.-124./729.*pi*pi))
 	+x3*(Re_r1[2]-(-1666./243.))
 	+x4*z*dRe_r1_2_dz
 	+x5;
 	
 	
-	float P2_2_rem=(P2_2_rem1+P2_2_rem2)/2.;
-	float P2_2=P2_2_beta+P2_2_rem;
+	double P2_2_rem=(P2_2_rem1+P2_2_rem2)/2.;
+	double P2_2=P2_2_beta+P2_2_rem;
 
 	if(fabs((alphas_mu/4./pi*alphas_mu/4./pi *(P2_1 + P2_2 + P2_3))/(P0 + alphas_mu/4./pi * (P1_1 + P1_2))) > 0.4) P2_1=P2_2=P2_3=0.;
 	
 
-	float P_E0 = P0 + alphas_mu/4./pi * (P1_1 + P1_2) + alphas_mu/4./pi*alphas_mu/4./pi *(P2_1 + P2_2 + P2_3);
+	double P_E0 = P0 + alphas_mu/4./pi * (P1_1 + P1_2) + alphas_mu/4./pi*alphas_mu/4./pi *(P2_1 + P2_2 + P2_3);
 
 
 	
-	float Cem[9],C0w[9],C1w[9],C2w[9];
+	double Cem[9],C0w[9],C1w[9],C2w[9];
 	CW_calculator(C0w,C1w,C2w,mu_W,param);
 
-	float alphas_mtop=alphas_running(param->mass_top_pole,param->mass_top_pole,param->mass_b,param); 
+	double eta_mu=alphas_running(mu_W,param->mass_top_pole,param->mass_b_pole,param)/alphas_mu;
 
-	float mass_top=running_mass(param->mtmt,param->mtmt,mu_W,param->mass_top_pole,param->mass_b,param);
-	float eta_mu=alphas_running(mu_W,param->mass_top_pole,param->mass_b_pole,param)/alphas_mu;
-
-	float r=param->mass_b/param->mass_b_1S;
+	double r=param->mass_b/param->mass_b_1S;
 	
-	float Kc0=1.4107*pow(eta_mu,14./23.)-0.8380*pow(eta_mu,16./23.)
+	double Kc0=1.4107*pow(eta_mu,14./23.)-0.8380*pow(eta_mu,16./23.)
 	-0.4286*pow(eta_mu,6./23.)-0.0714*pow(eta_mu,-12./23.)
 	-0.6494*pow(eta_mu,0.4086)-0.0380*pow(eta_mu,-0.4230)
 	-0.0185*pow(eta_mu,-0.8994)-0.0057*pow(eta_mu,0.1456);
 
-	float Kt0=pow(eta_mu,4./23.)*(C0w[7]+23./36.)-8./3.*(pow(eta_mu,4./23.)-pow(eta_mu,2./23.))*(C0w[8]+1./3.);
+	double Kt0=pow(eta_mu,4./23.)*(C0w[7]+23./36.)-8./3.*(pow(eta_mu,4./23.)-pow(eta_mu,2./23.))*(C0w[8]+1./3.);
 	
-	float lambda2=0.12;
+	double lambda2=0.12;
 
-	float N_E0= -1./18.*(Kc0+r*Kt0)*(pow(eta_mu,6./23.)+pow(eta_mu,-12./23.))*lambda2/param->mass_c/param->mass_c;
+	double N_E0= -1./18.*(Kc0+r*Kt0)*(pow(eta_mu,6./23.)+pow(eta_mu,-12./23.))*lambda2/param->mass_c/param->mass_c;
 	
 	if((P2_1==0.)&&(P2_2==0.)&&(P2_3==0.)) N_E0=0.;
 
@@ -678,34 +675,33 @@ float bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struct p
 	Cem[7]= (32./75.*pow(eta_mu,-9./23.)-40./69.*pow(eta_mu,-7/23.)+88./575.*pow(eta_mu,16./23.))*C0w[7]+Cem[8]*C0w[8]+Cem[2];
 
 
-	float P_em=alpha_em*(2.*Cem[7]*C0[7]-C0[7]*C0[7]*2.*alphas_mu*log(param->mass_W/mu)/pi)/alphas_mu;
+	double P_em=alpha_em*(2.*Cem[7]*C0[7]-C0[7]*C0[7]*2.*alphas_mu*log(param->mass_W/mu)/pi)/alphas_mu;
 
 #ifdef DEBUG
 	for (ie=1;ie<=8;ie++) printf("C0[%d]=%f\t C1[%d]=%f\n",ie,C0[ie],ie,C1[ie]);
 	printf("C2[7]=%f\n\n",C2[7]);
 #endif
 
-	float BRinc=BR_BXcenu_exp*VtsVtb_Vcb_2*6.*alpha_em/pi/Cbr*(P_E0+P_em+N_E0);
+	double BRinc=BR_BXcenu_exp*VtsVtb_Vcb_2*6.*alpha_em/pi/Cbr*(P_E0+P_em+N_E0);
 
 	return BRinc;
 }
 
 /*---------------------------------------------------------------------*/
 
-float bsgamma_calculator(char name[])
+double bsgamma_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating the inclusive branching ratio of b -> s gamma */
 {
-	float C0w[9],C1w[9],C2w[9],C0b[9],C1b[9],C2b[9];
+	double C0w[9],C1w[9],C2w[9],C0b[9],C1b[9],C2b[9];
 	struct parameters param;
-	int ie;
 		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 	
-	float mu_W=2.*param.mass_W;
+	double mu_W=2.*param.mass_W;
 		
-	float mu_b=param.mass_b_1S/2.;
+	double mu_b=param.mass_b_1S/2.;
 
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);

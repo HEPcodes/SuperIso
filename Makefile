@@ -1,27 +1,27 @@
-
 .KEEP_STATE:
 
 #
-VERSION = v2.4
+VERSION = v2.5
 
-# Choose your C compiler here (in general gcc on Linux systems):
+# Choose your compilers here (in general gcc/gfortran on Linux systems):
 CC = gcc
+CFLAGS= -O3 -pipe -fomit-frame-pointer -ffast-math
+
 #CC = icc
+#CFLAGS = -O3
+
+MAKE = make
+AR = ar
 
 .SUFFIXES:	.o .c .h
-.PRECIOUS:	.c .h libisospin.a
-
-#Optimisation level, eg: -O3
-OPT= -O3
-#OR debug level: -g(n=1,2,3)
-DEBUG= 
-
-CFLAGS= -I./src -L./src $(DEBUG) $(OPT)
+.PRECIOUS:	.c .h libisospin.a librelic.a
 
 # Add the link to Softsusy and Isajet, if available.
 # Otherwise, comment them in the main programs */
 SOFTSUSY = ~/softsusy/softpoint.x
 ISAJET = ~/isajet/isasugra.x
+
+CINCLUDE= -I./src -L./src
 
 all: libisospin.a
 	@case `uname` in \
@@ -33,21 +33,27 @@ all: libisospin.a
    	echo 'Please run "make name" to compile "name.c" into "name.x"';\
 	echo ' '
 
+%.c:: %.c libisospin.a
+	$(CC) -c $(CFLAGS) $@;
+	$(CC) -o $*.x $(CFLAGS) $(CINCLUDE) $*.o -lisospin -lm;
+	@rm -f $*.o;
+	@touch $*.x
+
 %:: %.c libisospin.a
 	$(CC) -c $(CFLAGS) $*.c;
-	$(CC) -o $@.x $(CFLAGS) $*.o -lm -lisospin;
+	$(CC) -o $*.x $(CFLAGS) $(CINCLUDE) $*.o -lisospin -lm;
 	@rm -f $*.o;
 	@touch $*.x
 
 clean:
 	rm -f *.x;
 	@echo > src/FlagsForMake;
-	make -C src/ clean
+	$(MAKE) -C src/ clean
 	
 distclean: 
 	rm -f *.a *.o *.x;
 	@echo > src/FlagsForMake;
-	make -C src/ distclean
+	$(MAKE) -C src/ distclean
 	
 libisospin.a: 
 	@echo;
@@ -55,9 +61,11 @@ libisospin.a:
 	@echo;
 	@echo CC = $(CC) > src/FlagsForMake;\
 	echo CFLAGS = $(CFLAGS) >> src/FlagsForMake;\
+	echo MAKE = $(MAKE) >> src/FlagsForMake;\
+	echo AR = $(AR) >> src/FlagsForMake;\
 	echo SOFTSUSY = $(SOFTSUSY) >> src/FlagsForMake;\
 	echo ISAJET = $(ISAJET) >> src/FlagsForMake;\
-	make -C src/
+	$(MAKE) -C src/ libisospin.a
 
 save: 
 	rm -f superiso_$(VERSION).tgz;\

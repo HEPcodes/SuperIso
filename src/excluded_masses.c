@@ -60,7 +60,7 @@ int charged_LSP(struct parameters* param)
 /* tests whether the SUSY point corresponds to a charged LSP (NLSP if the LSP is a gravitino) */
 /* if the LSP is charged, return 1, otherwise 0 */
 {
-	float mass_non_chargee;
+	double mass_non_chargee;
 	int charged_LSP=0;
 
 #ifdef SMONLY	

@@ -10,15 +10,15 @@ double Kmunu_pimunu(struct parameters* param)
 	double life_pi=2.6033e-8;
 	double life_K=1.2380e-8;  
 
-#ifdef SMONLY
-	return param->m_K/m_pi*(1.+delta_em)*pow(Vus_Vud*fK_fpi*(1.-param->mass_mu*param->mass_mu/param->m_K/param->m_K)/(1.-param->mass_mu*param->mass_mu/m_pi/m_pi),2.)*life_K/life_pi;
-#endif
+	if(param->SM==1) return param->m_K/m_pi*(1.+delta_em)*pow(Vus_Vud*fK_fpi*(1.-param->mass_mu*param->mass_mu/param->m_K/param->m_K)/(1.-param->mass_mu*param->mass_mu/m_pi/m_pi),2.)*life_K/life_pi;
 	
+	if(param->THDM_model>0) return param->m_K/m_pi*(1.+delta_em)*pow(Vus_Vud*fK_fpi*(1.-param->mass_mu*param->mass_mu/param->m_K/param->m_K)/(1.-param->mass_mu*param->mass_mu/m_pi/m_pi)*(1.-param->m_K*param->m_K/param->mass_H/param->mass_H*(1.-param->mass_d/param->mass_s)*param->lambda_d[2][2]*param->lambda_l[2][2]),2.)*life_K/life_pi;
+
 	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
 	double epsilon0=-2./3.*alphas_MSOFT/pi*param->mu_Q/param->mass_gluino*
 H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->MsR_Q*param->MsR_Q/param->mass_gluino/param->mass_gluino);
 	
-	return param->m_K/m_pi*(1.+delta_em)*pow(Vus_Vud*fK_fpi*(1.-param->mass_mu*param->mass_mu/param->m_K/param->m_K)/(1.-param->mass_mu*param->mass_mu/m_pi/m_pi)	*(1.-param->m_K*param->m_K/param->mass_H/param->mass_H*(1.-param->mass_d/param->mass_s)*param->tan_beta*param->tan_beta/(1.+epsilon0*param->tan_beta)),2.)*life_K/life_pi;
+	return param->m_K/m_pi*(1.+delta_em)*pow(Vus_Vud*fK_fpi*(1.-param->mass_mu*param->mass_mu/param->m_K/param->m_K)/(1.-param->mass_mu*param->mass_mu/m_pi/m_pi)*(1.-param->m_K*param->m_K/param->mass_H/param->mass_H*(1.-param->mass_d/param->mass_s)*param->tan_beta*param->tan_beta/(1.+epsilon0*param->tan_beta)),2.)*life_K/life_pi;
 }
 
 /*--------------------------------------------------------------------*/
@@ -26,14 +26,14 @@ H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->MsR_
 double Rl23(struct parameters* param)
 /* computes the ratio Rl23 */
 {
-#ifdef SMONLY
-	return 1.;
-#endif
+	if(param->SM==1) return 1.;
+
+	if(param->THDM_model>0) return fabs(1.-param->m_K*param->m_K/param->mass_H/param->mass_H*(1.-param->mass_d/param->mass_s)*param->lambda_d[2][2]*param->lambda_l[2][2]);
 
 	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
 	double epsilon0=-2./3.*alphas_MSOFT/pi*param->mu_Q/param->mass_gluino*
 H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->MsR_Q*param->MsR_Q/param->mass_gluino/param->mass_gluino);
-	
+
 	return fabs(1.-param->m_K*param->m_K/param->mass_H/param->mass_H*(1.-param->mass_d/param->mass_s)*param->tan_beta*param->tan_beta/(1.+epsilon0*param->tan_beta));
 }
 

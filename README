@@ -1,5 +1,5 @@
-SuperIso Version 2.5 (29 March 2009)
-------------------------------------
+SuperIso Version 2.6 (31 August 2009)
+-------------------------------------
 By Farvah Nazila Mahmoudi (mahmoudi@in2p3.fr)
 
 
@@ -9,17 +9,14 @@ INTRODUCTION
 The most recent version of this program can be obtained from: 
 http://superiso.in2p3.fr
 
-This C code (in C99 standard) provides the calculation of several flavor physics observables as well as the muon anomalous magnetic moment, for a set of supersymmetric parameters which can be either calculated within this program thanks to Isajet or Softsusy, or directly provided by user thanks to a SUSY Les Houches Accord (SLHA1 or SLHA2) file.
+This C code (in C99 standard) provides the calculation of several flavor physics observables as well as the muon anomalous magnetic moment, for a set of supersymmetric or 2HDM parameters which can be either calculated within this program thanks to Isajet, Softsusy or 2HDMC, or directly provided by user thanks to a SUSY Les Houches Accord (SLHA1 or SLHA2) file.
 
 
 If you use this program to write a paper, please cite: 
 
 F. Mahmoudi, arXiv:0710.2067 [hep-ph], Comput. Phys. Commun. 178 (2008) 745
-
 AND
-
-F. Mahmoudi, arXiv:0808.3144 [hep-ph], to appear in Comput. Phys. Commun.
-
+F. Mahmoudi, arXiv:0808.3144 [hep-ph], Comput. Phys. Commun. 180 (2009) 1579.
 
 The program has been tested on Linux and Mac machines with gcc and icc.
 
@@ -28,17 +25,19 @@ Installation and Compilation
 ----------------------------
 - tar xzvf superiso_vX.X.tgz
 - cd superiso_vX.X
-- in Makefile, first define your C compiler, and the path to Isajet or Softsusy, if you want to use them. If not, you must provide your SLHA file as input.
+- in Makefile, first define your C compiler, and the path to Isajet, Softsusy or 2HDMC, if you want to use them. If not, you must provide your SLHA file as input.
 - compile with: make
 
-5 programs are available:
+7 programs are available:
+- sm.c: Standard Model
 - msugra.c: msugra parameter space, linked to isajet or softsusy
 - amsb.c: amsb parameter space, linked to softsusy
 - gmsb.c: gmsb parameter space, linked to softsusy
 - nuhm.c: nuhm parameter space, linked to softsusy
+- thdm.c: 2HDM types I-IV parameter space, linked to 2HDMC
 - slha.c: scans the user provided SLHA file
 
-They can be compiled with: make name, where "name" stands for msugra, amsb, gmsb, nuhm or slha.
+They can be compiled with: make name (or make name.c), where "name" stands for sm, msugra, amsb, gmsb, nuhm, thdm or slha.
 
 They can be run with: ./name.x
 Note that an example of SLHA file is also provided: example.lha
@@ -63,13 +62,16 @@ kmunu.c: calculation of the observables related to K-> mu nu
 leshouches.c: procedures reading files in the SLHA format
 quark_masses.c: calculation of the quark masses
 softsusy.c: procedures calling Softsusy
+2hdmc.c: procedures calling 2HDMC
 wilson.c: calculation of the Wilson coefficients
 
 - Main programs
+sm.c: calculation of the observables in the SM
+msugra.c: calculation of the observables for a mSUGRA point
 amsb.c: calculation of the observables for an AMSB point
 gmsb.c: calculation of the observables for a GMSB point
-msugra.c: calculation of the observables for a mSUGRA point
 nuhm.c: calculation of the observables for a NUHM point
+thdm.c: calculation of the observables for a 2HDM type I-IV point
 slha.c: calculation of the observables using a given SLHA file
 
 - Headers in src
@@ -83,6 +85,11 @@ README
 
 History
 -------
+v2.6 - 08/31/2009 - 	Implementation of the general 2HDM.
+			Interface with 2HDMC.
+			Addition of a main program for the SM.
+			Improvement of g-2 calculation.
+
 v2.5 - 03/29/2009 - 	Replacement of "float" type by "double" to match the relic version conventions.
 			Minor improvements.
 			

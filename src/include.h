@@ -14,7 +14,6 @@
 /*--------------------------------------------------------------------*/
 
 /*#define DEBUG*/
-/*#define SMONLY*/
 /*#define SM_ChargedHiggs*/
 
 /*--------------------------------------------------------------------*/
@@ -28,18 +27,19 @@
 typedef struct parameters
 /* structure containing all the scanned parameters from the SLHA file */
 {
+	int SM;
 	int model; /* mSUGRA = 1, GMSB = 2, AMSB = 3 */
 	int generator; /* ISAJET = 1, SOFTSUSY = 2 */
 	double Q; /* Qmax ; default = M_EWSB = sqrt(m_stop1*mstop2) */
 	double m0,m12,tan_beta,sign_mu,A0; /* mSUGRA parameters */
 	double Lambda,Mmess,N5,cgrav,m32; /* AMSB, GMSB parameters */
 	double mass_Z,mass_W,mass_b,mass_top_pole,mass_tau_pole; /* SM parameters */
-	double inv_alpha_em,alphas_MZ,alpha,Gfermi,GAUGE_Q; /* SM parameters */
-	double charg_Umix[3][3],charg_Vmix[3][3],stop_mix[3][3],sbot_mix[3][3],stau_mix[3][3],neut_mix[6][6],mass_neut[6]; /* mass mixing matrices */
+	double inv_alpha_em,alphas_MZ,Gfermi,GAUGE_Q; /* SM parameters */
+	double charg_Umix[3][3],charg_Vmix[3][3],stop_mix[3][3],sbot_mix[3][3],stau_mix[3][3],neut_mix[6][6],mass_neut[6],alpha; /* mass mixing matrices */
 	double Min,M1_Min,M2_Min,M3_Min,At_Min,Ab_Min,Atau_Min,M2H1_Min,M2H2_Min,mu_Min,M2A_Min,tb_Min,mA_Min; /* optional input parameters at scale Min */
 	double MeL_Min,MmuL_Min,MtauL_Min,MeR_Min,MmuR_Min,MtauR_Min; /* optional input parameters at scale Min */
 	double MqL1_Min,MqL2_Min,MqL3_Min,MuR_Min,McR_Min,MtR_Min,MdR_Min,MsR_Min,MbR_Min; /* optional input parameters at scale Min */
-	double N51,N52,N53,M2H1_Q,M2H2_Q; /* optional input parameters (N51...3: GMSB)  */
+	double N51,N52,N53,M2H1_Q,M2H2_Q; /* optional input parameters (N51...3: GMSB) */
 	double mass_d,mass_u,mass_s,mass_c,mass_t,mass_e,mass_nue,mass_mu,mass_num,mass_tau,mass_nut; /* SM masses */
 	double mass_gluon,mass_photon,mass_Z0; /* SM masses */
 	double mass_h0,mass_H0,mass_A0,mass_H,mass_dnl,mass_upl,mass_stl,mass_chl,mass_b1,mass_t1; /* Higgs & superparticle masses */
@@ -60,7 +60,7 @@ typedef struct parameters
 	double PMNSU_Q,CKM_Q,MSE2_Q,MSU2_Q,MSD2_Q,MSL2_Q,MSQ2_Q,TU_Q,TD_Q,TE_Q;
 	
 	double CKM[4][4]; /* CKM matrix */
-	double H0_mix[4][4],A0_mix[4][3]; /* Higgs mixing matrices */
+	double H0_mix[4][4],A0_mix[4][4]; /* Higgs mixing matrices */
 	double sU_mix[7][7],sD_mix[7][7],sE_mix[7][7], sNU_mix[4][4]; /* mixing matrices */
 	double sCKM_msq2[4][4],sCKM_msl2[4][4],sCKM_msd2[4][4],sCKM_msu2[4][4],sCKM_mse2[4][4]; /* super CKM matrices */
 	double PMNS_U[4][4]; /* PMNS mixing matrices */
@@ -73,21 +73,14 @@ typedef struct parameters
 	/* Flavor constants */
 	double f_B,f_Bs,f_Ds,m_B,m_Bs,m_Ds,m_K,m_Kstar,m_D,life_B,life_Bs,life_Ds;
 	
-	/* largeurs de desintegration */
+	/* Decay widths */
 	double width_h0,width_H0,width_A0,width_H;
+
+	/* 2HDM */
+	int THDM_model;
+	double lambda_u[4][4],lambda_d[4][4],lambda_l[4][4];
 }
 parameters;
-
-/*--------------------------------------------------------------------*/
-
-typedef struct relicparam
-/* structure containing the cosmological model parameters */
-{
-	double dd0,ndd;
-	double sd0,nsd;
-	double table_eff[276][3];
-}
-relicparam;
 
 /*--------------------------------------------------------------------*/
 /* Prototypes */
@@ -100,11 +93,6 @@ int softsusy_sugra(double m0, double m12, double tanb, double A0, double sgnmu, 
 int softsusy_gmsb(double Lambda, double Mmess, double tanb, int N5, double cGrav, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int softsusy_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int softsusy_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, double mbot, double alphas_mz, char name[]);
-
-/* nmssmtools.c */
-int nmssmtools_cnmssm(double m0, double m12, double tanb, double A0, double lambda, double AK, double sgnmu, double mtop, double mbot, double alphas_mz);
-int nmssmtools_nnuhm(double m0, double m12, double tanb, double A0, double MHDGUT, double MHUGUT, double lambda, double AK, double sgnmu, double mtop, double mbot, double alphas_mz);
-int nmssmtools_ngmsb(double Lambda, double Mmess, double tanb, int N5, double lambda, double AK, double Del_h, double sgnmu, double mtop, double mbot, double alphas_mz);
 
 /* leshouches.c */ 
 int Les_Houches_Reader(char name[], struct parameters* param);
@@ -137,6 +125,7 @@ double K2(double x);
 double K0exp(double x,double z);
 double K1exp(double x,double z);
 double K2exp(double x,double z);
+int test_integer(char name[]);
 
 /* wilson.c */
 double A0t(double x);
@@ -156,11 +145,11 @@ double F8_2(double x);
 double F8_3(double x);
 double H2(double x, double y);
 double B(double m1, double m2, double Q);
-double G7H(double x, double tb);
-double Delta7H(double x, double tb);
-double EH(double x, double tb);
-double G8H(double x, double tb);
-double Delta8H(double x, double tb);
+double G7H(double x, double lu, double ld);
+double Delta7H(double x, double lu, double ld);
+double EH(double x, double lu);
+double G8H(double x, double lu, double ld);
+double Delta8H(double x, double lu, double ld);
 double C7t2mt(double x);
 double C7c2MW(double x);
 double C8t2mt(double x);
@@ -224,6 +213,11 @@ double F1N(double x);
 double F2N(double x);
 double F1C(double x);
 double F2C(double x);
+double fPS(double x);
+double fS(double x);
+double fft(double x);
+double muonf(double z);
+double muong(double z);
 double muon_gm2_calculator(char name[]);
 double muon_gm2(struct parameters* param);
 
@@ -264,3 +258,7 @@ double Dstaunu(struct parameters* param);
 double Dstaunu_calculator(char name[]);
 double Dsmunu(struct parameters* param);
 double Dsmunu_calculator(char name[]);
+
+/* 2hdmc.c */
+int thdmc_types(double l1, double l2, double l3, double l4, double l5, double l6, double l7, double m12_2, double tanb, int type, char name[]);
+

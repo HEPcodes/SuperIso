@@ -39,11 +39,21 @@ double dGammaBDlnu_dw(double w, double ml, struct parameters* param)
 {
 	double Vcb=4.17e-2;
 
-#ifdef SMONLY
-	return param->Gfermi*param->Gfermi*Vcb*Vcb*pow(param->m_B,5.)/192./pow(pi,3.)*rhoV(w,ml,param->m_B,param->m_D)*(1.-ml*ml/param->m_B/param->m_B*rhoS(w,ml,param->m_B,param->m_D));
-#endif
-	
-	return param->Gfermi*param->Gfermi*Vcb*Vcb*pow(param->m_B,5.)/192./pow(pi,3.)*rhoV(w,ml,param->m_B,param->m_D)*	(1.-ml*ml/param->m_B/param->m_B*pow(1.-tBDlnu(w,param->m_B,param->m_D)/(param->mass_b-param->mass_c)*param->mass_b/param->mass_H/param->mass_H*param->tan_beta*param->tan_beta/(1.+epsilon_0(param)*param->tan_beta),2.)*rhoS(w,ml,param->m_B,param->m_D));
+	if(param->SM==1) return param->Gfermi*param->Gfermi*Vcb*Vcb*pow(param->m_B,5.)/192./pow(pi,3.)*rhoV(w,ml,param->m_B,param->m_D)*(1.-ml*ml/param->m_B/param->m_B*rhoS(w,ml,param->m_B,param->m_D));
+
+
+	if(param->THDM_model==0) return param->Gfermi*param->Gfermi*Vcb*Vcb*pow(param->m_B,5.)/192./pow(pi,3.)*rhoV(w,ml,param->m_B,param->m_D)*	(1.-ml*ml/param->m_B/param->m_B*pow(1.-tBDlnu(w,param->m_B,param->m_D)/(param->mass_b-param->mass_c)*param->mass_b/param->mass_H/param->mass_H*param->tan_beta*param->tan_beta/(1.+epsilon_0(param)*param->tan_beta),2.)*rhoS(w,ml,param->m_B,param->m_D));
+
+	else 
+	{	
+		double lambdal;
+		if(fabs(1.-ml/param->mass_e)<1.e-2) lambdal=param->lambda_l[1][1];
+		else if(fabs(1.-ml/param->mass_mu)<1.e-2) lambdal=param->lambda_l[2][2];
+		else lambdal=param->lambda_l[3][3];
+
+return param->Gfermi*param->Gfermi*Vcb*Vcb*pow(param->m_B,5.)/192./pow(pi,3.)*rhoV(w,ml,param->m_B,param->m_D)*	(1.-ml*ml/param->m_B/param->m_B*pow(1.-tBDlnu(w,param->m_B,param->m_D)/(param->mass_b-param->mass_c)/param->mass_H/param->mass_H*(param->lambda_d[3][3]*param->mass_b-param->lambda_u[2][2]*param->mass_c)*lambdal,2.)*rhoS(w,ml,param->m_B,param->m_D));
+	}
+
 }
 
 /*--------------------------------------------------------------------*/

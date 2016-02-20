@@ -5,17 +5,15 @@ double Dstaunu(struct parameters* param)
 {
 	double Vcs=0.97334;
 
-#ifdef SMONLY
-	return 
+	if(param->SM==1) return 
 param->m_Ds/8./pi*pow(param->Gfermi*Vcs*param->mass_tau_pole*param->f_Ds*(1.-param->mass_tau_pole*param->mass_tau_pole/param->m_Ds/param->m_Ds),2.)*param->life_Ds/hbar;
-#endif
-	
-	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
-	double epsilon0=-2./3.*alphas_MSOFT/pi*param->mu_Q/param->mass_gluino*
-H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->McR_Q*param->McR_Q/param->mass_gluino/param->mass_gluino);
 
+	if(param->THDM_model>0) return param->m_Ds/8./pi*pow(param->Gfermi*Vcs*param->mass_tau_pole*param->f_Ds*(1.-param->mass_tau_pole*param->mass_tau_pole/param->m_Ds/param->m_Ds)*(1.+param->m_Ds*param->m_Ds/param->mass_H/param->mass_H*(param->mass_c*param->lambda_u[2][2]-param->mass_s*param->lambda_d[2][2])*param->lambda_l[3][3]/(param->mass_s+param->mass_c)),2.)*param->life_Ds/hbar;
+
+	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
+	double epsilon0=-2./3.*alphas_MSOFT/pi*param->mu_Q/param->mass_gluino*H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->McR_Q*param->McR_Q/param->mass_gluino/param->mass_gluino);
 	
-	return param->m_Ds/8./pi*pow(param->Gfermi*Vcs*param->mass_tau_pole*param->f_Ds*(1.-param->mass_tau_pole*param->mass_tau_pole/param->m_Ds/param->m_Ds)		*(1.+param->m_Ds*param->m_Ds/param->mass_H/param->mass_H*(param->mass_c-param->mass_s*param->tan_beta*param->tan_beta/(1.+epsilon0*param->tan_beta))/(param->mass_s+param->mass_c)),2.)*param->life_Ds/hbar;
+	return param->m_Ds/8./pi*pow(param->Gfermi*Vcs*param->mass_tau_pole*param->f_Ds*(1.-param->mass_tau_pole*param->mass_tau_pole/param->m_Ds/param->m_Ds)*(1.+param->m_Ds*param->m_Ds/param->mass_H/param->mass_H*(param->mass_c-param->mass_s*param->tan_beta*param->tan_beta/(1.+epsilon0*param->tan_beta))/(param->mass_s+param->mass_c)),2.)*param->life_Ds/hbar;
 }
 
 /*--------------------------------------------------------------------*/
@@ -39,17 +37,15 @@ double Dsmunu(struct parameters* param)
 {
 	double Vcs=0.97334;
 
-#ifdef SMONLY
-	return 
+	if(param->SM==1) return 
 param->m_Ds/8./pi*pow(param->Gfermi*Vcs*param->mass_mu*param->f_Ds*(1.-param->mass_mu*param->mass_mu/param->m_Ds/param->m_Ds),2.)*param->life_Ds/hbar;
-#endif
 	
-	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
-	double epsilon0=-2./3.*alphas_MSOFT/pi*param->mu_Q/param->mass_gluino*
-H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->McR_Q*param->McR_Q/param->mass_gluino/param->mass_gluino);
+	if(param->THDM_model>0) return param->m_Ds/8./pi*pow(param->Gfermi*Vcs*param->mass_mu*param->f_Ds*(1.-param->mass_mu*param->mass_mu/param->m_Ds/param->m_Ds)*(1.+param->m_Ds*param->m_Ds/param->mass_H/param->mass_H*(param->mass_c*param->lambda_u[2][2]-param->mass_s*param->lambda_d[2][2])*param->lambda_l[2][2]/(param->mass_s+param->mass_c)),2.)*param->life_Ds/hbar;
 
+	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
+	double epsilon0=-2./3.*alphas_MSOFT/pi*param->mu_Q/param->mass_gluino*H2(param->MqL2_Q*param->MqL2_Q/param->mass_gluino/param->mass_gluino,param->McR_Q*param->McR_Q/param->mass_gluino/param->mass_gluino);
 	
-	return param->m_Ds/8./pi*pow(param->Gfermi*Vcs*param->mass_mu*param->f_Ds*(1.-param->mass_mu*param->mass_mu/param->m_Ds/param->m_Ds)		*(1.+param->m_Ds*param->m_Ds/param->mass_H/param->mass_H*(param->mass_c-param->mass_s*param->tan_beta*param->tan_beta/(1.+epsilon0*param->tan_beta))/(param->mass_s+param->mass_c)),2.)*param->life_Ds/hbar;
+	return param->m_Ds/8./pi*pow(param->Gfermi*Vcs*param->mass_mu*param->f_Ds*(1.-param->mass_mu*param->mass_mu/param->m_Ds/param->m_Ds)*(1.+param->m_Ds*param->m_Ds/param->mass_H/param->mass_H*(param->mass_c-param->mass_s*param->tan_beta*param->tan_beta/(1.+epsilon0*param->tan_beta))/(param->mass_s+param->mass_c)),2.)*param->life_Ds/hbar;
 }
 
 /*--------------------------------------------------------------------*/

@@ -21,17 +21,17 @@ all: libisospin.a
 	   esac
 	   
 clean:
-	rm -f *.a isajet.h softsusy.h FlagsForMake
+	rm -f *.a isajet.h softsusy.h 2hdmc.h FlagsForMake
 	
 distclean: 
-	rm -f *.a *.o *.x isajet.h softsusy.h FlagsForMake
+	rm -f *.a *.o *.x isajet.h softsusy.h 2hdmc.h FlagsForMake
 	
 libisospin.a: libisospin.a(softsusy.o) libisospin.a(leshouches.o)\
 	  libisospin.a(isospin.o) libisospin.a(isajet.o) libisospin.a(wilson.o)\
 	  libisospin.a(bsgamma.o) libisospin.a(alphas.o) libisospin.a(general.o)\
 	  libisospin.a(excluded_masses.o) libisospin.a(quark_masses.o) libisospin.a(gmuon.o)\
 	  libisospin.a(btaunu.o) libisospin.a(bdtaunu.o) libisospin.a(bsmumu.o)\
-	  libisospin.a(kmunu.o) libisospin.a(dslnu.o)
+	  libisospin.a(kmunu.o) libisospin.a(dslnu.o) libisospin.a(2hdmc.o)
 	$(RANL)
 
 libisospin.a(softsusy.o): softsusy.c include.h softsusy.h
@@ -50,6 +50,7 @@ libisospin.a(bdtaunu.o): bdtaunu.c include.h
 libisospin.a(bsmumu.o): bsmumu.c include.h
 libisospin.a(kmunu.o): kmunu.c include.h
 libisospin.a(dslnu.o): dslnu.c include.h
+libisospin.a(2hdmc.o): 2hdmc.c include.h 2hdmc.h
 
 softsusy.h:
 	@echo \#define SOFTSUSY \"$(SOFTSUSY)\" > softsusy.h;
@@ -57,4 +58,6 @@ softsusy.h:
 isajet.h:
 	@echo \#define ISAJET \"$(ISAJET)\" > isajet.h;
 
+2hdmc.h:
+	@echo \#define THDMC \"$(THDMC)\" > 2hdmc.h;
 

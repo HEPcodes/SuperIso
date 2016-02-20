@@ -1,11 +1,11 @@
 .KEEP_STATE:
 
 #
-VERSION = v2.5
+VERSION = v2.6
 
 # Choose your compilers here (in general gcc/gfortran on Linux systems):
 CC = gcc
-CFLAGS= -O3 -pipe -fomit-frame-pointer -ffast-math
+CFLAGS= -O3 -pipe -fomit-frame-pointer -funsafe-math-optimizations
 
 #CC = icc
 #CFLAGS = -O3
@@ -16,10 +16,12 @@ AR = ar
 .SUFFIXES:	.o .c .h
 .PRECIOUS:	.c .h libisospin.a librelic.a
 
-# Add the link to Softsusy and Isajet, if available.
+# Add the link to Softsusy and Isajet main programs, if available.
 # Otherwise, comment them in the main programs */
 SOFTSUSY = ~/softsusy/softpoint.x
 ISAJET = ~/isajet/isasugra.x
+# Add the link to 2HDMC directory, if available.
+THDMC = ~/2HDMC
 
 CINCLUDE= -I./src -L./src
 
@@ -65,6 +67,7 @@ libisospin.a:
 	echo AR = $(AR) >> src/FlagsForMake;\
 	echo SOFTSUSY = $(SOFTSUSY) >> src/FlagsForMake;\
 	echo ISAJET = $(ISAJET) >> src/FlagsForMake;\
+	echo THDMC = $(THDMC) >> src/FlagsForMake;\
 	$(MAKE) -C src/ libisospin.a
 
 save: 
@@ -77,6 +80,8 @@ save:
 	cp -p msugra.c superiso_$(VERSION)/;\
 	cp -p nuhm.c superiso_$(VERSION)/;\
 	cp -p slha.c superiso_$(VERSION)/;\
+	cp -p sm.c superiso_$(VERSION)/;\
+	cp -p thdm.c superiso_$(VERSION)/;\
 	cp -p Makefile superiso_$(VERSION)/;\
 	mkdir superiso_$(VERSION)/src;\
 	cp -p src/*.h superiso_$(VERSION)/src/;\

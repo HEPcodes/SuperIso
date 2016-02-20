@@ -255,3 +255,13 @@ double K2exp(double x,double z)
 {
    return K0exp(x,z)+2./x*K1exp(x,z);
 }
+
+/*--------------------------------------------------------------------*/
+
+int test_integer(char name[])
+/* tests if the string "name" is an integer, and return 1 if so, 0 otherwise */
+{
+	char *testint;
+	strtol(name,&testint,10);
+	return (*testint=='\0');
+}

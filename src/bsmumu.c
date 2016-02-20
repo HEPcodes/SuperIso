@@ -31,14 +31,21 @@ double D1(double x, double y, double z)
 
 /*---------------------------------------------------------------------*/
 
+double Bplus(double x, double y)
+{
+	return y/(x-y)*(log(y)/(y-1.)-log(x)/(x-1.));
+}
+
+/*---------------------------------------------------------------------*/
+
 void C_SUSY(struct parameters* param, double *Ccount_S, double *Ccount_P, double *Cbox_S, double *Cbox_P, double *Cpeng_S, double *Cpeng_P, double *CHp_S, double *CHp_P)
 {
 
-#ifdef SMONLY
-	*Ccount_S=*Ccount_P=*Cbox_S=*Cbox_P=*Cpeng_S=*Cpeng_P=*CHp_S=*CHp_P=0.;
-	return;
-#endif
-
+	if(param->SM==1)
+	{
+		*Ccount_S=*Ccount_P=*Cbox_S=*Cbox_P=*Cpeng_S=*Cpeng_P=*CHp_S=*CHp_P=0.;
+		return;
+	}
 	
 	double sw=sin(atan(param->gp/param->g2));
 	double MU[4];
@@ -46,13 +53,64 @@ void C_SUSY(struct parameters* param, double *Ccount_S, double *Ccount_P, double
 	MU[1]=param->mass_u;
 	MU[2]=param->mass_c;
 	MU[3]=param->mtmt;
-	*CHp_S=param->mass_mu*pow(param->tan_beta/2./sw/param->mass_W,2.)*D3(param->mass_H*param->mass_H/MU[3]/MU[3])*MU[3]*MU[3]/param->mass_H/param->mass_H;
-	*CHp_P=-*CHp_S;
+
+ 	if(param->THDM_model==0)
+	{
+		*CHp_S=param->mass_mu*pow(param->tan_beta/2./sw/param->mass_W,2.)*D3(param->mass_H*param->mass_H/MU[3]/MU[3])*MU[3]*MU[3]/param->mass_H/param->mass_H;
+		*CHp_P=-*CHp_S;
+	
 
 #ifdef SM_ChargedHiggs
 	*Ccount_S=*Ccount_P=*Cbox_S=*Cbox_P=*Cpeng_S=*Cpeng_P=0.;
 	return;
 #endif
+	}
+ 	else
+	{
+		double CSbox=-param->mass_mu*(param->lambda_d[3][3]-MU[3]/param->mass_b*param->lambda_u[3][3])*param->lambda_l[2][2]*pow(1./2./sw/param->mass_W,2.)*Bplus(param->mass_H*param->mass_H/param->mass_W/param->mass_W,MU[3]*MU[3]/param->mass_W/param->mass_W);
+
+		double CPbox=-CSbox;
+		
+		double Pplus=-D2(param->mass_H*param->mass_H/param->mass_W/param->mass_W,MU[3]*MU[3]/param->mass_W/param->mass_W)*MU[3]*MU[3]/param->mass_W/param->mass_W;
+	
+		double CSpeng1=-param->mass_mu*(param->lambda_d[3][3]-MU[3]/param->mass_b*param->lambda_u[3][3])*param->lambda_l[2][2]*pow(1./2./sw,2.)*Pplus*(sin(param->alpha)*sin(param->alpha)/param->mass_h0/param->mass_h0+cos(param->alpha)*cos(param->alpha)/param->mass_H0/param->mass_H0);
+	
+		double CPpeng1=param->mass_mu*(param->lambda_d[3][3]-MU[3]/param->mass_b*param->lambda_u[3][3])*param->lambda_l[2][2]*pow(1./2./sw,2.)*Pplus/param->mass_A0/param->mass_A0;
+		
+
+		double CSpeng2=param->mass_mu*(param->lambda_d[3][3]-MU[3]/param->mass_b*param->lambda_u[3][3])*param->lambda_l[2][2]*pow(1./2./sw,2.)*Pplus*(sin(param->alpha)*sin(param->alpha)/param->mass_h0/param->mass_h0*(param->mass_H*param->mass_H-param->mass_h0*param->mass_h0)/param->mass_W/param->mass_W+cos(param->alpha)*cos(param->alpha)/param->mass_H0/param->mass_H0*(param->mass_H*param->mass_H-param->mass_H0*param->mass_H0)/param->mass_W/param->mass_W);
+	
+		double CPpeng2=-param->mass_mu*(param->lambda_d[3][3]-MU[3]/param->mass_b*param->lambda_u[3][3])*param->lambda_l[2][2]*pow(1./2./sw,2.)*Pplus/param->mass_A0/param->mass_A0*(param->mass_H*param->mass_H-param->mass_A0*param->mass_A0)/param->mass_W/param->mass_W;
+ 
+	
+		double CSself=-param->mass_mu*param->lambda_d[3][3]*param->lambda_l[2][2]*pow(1./2./sw,2.)*(param->mass_H*param->mass_H/param->mass_W/param->mass_W+((param->lambda_d[3][3]+param->mass_s/param->mass_b*param->lambda_d[2][2])*param->lambda_u[3][3]))*Pplus*(sin(param->alpha)*sin(param->alpha)/param->mass_h0/param->mass_h0+cos(param->alpha)*cos(param->alpha)/param->mass_H0/param->mass_H0);
+	
+		double CPself=param->mass_mu*param->lambda_d[3][3]*param->lambda_l[2][2]*pow(1./2./sw,2.)*(param->mass_H*param->mass_H/param->mass_W/param->mass_W+((param->lambda_d[3][3]-param->mass_s/param->mass_b*param->lambda_d[2][2])*param->lambda_u[3][3]))*Pplus/param->mass_A0/param->mass_A0;
+		
+	
+		CSbox *= 1.+param->mass_s/param->mass_b*(param->lambda_d[2][2]-MU[3]/param->mass_s*param->lambda_u[3][3])/(param->lambda_d[3][3]-MU[3]/param->mass_s*param->lambda_u[3][3]);
+	
+		CPbox *= 1.+param->mass_s/param->mass_b*(param->lambda_d[2][2]-MU[3]/param->mass_s*param->lambda_u[3][3])/(param->lambda_d[3][3]-MU[3]/param->mass_b*param->lambda_u[3][3]);
+	
+		CSpeng1 *= 1.+param->mass_s/param->mass_b*(param->lambda_d[2][2]-MU[3]/param->mass_s*param->lambda_u[3][3])/(param->lambda_d[3][3]-MU[3]/param->mass_b*param->lambda_u[3][3]);
+	
+		CPpeng1 *= 1.+param->mass_s/param->mass_b*(param->lambda_d[2][2]-MU[3]/param->mass_s*param->lambda_u[3][3])/(param->lambda_d[3][3]-MU[3]/param->mass_b*param->lambda_u[3][3]);
+
+		CSpeng2 *= 1.+param->mass_s/param->mass_b*(param->lambda_d[2][2]-MU[3]/param->mass_s*param->lambda_u[3][3])/(param->lambda_d[3][3]-MU[3]/param->mass_b*param->lambda_u[3][3]);
+	
+		CPpeng2 *= 1.+param->mass_s/param->mass_b*(param->lambda_d[2][2]-MU[3]/param->mass_s*param->lambda_u[3][3])/(param->lambda_d[3][3]-MU[3]/param->mass_b*param->lambda_u[3][3]);
+	
+		CSself *= 1.+param->mass_s/param->mass_b*param->lambda_d[2][2]/param->lambda_d[3][3];
+
+		CPself *= 1.+param->mass_s/param->mass_b*param->lambda_d[2][2]/param->lambda_d[3][3];
+	
+	
+		*CHp_S=CSbox+CSpeng1+CSpeng2+CSself;
+		*CHp_P=CPbox+CPpeng1+CPpeng2+CPself;
+	
+		*Ccount_S=*Ccount_P=*Cbox_S=*Cbox_P=*Cpeng_S=*Cpeng_P=0.;
+		return;	
+	}
 
 	double C,Ctmp,Ca,Cb,Dtmp;
 	double m_cha[3], m_squ[7], m_snu[4], GammaULT[4][7], GammaURT[4][7], G_aimn[7][3][4][4], lmn[4][4];
@@ -193,7 +251,9 @@ double Bsmumu(struct parameters* param)
 	
 	C_SUSY(param,&Ccount_S,&Ccount_P,&Cbox_S,&Cbox_P,&Cpeng_S,&Cpeng_P,&CHp_S,&CHp_P);
 	
-	double epsfac=pow((1.+epsilon_b(param)*param->tan_beta),2.);
+	double epsfac;
+	if(param->THDM_model>0) epsfac=1.;
+	else epsfac=pow((1.+epsilon_b(param)*param->tan_beta),2.);
 
 	CS=(CHp_S+Ccount_S+Cbox_S+Cpeng_S);
 	CP=(CHp_P+Ccount_P+Cbox_P+Cpeng_P);
@@ -208,7 +268,6 @@ double Bsmumu(struct parameters* param)
 	printf("CS=%.5e\t CP=%.5e\n",CS,CP);
 #endif
 	
-
 	CA=1.033*pow(mt_mt(param)/170.,1.55)/pow(sin(atan(param->gp/param->g2)),2.);
 	
 	double BRmumu=param->Gfermi*param->Gfermi*alpha_em*alpha_em*pow(param->m_Bs,5.)*param->f_Bs*param->f_Bs*param->life_Bs/hbar/64./pi/pi/pi*VtbVts*VtbVts*sqrt(1.-4.*param->mass_mu*param->mass_mu/param->m_Bs/param->m_Bs)

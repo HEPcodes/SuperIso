@@ -6,9 +6,7 @@ int excluded_masses(struct parameters* param)
 {
 	int excluded=0;
 
-#ifdef SMONLY	
-	return excluded;
-#endif
+	if(param->SM==1) return excluded;
 
 	if(param->mass_h0!=0.) excluded=(excluded||(fabs(param->mass_h0)<111.)); /* Higgs */
 	if(param->mass_H!=0.) excluded=(excluded||(fabs(param->mass_H)<79.3)); /* charged Higgs */

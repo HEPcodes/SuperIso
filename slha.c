@@ -1,9 +1,8 @@
 #include "src/include.h"
 #include "src/higgsbounds.h"
-#include "src/hdecay.h"
 
 
-/* #define USE_HIGGSBOUNDS */ /* to be commented if HIGGSBOUNDS or HDECAY is unavailable */
+#define USE_HIGGSBOUNDS /* to be commented if HIGGSBOUNDS is unavailable */
 
 /*--------------------------------------------------------*/
 /* Calculation of the observables using a given SLHA file */
@@ -28,14 +27,9 @@ int main(int argc,char** argv)
 
 	int filesOK=1;
 #ifdef USE_HIGGSBOUNDS
-	if(!test_file(HIGGSBOUNDS)) 
+	if(!test_file(HBwithFH)) 
 	{
-		printf("\"%s\" absent. Please check the HIGGSBOUNDS path or comment \"#define USE_HIGGSBOUNDS\" in slha.c\n",HIGGSBOUNDS);
-		filesOK=0;
-	}
-	if(!test_file(HDECAY)) 
-	{
-		printf("\"%s\" absent. Please check the HDECAY path or comment \"#define USE_HIGGSBOUNDS\" in slha.c\n",HDECAY);
+		printf("\"%s\" absent. Please check the HBwithFH path or comment \"#define USE_HIGGSBOUNDS\" in slha.c\n",HBwithFH);
 		filesOK=0;
 	}
 #endif
@@ -62,7 +56,7 @@ int main(int argc,char** argv)
 		printf("a_muon=%.3e\n",muon_gm2_calculator(name));
 
 #ifdef USE_HIGGSBOUNDS
-		printf("excluded_HiggsBounds=%d\n",higgsbounds_calculator(name));
+		printf("excluded_HiggsBounds=%d\n",(higgsbounds_calculator(name)>1.));
 #else
  		if(test!=3) printf("excluded_Higgs_mass=%d\n",excluded_Higgs_mass_calculator(name));
 #endif

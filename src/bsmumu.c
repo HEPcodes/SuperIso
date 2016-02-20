@@ -23,7 +23,7 @@ double Bsmumu(double C0b[], double C1b[], double complex CQ0b[], double complex 
 	printf("-----------------\n");
 	printf("C10=%.5e\t CQ1=%.5e\t CQ2=%.5e\n",C10,creal(CQ1),creal(CQ2));
 #endif	
-	
+		
 	double BRmumu=param->Gfermi*param->Gfermi*alpha_em*alpha_em*pow(param->m_Bs,3.)*param->f_Bs*param->f_Bs*param->life_Bs/hbar/64./pi/pi/pi*VtbVts*VtbVts*sqrt(1.-4.*param->mass_mu*param->mass_mu/param->m_Bs/param->m_Bs)
 	*((1.-4.*param->mass_mu*param->mass_mu/param->m_Bs/param->m_Bs)*pow(cabs(CQ1-CQp1),2.) + pow(cabs((CQ2-CQp2)+2.*(C10-C10p)*param->mass_mu/param->m_Bs),2.));
 	

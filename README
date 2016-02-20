@@ -1,5 +1,5 @@
-SuperIso Version 3.0 (23 February 2011)
----------------------------------------
+SuperIso Version 3.1 (23 May 2011)
+-----------------------------------------
 By Farvah Nazila Mahmoudi (mahmoudi@in2p3.fr)
 
 
@@ -17,7 +17,7 @@ F. Mahmoudi, arXiv:0710.2067 [hep-ph], Comput. Phys. Commun. 178 (2008) 745
 AND
 F. Mahmoudi, arXiv:0808.3144 [hep-ph], Comput. Phys. Commun. 180 (2009) 1579.
 AND
-F. Mahmoudi, Comput. Phys. Commun. 180 (2009) 1579.
+F. Mahmoudi, Comput. Phys. Commun. 180 (2009) 1718.
 
 
 The program has been tested on Linux and Mac machines with gcc and icc.
@@ -27,7 +27,7 @@ Installation and Compilation
 ----------------------------
 - tar xzvf superiso_vX.X.tgz
 - cd superiso_vX.X
-- in Makefile, first define your C compiler, and the path to Isajet, Softsusy, SPheno, SuSpect, NMSSMTools, Hdecay, HiggsBounds or 2HDMC, if you want to use them. If not, you must comment them in the main programs.
+- in Makefile, first define your C compiler, and the path to Isajet, Softsusy, SPheno, SuSpect, NMSSMTools, HiggsBounds (HBwithFH, see below) or 2HDMC, if you want to use them. If not, you must comment them in the main programs.
 - compile with: make
 
 12 programs are available:
@@ -35,8 +35,8 @@ Installation and Compilation
 - cmssm.c: cmssm parameter space, linked to isajet, softsusy, spheno or suspect
 - amsb.c: amsb parameter space, linked to isajet (>=7.80), softsusy, spheno or suspect
 - hcamsb.c: hypercharged amsb parameter space, linked to isajet (>=7.80)
-- gmsb.c: gmsb parameter space, linked to isajet (>=7.80), softsusy, spheno or suspect
 - mmamsb.c: mixed moduli amsb parameter space, linked to isajet (>=7.80)
+- gmsb.c: gmsb parameter space, linked to isajet (>=7.80), softsusy, spheno or suspect
 - nuhm.c: nuhm parameter space, linked to isajet (>=7.80) or softsusy
 - thdm.c: 2HDM types I-IV parameter space, linked to 2HDMC
 - slha.c: scans the user provided SLHA file
@@ -48,6 +48,13 @@ They can be compiled with: make name (or make name.c), where "name" stands for s
 
 They can be run with: ./name.x
 Note that an example of SLHA file is also provided: example.lha
+
+To use Higgsbounds limits when using SuperIso, the user has to have compiled HBwithFH (provided in the Higgsbound package) as well as FeynHiggs. More details are given in the following:
+- In HiggsBounds-f90/configure choose the same compilor as the one with which FeynHiggs is compiled. Also, provide the link to FHINCLUDE and FHLIBS. For example 
+FHINCLUDE = -I/path/FeynHiggs-2.8.0/build/include
+FHLIBS = -L/path/FeynHiggs-2.8.0/build/ -lFH
+- In HiggsBounds-f90/example_programs/HBwithFH.F comment "call setPara" and uncomment "call setSLHA("myfile.slha")" instead.
+- Run: ./demonstrateHiggsBounds_HBwithFH.bat to compile HBwithFH.
 
 
 Included Files
@@ -63,7 +70,6 @@ dslnu.c: calculation of the branching ratios of Ds-> tau nu and Ds-> mu nu
 excluded_masses.c: procedures which check the charge of the LSP, and the agreement with the lower mass limits
 general.c: some useful mathematical functions 
 gmuon.c: calculation of the muon anomalous magnetic moment
-hdecay.c: procedures calling HDECAY
 higgsbounds.c: procedures calling HiggsBounds
 isajet.c: procedures calling Isajet
 isospin.c: calculation of the isospin asymmetry in B-> K* gamma
@@ -102,6 +108,9 @@ README
 
 History
 -------
+v3.1 - 05/23/2011 - 	Improved interface for Higgsbounds.
+			Wolfenstein parameterization for the CKM matrix.
+
 v3.0 - 02/23/2011 - 	NMSSM calculations included.
 			Interface with NMSSMTools. 
 
@@ -134,18 +143,18 @@ v2.3 - 08/25/2008 - 	Implementation of the branching ratio of Bs-> mu+ mu-.
 			Some minor corrections and improvements.
 			Change of the name of some routines.
 
-v2.2 - 06/26/2008 - Implementation of B-> tau nu, B-> D tau nu and K-> mu nu observables.
+v2.2 - 06/26/2008 - 	Implementation of B-> tau nu, B-> D tau nu and K-> mu nu observables.
 
-v2.1 - 04/15/2008 - SLHA2 compliant.
+v2.1 - 04/15/2008 - 	SLHA2 compliant.
 
 v2.0 - 02/18/2008 -	Full NNLO implementation for the branching ratio (b -> s gamma).
 			Improvement of the calculation of the Wilson coefficients.
 			Updated parameters for the computation of the isospin asymmetry.
 			Implementation of the muon g-2 calculation. 
 			
-v1.1 - 01/14/2008 - NUHM module has been added, as well as some minor corrections.
+v1.1 - 01/14/2008 - 	NUHM module has been added, as well as some minor corrections.
 
-v1.0 - 09/17/2007 - First public release.
+v1.0 - 09/17/2007 - 	First public release.
 
 
 LICENSE

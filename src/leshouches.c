@@ -174,8 +174,8 @@ void Init_param(struct parameters* param)
 	param->mass_c2=0.;
 	param->CKM_lambda=0.;
 	param->CKM_A=0.;
-	param->CKM_rho=0.;
-	param->CKM_eta=0.;
+	param->CKM_rhobar=0.;
+	param->CKM_etabar=0.;
 	param->PMNS_theta12=0.;
 	param->PMNS_theta23=0.;
 	param->PMNS_theta13=0.;
@@ -246,15 +246,6 @@ void Init_param(struct parameters* param)
 		param->TE[ie][je]=0.;
 	}
 	
-	/* widths */
-	param->width_h0=0.;
-	param->width_H0=0.;
-	param->width_A0=0.;
-	param->width_H=0.;
-	param->widthcalc=0;
-	param->width_H03=0.;
-	param->width_A02=0.;
-	
 	/* non-SLHA*/
 	param->mass_b_1S=0.;
 	param->mass_b_pole=0.;
@@ -275,7 +266,7 @@ void Init_param(struct parameters* param)
 	param->f_Bs=0.2388;
 	param->f_Ds=0.248;
 	param->f_D=0.207;
-	param->fK_fpi=1.189;
+	param->fK_fpi=1.193;
 	param->m_B=5.27917;
 	param->m_Bs=5.3663;
 	param->m_pi=0.1396;
@@ -325,7 +316,7 @@ void Init_param(struct parameters* param)
 	param->mass_tau=param->mass_tau_pole;
 	
 	param->mass_Z=91.1876;
-	param->alphas_MZ=0.1184;
+	param->alphas_MZ=0.1176;
 	param->mass_W=80.399;
 
 	param->gp=3.58051564e-1;
@@ -333,29 +324,6 @@ void Init_param(struct parameters* param)
 	param->inv_alpha_em=1.27910000e2;
 	param->Gfermi=1.16637000e-5;
 
-	param->width_Z=2.495;
-	param->width_W=2.085;
-	param->width_top=1.;
-
-	param->widthcalc=2; /* 2 = FeynHiggs */
-
-	/* HiggsBound */
-	for(ie=1;ie<=5;ie++) param->mass_hSM[ie]=param->width_hSM[ie]=param->g2hss_SM[ie]=param->g2hcc_SM[ie]=param->g2hbb_SM[ie]=param->g2htoptop_SM[ie]=param->g2htautau_SM[ie]=param->g2hWW_SM[ie]=param->g2hgg_SM[ie]=param->g2hgaga_SM[ie]=param->g2hZga_SM[ie]=param->g2hZZ_SM[ie]=-1.;
-	
-	param->g2h0ss=param->g2h0cc=param->g2h0bb=param->g2h0toptop=param->g2h0tautau=param->g2h0WW=param->g2h0gg=param->g2h0gaga=param->g2h0Zga=param->g2h0ZZ=0.;
-	param->g2H0ss=param->g2H0cc=param->g2H0bb=param->g2H0toptop=param->g2H0tautau=param->g2H0WW=param->g2H0gg=param->g2H0gaga=param->g2H0Zga=param->g2H0ZZ=0.;
-	param->g2A0ss=param->g2A0cc=param->g2A0bb=param->g2A0toptop=param->g2A0tautau=param->g2A0WW=param->g2A0gg=param->g2A0gaga=param->g2A0Zga=param->g2A0ZZ=0.;
-	param->g2H03ss=param->g2H03cc=param->g2H03bb=param->g2H03toptop=param->g2H03tautau=param->g2H03WW=param->g2H03gg=param->g2H03gaga=param->g2H03Zga=param->g2H03ZZ=0.;
-	param->g2A02ss=param->g2A02cc=param->g2A02bb=param->g2A02toptop=param->g2A02tautau=param->g2A02WW=param->g2A02gg=param->g2A02gaga=param->g2A02Zga=param->g2A02ZZ=0.;
-
-param->g2h0Zh0=param->g2h0ZH0=param->g2h0ZA0=param->g2h0ZA02=param->g2h0ZH03=param->BRh0H0H0=param->BRh0A0A0=param->BRh0A02A02=param->BRh0H03H03=0.;	param->g2H0Zh0=param->g2H0ZH0=param->g2H0ZA0=param->g2H0ZA02=param->g2H0ZH03=param->BRH0h0h0=param->BRH0A0A0=param->BRH0A02A02=param->BRH0H03H03=0.;	param->g2A0Zh0=param->g2A0ZH0=param->g2A0ZA0=param->g2A0ZA02=param->g2A0ZH03=param->BRA0h0h0=param->BRA0H0H0=param->BRA0A02A02=param->BRA0H03H03=0.;	param->g2A02Zh0=param->g2A02ZH0=param->g2A02ZA0=param->g2A02ZA02=param->g2A02ZH03=param->BRA02h0h0=param->BRA02H0H0=param->BRA02A0A0=param->BRA02H03H03=0.;	param->g2H03Zh0=param->g2H03ZH0=param->g2H03ZA0=param->g2H03ZA02=param->g2H03ZH03=param->BRH03h0h0=param->BRH03H0H0=param->BRH03A0A0=param->BRH03A02A02=0.;
-	
-	param->BRh0invisible=param->BRH0invisible=param->BRA0invisible=param->BRA02invisible=param->BRH03invisible=0.;
-
-	param->BRHcs=param->BRHcb=param->BRHtaunu=0.;
-	
-	param->BRtWb=param->BRtHb=0.;
-	
 	return;
 }
 
@@ -408,8 +376,6 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 	
 	if(param->model<0) return 0;	
 	
-	param->BRh0invisible=param->BRH0invisible=param->BRA0invisible=0.;
-
 	lecture = fopen(name,"r");
 	while(EOF != fscanf(lecture,"%s",dummy))
 	{
@@ -497,8 +463,8 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				{
 					case 1: fscanf(lecture,"%lf",&param->CKM_lambda); break;
 					case 2: fscanf(lecture,"%lf",&param->CKM_A); break;
-					case 3: fscanf(lecture,"%lf",&param->CKM_rho); break;
-					case 4: fscanf(lecture,"%lf",&param->CKM_eta); break;
+					case 3: fscanf(lecture,"%lf",&param->CKM_rhobar); break;
+					case 4: fscanf(lecture,"%lf",&param->CKM_etabar); break;
 				}
 			}	
 			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
@@ -1633,283 +1599,6 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			}	
 			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}		
-		else if(!strcasecmp(dummy,"DECAY"))
-		{
-			fscanf(lecture,"%s",dummy); 
-			switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
-			{
-				case 6:
-				{
-					fscanf(lecture,"%lf",&param->width_top);
-					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
-					{
-						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
-						{
-							fscanf(lecture,"%s",nda);
-							fscanf(lecture,"%s",id1);
-							fscanf(lecture,"%s",id2);
-							if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"24")))||((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"5")))) param->BRtWb=atof(dummy);
-							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"37")))||((!strcasecmp(id1,"37"))&&(!strcasecmp(id2,"5")))) param->BRtHb=atof(dummy);
-						}
-					}
-					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
-					break;
-				}
-				case 23: fscanf(lecture,"%lf",&param->width_Z); break;
-				case 24: fscanf(lecture,"%lf",&param->width_W); break;
-				case 25:
-				{
-					fscanf(lecture,"%lf",&param->width_h0);
-					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
-					{
-						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
-						{	
-							fscanf(lecture,"%s",nda);
-							fscanf(lecture,"%s",id1);
-							fscanf(lecture,"%s",id2);
-							if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2h0ss=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2h0cc=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2h0bb=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2h0toptop=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2h0tautau=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2h0WW=atof(dummy)*param->width_h0;
-							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2h0gg=atof(dummy)*param->width_h0;
-							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2h0gaga=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2h0ZH0=atof(dummy)*param->width_h0;
-							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2h0ZZ=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2h0Zh0=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2h0Zh0=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2h0ZH0=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2h0ZA0=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2h0ZA02=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2h0ZH03=atof(dummy)*param->width_h0;
-							else if((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"35"))) param->BRh0H0H0=atof(dummy);
-							else if((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"36"))) param->BRh0A0A0=atof(dummy);
-							else if((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"46"))) param->BRh0A02A02=atof(dummy);
-							else if((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"45"))) param->BRh0H03H03=atof(dummy);
-							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRh0invisible+=atof(dummy);
-
-						}
-					}	
-					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
-					break;
-				}
-				case 26:
-				{
-					fscanf(lecture,"%lf",&param->width_h0);
-					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
-					{
-						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
-						{
-							fscanf(lecture,"%s",nda);
-							fscanf(lecture,"%s",id1);
-							fscanf(lecture,"%s",id2);
-							if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2h0ss=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2h0cc=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2h0bb=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2h0toptop=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2h0tautau=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2h0WW=atof(dummy)*param->width_h0;
-							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2h0gg=atof(dummy)*param->width_h0;
-							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2h0gaga=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"22")))||((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"23")))) param->g2h0Zga=atof(dummy)*param->width_h0;
-							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2h0ZZ=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2h0Zh0=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2h0Zh0=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2h0ZH0=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2h0ZA0=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2h0ZA02=atof(dummy)*param->width_h0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2h0ZH03=atof(dummy)*param->width_h0;
-							else if((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"35"))) param->BRh0H0H0=atof(dummy);
-							else if((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"36"))) param->BRh0A0A0=atof(dummy);
-							else if((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"46"))) param->BRh0A02A02=atof(dummy);
-							else if((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"45"))) param->BRh0H03H03=atof(dummy);
-							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRh0invisible+=atof(dummy);
-
-						}
-					}
-					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
-					break;
-				}
-				case 35:
-				{
-					fscanf(lecture,"%lf",&param->width_H0);
-					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
-					{
-						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
-						{
-							fscanf(lecture,"%s",nda);
-							fscanf(lecture,"%s",id1);
-							fscanf(lecture,"%s",id2);					if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2H0ss=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2H0cc=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2H0bb=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2H0toptop=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2H0tautau=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2H0WW=atof(dummy)*param->width_H0;
-							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2H0gg=atof(dummy)*param->width_H0;
-							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2H0gaga=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"22")))||((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"23")))) param->g2H0Zga=atof(dummy)*param->width_H0;
-							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2H0ZZ=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2H0Zh0=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2H0Zh0=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2H0ZH0=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2H0ZA0=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2H0ZA02=atof(dummy)*param->width_H0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2H0ZH03=atof(dummy)*param->width_H0;
-							else if((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"25"))) param->BRH0h0h0=atof(dummy);
-							else if((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"26"))) param->BRH0h0h0=atof(dummy);
-							else if((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"36"))) param->BRH0A0A0=atof(dummy);
-							else if((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"46"))) param->BRH0A02A02=atof(dummy);
-							else if((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"45"))) param->BRH0H03H03=atof(dummy);
-							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRH0invisible+=atof(dummy);
-						}
-					}	
-					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
-					break;
-				}
-				case 36:
-				{
-					fscanf(lecture,"%lf",&param->width_A0);
-					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
-					{
-						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
-						{
-							fscanf(lecture,"%s",nda);
-							fscanf(lecture,"%s",id1);
-							fscanf(lecture,"%s",id2);
-							if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2A0ss=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2A0cc=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2A0bb=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2A0toptop=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2A0tautau=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2A0WW=atof(dummy)*param->width_A0;
-							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2A0gg=atof(dummy)*param->width_A0;
-							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2A0gaga=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"22")))||((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"23")))) param->g2A0Zga=atof(dummy)*param->width_A0;
-							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2A0ZZ=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2A0Zh0=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2A0Zh0=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2A0ZH0=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2A0ZA0=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2A0ZH0=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2A0ZA0=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2A0ZA02=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2A0ZH03=atof(dummy)*param->width_A0;
-							else if((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"25"))) param->BRA0h0h0=atof(dummy);
-							else if((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"26"))) param->BRA0h0h0=atof(dummy);
-							else if((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"35"))) param->BRA0H0H0=atof(dummy);
-							else if((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"46"))) param->BRA0A02A02=atof(dummy);
-							else if((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"45"))) param->BRA0H03H03=atof(dummy);
-							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRA0invisible+=atof(dummy);
-						}
-					}
-					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
-					break;
-				}
-				case 37: 
-				{
-					fscanf(lecture,"%lf",&param->width_H);
-					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
-					{
-						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
-						{
-							fscanf(lecture,"%s",nda);
-							fscanf(lecture,"%s",id1);
-							fscanf(lecture,"%s",id2);
-							if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"4")))) param->BRHcs=atof(dummy);
-							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"4")))) param->BRHcb=atof(dummy);
-							else if(((!strcasecmp(id1,"16"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"16")))) param->BRHtaunu=atof(dummy);
-						}
-					}
-					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
-					break;
-				}
-				case 45:
-				{
-					fscanf(lecture,"%lf",&param->width_H03);
-					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
-					{
-						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
-						{
-							fscanf(lecture,"%s",nda);
-							fscanf(lecture,"%s",id1);
-							fscanf(lecture,"%s",id2);					if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2H03ss=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2H03cc=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2H03bb=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2H03toptop=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2H03tautau=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2H03WW=atof(dummy)*param->width_H03;
-							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2H03gg=atof(dummy)*param->width_H03;
-							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2H03gaga=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"22")))||((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"23")))) param->g2H03Zga=atof(dummy)*param->width_H03;
-							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2H03ZZ=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2H03Zh0=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2H03Zh0=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2H03ZH0=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2H03ZA0=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2H03ZA02=atof(dummy)*param->width_H03;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2H03ZH03=atof(dummy)*param->width_H03;
-							else if((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"25"))) param->BRH03h0h0=atof(dummy);
-							else if((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"26"))) param->BRH03h0h0=atof(dummy);
-							else if((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"35"))) param->BRH03H0H0=atof(dummy);
-							else if((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"36"))) param->BRH03A0A0=atof(dummy);
-							else if((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"46"))) param->BRH03A02A02=atof(dummy);
-							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRH03invisible+=atof(dummy);
-						}
-					}	
-					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
-					break;
-				}
-				case 46:
-				{
-					fscanf(lecture,"%lf",&param->width_A02);
-					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
-					{
-						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
-						{
-							fscanf(lecture,"%s",nda);
-							fscanf(lecture,"%s",id1);
-							fscanf(lecture,"%s",id2);
-							if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2A02ss=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2A02cc=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2A02bb=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2A02toptop=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2A02tautau=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2A02WW=atof(dummy)*param->width_A02;
-							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2A02gg=atof(dummy)*param->width_A02;
-							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2A02gaga=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"22")))||((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"23")))) param->g2A02Zga=atof(dummy)*param->width_A02;
-							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2A02ZZ=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2A02Zh0=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2A02Zh0=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2A02ZH0=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2A02ZA0=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2A0ZH0=atof(dummy)*param->width_A0;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2A02ZA0=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2A02ZA02=atof(dummy)*param->width_A02;
-							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2A02ZH03=atof(dummy)*param->width_A02;
-							else if((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"25"))) param->BRA02h0h0=atof(dummy);
-							else if((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"26"))) param->BRA02h0h0=atof(dummy);
-							else if((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"35"))) param->BRA02H0H0=atof(dummy);
-							else if((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"36"))) param->BRA02A0A0=atof(dummy);
-							else if((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"45"))) param->BRA02H03H03=atof(dummy);
-							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRA02invisible+=atof(dummy);
-						}
-					}
-					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
-					break;
-				}
-			}		
-			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
-		}
 	}
 	fclose(lecture);
 
@@ -2019,8 +1708,8 @@ void slha_adjust(struct parameters* param)
 		}
 		param->mass_t1=mass[iemax];
 
-		param->stop_mix[1][1]=param->sU_mix[1][6];
-		param->stop_mix[1][2]=param->sU_mix[1][3];
+		param->stop_mix[1][1]=param->sU_mix[1][3];
+		param->stop_mix[1][2]=param->sU_mix[1][6];
 	}	
 			
 	dum=atan(param->stop_mix[1][2]/param->stop_mix[1][1]);
@@ -2091,8 +1780,8 @@ void slha_adjust(struct parameters* param)
 		}
 		param->mass_b2=mass[iemax];
 
-		param->sbot_mix[1][1]=param->sD_mix[1][6];
-		param->sbot_mix[1][2]=param->sD_mix[1][3];
+		param->sbot_mix[1][1]=param->sD_mix[1][3];
+		param->sbot_mix[1][2]=param->sD_mix[1][6];
 	}
 		
 	dum=atan(param->sbot_mix[1][2]/param->sbot_mix[1][1]);
@@ -2163,8 +1852,8 @@ void slha_adjust(struct parameters* param)
 		}
 		param->mass_tau1=mass[iemax];
 
-		param->stau_mix[1][1]=param->sE_mix[1][6];
-		param->stau_mix[1][2]=param->sE_mix[1][3];
+		param->stau_mix[1][1]=param->sE_mix[1][3];
+		param->stau_mix[1][2]=param->sE_mix[1][6];
 	}
 		
 	dum=atan(param->stau_mix[1][2]/param->stau_mix[1][1]);
@@ -2182,16 +1871,46 @@ void slha_adjust(struct parameters* param)
  	param->mass_b_1S=mb_1S(param);
 	
 	param->mtmt=mt_mt(param);
+	
+	if(param->CKM_lambda*param->CKM_A*param->CKM_rhobar!=0.)
+	{
+		double s12,s13,s23,c12,c13,c23;
+		double complex expid;
+	
+		s12=param->CKM_lambda;
+		s23=param->CKM_A*param->CKM_lambda*param->CKM_lambda;
+		s13=cabs(param->CKM_A*pow(param->CKM_lambda,3.)*(param->CKM_rhobar+I*param->CKM_etabar)*sqrt(1.-pow(param->CKM_A*param->CKM_lambda*param->CKM_lambda,2.))/sqrt(1.-param->CKM_lambda*param->CKM_lambda)/(1.-pow(param->CKM_A*param->CKM_lambda*param->CKM_lambda,2.)*(param->CKM_rhobar+I*param->CKM_etabar)));
+		expid=(param->CKM_A*pow(param->CKM_lambda,3.)*(param->CKM_rhobar+I*param->CKM_etabar)*sqrt(1.-pow(param->CKM_A*param->CKM_lambda*param->CKM_lambda,2.))/sqrt(1.-param->CKM_lambda*param->CKM_lambda)/(1.-pow(param->CKM_A*param->CKM_lambda*param->CKM_lambda,2.)*(param->CKM_rhobar+I*param->CKM_etabar)))/s13;
+	
+		c12=sqrt(1.-s12*s12);
+		c13=sqrt(1.-s13*s13);
+		c23=sqrt(1.-s23*s23);
 
-	param->Vud=param->CKM[1][1];
-	param->Vus=param->CKM[1][2];
-	param->Vub=param->CKM[1][3];
-	param->Vcd=param->CKM[2][1];
-	param->Vcs=param->CKM[2][2];
-	param->Vcb=param->CKM[2][3];
-	param->Vtd=param->CKM[3][1];
-	param->Vts=param->CKM[3][2];
-	param->Vtb=param->CKM[3][3];
+		param->CKM[1][1]=c12*c13;
+		param->CKM[1][2]=s12*c13;
+		param->CKM[1][3]=creal(s13/expid);
+		param->IMCKM[1][3]=cimag(s13/expid);
+		param->CKM[2][1]=creal(-s12*c23-c12*s23*s13*expid);
+		param->IMCKM[2][1]=cimag(-s12*c23-c12*s23*s13*expid);
+		param->CKM[2][2]=creal(c12*c23-s12*s23*s13*expid);
+		param->IMCKM[2][2]=cimag(c12*c23-s12*s23*s13*expid);
+		param->CKM[2][3]=s23*c13;
+		param->CKM[3][1]=creal(s12*s23-c12*c23*s13*expid);
+		param->IMCKM[3][1]=cimag(s12*s23-c12*c23*s13*expid);
+		param->CKM[3][2]=creal(-c12*s23-s12*c23*s13*expid);
+		param->IMCKM[3][2]=cimag(-c12*s23-s12*c23*s13*expid);
+		param->CKM[3][3]=c23*c13;
+	}
+
+	param->Vud=param->CKM[1][1]+I*param->IMCKM[1][1];
+	param->Vus=param->CKM[1][2]+I*param->IMCKM[1][2];
+	param->Vub=param->CKM[1][3]+I*param->IMCKM[1][3];
+	param->Vcd=param->CKM[2][1]+I*param->IMCKM[2][1];
+	param->Vcs=param->CKM[2][2]+I*param->IMCKM[2][2];
+	param->Vcb=param->CKM[2][3]+I*param->IMCKM[2][3];
+	param->Vtd=param->CKM[3][1]+I*param->IMCKM[3][1];
+	param->Vts=param->CKM[3][2]+I*param->IMCKM[3][2];
+	param->Vtb=param->CKM[3][3]+I*param->IMCKM[3][3];
 	
 	return;
 }
@@ -2214,3 +1933,4 @@ int test_slha(char name[])
 
 	return param.model;
 }
+

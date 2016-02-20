@@ -20,10 +20,10 @@ all: libisospin.a
 	   esac
 	   
 clean:
-	rm -f *.a isajet.h softsusy.h spheno.h suspect.h 2hdmc.h hdecay.h higgsbounds.h	nmssmtools.h
+	rm -f *.a isajet.h softsusy.h spheno.h suspect.h nmssmtools.h 2hdmc.h higgsbounds.h
 
 distclean: 
-	rm -f *.a *.o *.x isajet.h softsusy.h spheno.h suspect.h 2hdmc.h hdecay.h higgsbounds.h nmssmtools.h
+	rm -f *.a *.o *.x isajet.h softsusy.h spheno.h suspect.h nmssmtools.h 2hdmc.h higgsbounds.h
 	
 libisospin.a: libisospin.a(softsusy.o) libisospin.a(leshouches.o)\
 	  libisospin.a(isospin.o) libisospin.a(isajet.o) libisospin.a(wilson.o)\
@@ -32,9 +32,8 @@ libisospin.a: libisospin.a(softsusy.o) libisospin.a(leshouches.o)\
 	  libisospin.a(btaunu.o) libisospin.a(bdtaunu.o) libisospin.a(kmunu.o)\
 	  libisospin.a(bsmumu.o) libisospin.a(dslnu.o) libisospin.a(dmunu.o)\
 	  libisospin.a(spheno.o) libisospin.a(suspect.o) libisospin.a(2hdmc.o)\
-	  libisospin.a(hdecay.o) libisospin.a(higgsbounds.o) libisospin.a(flha.o)\
-	  libisospin.a(nmssmtools.o)
-	$(RANL)
+	  libisospin.a(nmssmtools.o) libisospin.a(higgsbounds.o) libisospin.a(flha.o)\
+	  $(RANL)
 
 libisospin.a(softsusy.o): softsusy.c include.h softsusy.h
 libisospin.a(leshouches.o): leshouches.c include.h
@@ -56,7 +55,6 @@ libisospin.a(dmunu.o): dmunu.c include.h
 libisospin.a(spheno.o): spheno.c include.h spheno.h
 libisospin.a(suspect.o): suspect.c include.h suspect.h
 libisospin.a(2hdmc.o): 2hdmc.c include.h 2hdmc.h
-libisospin.a(hdecay.o): hdecay.c hdecay.h include.h
 libisospin.a(higgsbounds.o): higgsbounds.c higgsbounds.h include.h
 libisospin.a(flha.o): flha.c include.h
 libisospin.a(nmssmtools.o): nmssmtools.c include.h nmssmtools.h
@@ -73,14 +71,11 @@ spheno.h:
 suspect.h:
 	@echo \#define SUSPECT \"$(SUSPECT)\" > suspect.h;
 	
+nmssmtools.h:
+	@echo \#define NMSSMTools \"$(NMSSMTools)\" > nmssmtools.h;
+
 2hdmc.h:
 	@echo \#define THDMC \"$(THDMC)\" > 2hdmc.h;
 
-hdecay.h:
-	@echo \#define HDECAY \"$(HDECAY)\" > hdecay.h;
-
 higgsbounds.h:
-	@echo \#define HIGGSBOUNDS \"$(HIGGSBOUNDS)\" > higgsbounds.h;
-
-nmssmtools.h:
-	@echo \#define NMSSMTools \"$(NMSSMTools)\" > nmssmtools.h;
+	@echo \#define HBwithFH \"$(HBwithFH)\" > higgsbounds.h;

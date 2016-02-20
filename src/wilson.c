@@ -965,7 +965,7 @@ double C8c2MW(double x)
 	-0.001537*pow(z,4.)+0.0007532*pow(z,4.)*log(z);
 	
 	else return -1.676-0.1179*w-0.02926*w*w-0.01297*pow(w,3.)-0.007296*pow(w,4.)
-	-0.004672*pow(w,5.)-0.003248*pow(w,6.)-0.0002389*pow(w,7.)-0.001831*pow(w,8.);
+	-0.004672*pow(w,5.)-0.003248*pow(w,6.)-0.002389*pow(w,7.)-0.001831*pow(w,8.);
 }
 
 /*----------------------------------------------------------------------*/
@@ -978,13 +978,13 @@ double epsilon_0(struct parameters* param)
 	return 0.;
 #endif
 
- 	double sw=sin(atan(param->gp/param->g2));
+	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
 	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
 
 	return 2./3.*alphas_MSOFT/pi*((param->A_b/param->tan_beta-param->mu_Q)/param->mass_gluino*
 H2(param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino,param->mass_b2*param->mass_b2/param->mass_gluino/param->mass_gluino)	
 	-0.5*(B(param->mass_gluino,param->mass_b1, param->MSOFT_Q)+B(param->mass_gluino,param->mass_b2, param->MSOFT_Q))/param->tan_beta )
-	 +1./param->inv_alpha_em/sw/sw/4./pi*(param->mu_Q*param->M2_Q)*( +param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_b1/param->mass_b1,param->mu_Q*param->mu_Q/param->mass_b1/param->mass_b1)/param->mass_b1/param->mass_b1/2. +param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_b2/param->mass_b2,param->mu_Q*param->mu_Q/param->mass_b2/param->mass_b2)/param->mass_b2/param->mass_b2/2.);
+	 +1./param->inv_alpha_em/sw2/4./pi*(param->mu_Q*param->M2_Q)*( +param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_b1/param->mass_b1,param->mu_Q*param->mu_Q/param->mass_b1/param->mass_b1)/param->mass_b1/param->mass_b1/2. +param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_b2/param->mass_b2,param->mu_Q*param->mu_Q/param->mass_b2/param->mass_b2)/param->mass_b2/param->mass_b2/2.);
 }
 
 /*----------------------------------------------------------------------*/
@@ -997,9 +997,9 @@ double epsilon_2(struct parameters* param)
 	return 0.;
 #endif
 
- 	double sw=sin(atan(param->gp/param->g2));
+	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
 
-	return param->yut[3]*param->yut[3]/16./pi/pi*(param->mu_Q/param->tan_beta-param->A_t)*(param->charg_Umix[1][2]*param->charg_Vmix[1][2]/param->mass_cha1 *H2(param->mass_t1*param->mass_t1/param->mass_cha1/param->mass_cha1,param->mass_t2*param->mass_t2/param->mass_cha1/param->mass_cha1) +param->charg_Umix[2][2]*param->charg_Vmix[2][2]/param->mass_cha2*H2(param->mass_t1*param->mass_t1/param->mass_cha2/param->mass_cha2,param->mass_t2*param->mass_t2/param->mass_cha2/param->mass_cha2))	+1./param->inv_alpha_em/sw/sw/4./pi*(param->mu_Q*param->M2_Q)*(param->stop_mix[1][1]*param->stop_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_t1/param->mass_t1,param->mu_Q*param->mu_Q/param->mass_t1/param->mass_t1)/param->mass_t1/param->mass_t1 +param->stop_mix[1][2]*param->stop_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_t2/param->mass_t2,param->mu_Q*param->mu_Q/param->mass_t2/param->mass_t2)/param->mass_t2/param->mass_t2);
+	return param->yut[3]*param->yut[3]/16./pi/pi*(param->mu_Q/param->tan_beta-param->A_t)*(param->charg_Umix[1][2]*param->charg_Vmix[1][2]/param->mass_cha1 *H2(param->mass_t1*param->mass_t1/param->mass_cha1/param->mass_cha1,param->mass_t2*param->mass_t2/param->mass_cha1/param->mass_cha1) +param->charg_Umix[2][2]*param->charg_Vmix[2][2]/param->mass_cha2*H2(param->mass_t1*param->mass_t1/param->mass_cha2/param->mass_cha2,param->mass_t2*param->mass_t2/param->mass_cha2/param->mass_cha2))	+1./param->inv_alpha_em/sw2/4./pi*(param->mu_Q*param->M2_Q)*(param->stop_mix[1][1]*param->stop_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_t1/param->mass_t1,param->mu_Q*param->mu_Q/param->mass_t1/param->mass_t1)/param->mass_t1/param->mass_t1 +param->stop_mix[1][2]*param->stop_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_t2/param->mass_t2,param->mu_Q*param->mu_Q/param->mass_t2/param->mass_t2)/param->mass_t2/param->mass_t2);
 }
 
 /*----------------------------------------------------------------------*/
@@ -1018,7 +1018,7 @@ double epsilon_bp(struct parameters* param)
 #ifdef SM_ChargedHiggs
 	return 0.;
 #endif
- 	double sw=sin(atan(param->gp/param->g2));
+	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
 	double alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
 	int ie;
 	int nb_neut;
@@ -1026,7 +1026,7 @@ double epsilon_bp(struct parameters* param)
 
 	double epsilonbp=2./3.*alphas_MSOFT/pi*(param->A_b/param->tan_beta-param->mu_Q)/param->mass_gluino*( param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t1*param->mass_t1/param->mass_gluino/param->mass_gluino,param->mass_b2*param->mass_b2/param->mass_gluino/param->mass_gluino) +param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t1*param->mass_t1/param->mass_gluino/param->mass_gluino,param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t2*param->mass_t2/param->mass_gluino/param->mass_gluino,param->mass_b2*param->mass_b2/param->mass_gluino/param->mass_gluino) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t2*param->mass_t2/param->mass_gluino/param->mass_gluino,param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino));	
 	for(ie=1;ie<=nb_neut;ie++)	epsilonbp+=param->yut[3]*param->yut[3]/16./pi/pi*param->neut_mix[ie][4]*param->neut_mix[ie][3]*(param->A_t-param->mu_Q/param->tan_beta)/param->mass_neut[ie]*( param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t2*param->mass_t2/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b1*param->mass_b1/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t2*param->mass_t2/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b2*param->mass_b2/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t1*param->mass_t1/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b1*param->mass_b1/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t1*param->mass_t1/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b2*param->mass_b2/param->mass_neut[ie]/param->mass_neut[ie]));
-	epsilonbp+=1./param->inv_alpha_em/sw/sw/4./pi*(param->mu_Q*param->M2_Q)*( (param->stop_mix[1][1]*param->stop_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_t1/param->mass_t1,param->mu_Q*param->mu_Q/param->mass_t1/param->mass_t1)/param->mass_t1/param->mass_t1 +param->stop_mix[1][2]*param->stop_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_t2/param->mass_t2,param->mu_Q*param->mu_Q/param->mass_t2/param->mass_t2)/param->mass_t2/param->mass_t2)/2. +(param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_b1/param->mass_b1,param->mu_Q*param->mu_Q/param->mass_b1/param->mass_b1)/param->mass_b1/param->mass_b1 +param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_b2/param->mass_b2,param->mu_Q*param->mu_Q/param->mass_b2/param->mass_b2)/param->mass_b2/param->mass_b2));
+	epsilonbp+=1./param->inv_alpha_em/sw2/4./pi*(param->mu_Q*param->M2_Q)*( (param->stop_mix[1][1]*param->stop_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_t1/param->mass_t1,param->mu_Q*param->mu_Q/param->mass_t1/param->mass_t1)/param->mass_t1/param->mass_t1 +param->stop_mix[1][2]*param->stop_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_t2/param->mass_t2,param->mu_Q*param->mu_Q/param->mass_t2/param->mass_t2)/param->mass_t2/param->mass_t2)/2. +(param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_b1/param->mass_b1,param->mu_Q*param->mu_Q/param->mass_b1/param->mass_b1)/param->mass_b1/param->mass_b1 +param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_b2/param->mass_b2,param->mu_Q*param->mu_Q/param->mass_b2/param->mass_b2)/param->mass_b2/param->mass_b2));
 
 	return epsilonbp;
 }
@@ -1093,7 +1093,7 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 /*----------------------------------------------------------------------*/
 
 	double L=log(mu_W*mu_W/param->mass_W/param->mass_W);
-	double sw=sin(atan(param->gp/param->g2));
+	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
 
 	double xt= pow(mass_top_muW/param->mass_W,2.);
 	double yt= pow(mass_top_muW/param->mass_H,2.);
@@ -1103,8 +1103,8 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 	double C2SM_0 = 1.;
 	double C7SM_0 = -0.5*A0t(xt)-23./36.;
 	double C8SM_0 = -0.5*F0t(xt)-1./3.;
-	double C9SM_0 = (1.-4.*sw*sw)/sw/sw*C0t(xt)-B0t(xt)/sw/sw-D0t(xt) +1./4./sw/sw+38./27.-4./9.*L;
-	double C10SM_0 = (B0t(xt)-C0t(xt))/sw/sw-1./4./sw/sw;
+	double C9SM_0 = (1.-4.*sw2)/sw2*C0t(xt)-B0t(xt)/sw2-D0t(xt) +1./4./sw2+38./27.-4./9.*L;
+	double C10SM_0 = (B0t(xt)-C0t(xt))/sw2-1./4./sw2;
 
 	/* epsilon corrections */
 	
@@ -1121,8 +1121,8 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 	double C4SM_1 = E0t(xt)-7./9.+2./3.*L;
 	double C7SM_1 = -0.5*A1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW))+713./243.+4./81.*L-4./9.*C4SM_1;
 	double C8SM_1 = -0.5*F1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW))+91./324.-4./27.*L-C4SM_1/6.;
-	double C9SM_1 = (1.-4.*sw*sw)/sw/sw*C1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW))-B1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW))/sw/sw-D1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW)) +1./sw/sw+524./729.-128./243.*pi*pi-16./3.*L-128./81.*L*L;
-	double C10SM_1 = (B1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW))-C1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW)))/sw/sw-1./sw/sw;
+	double C9SM_1 = (1.-4.*sw2)/sw2*C1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW))-B1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW))/sw2-D1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW)) +1./sw2+524./729.-128./243.*pi*pi-16./3.*L-128./81.*L*L;
+	double C10SM_1 = (B1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW))-C1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW)))/sw2-1./sw2;
 
 	/* NNLO */
 	
@@ -1208,8 +1208,8 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 	double C7H_0=1./3.*lu*lu*F7_1(yt) - lu*ld*F7_2(yt);
 	double C8H_0=1./3.*lu*lu*F8_1(yt) - lu*ld*F8_2(yt);
 
-	double C9H_0=(1.-4.*sw*sw)/sw/sw*C9llH0(xt,yt,lu)-D9H0(yt,lu);
-	double C10H_0=-C9llH0(xt,yt,lu)/sw/sw;
+	double C9H_0=(1.-4.*sw2)/sw2*C9llH0(xt,yt,lu)-D9H0(yt,lu);
+	double C10H_0=-C9llH0(xt,yt,lu)/sw2;
 
 	/* NLO */
 
@@ -1217,8 +1217,8 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 	
  	double C7H_1= G7H(yt,lu,ld)+Delta7H(yt,lu,ld)*log(pow(mu_W/param->mass_H,2.))-4./9.*C4H_1;
 	double C8H_1= G8H(yt,lu,ld)+Delta8H(yt,lu,ld)*log(pow(mu_W/param->mass_H,2.))-1./6.*C4H_1;
-	double C9H_1=(1.-4.*sw*sw)/sw/sw*C9llH1(xt,yt,lu,log(pow(mu_W/param->mass_H,2.)))-D9H1(yt,lu,log(pow(mu_W/param->mass_H,2.)));
-	double C10H_1=-C9llH1(xt,yt,lu,log(pow(mu_W/param->mass_H,2.)))/sw/sw;
+	double C9H_1=(1.-4.*sw2)/sw2*C9llH1(xt,yt,lu,log(pow(mu_W/param->mass_H,2.)))-D9H1(yt,lu,log(pow(mu_W/param->mass_H,2.)));
+	double C10H_1=-C9llH1(xt,yt,lu,log(pow(mu_W/param->mass_H,2.)))/sw2;
 
 
 	/* NNLO */	
@@ -1242,7 +1242,7 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 	double Gamma_UL[7][4],Gamma_UR[7][4],Gamma_NL[4][4],Gamma_NR[4][4];
 	double Gamma_U[7][7],I_LR[7][7],P_U[7][7];
 	double X_UL[3][7][4],X_UR[3][7][4],X_NL[3][4][4],X_NR[3][4][4];
-	double MU[4],MD[4],ME[4],VCKM[4][4],Mch[3],MsqU[7],MsqD[7],Msn[4];
+	double MU[4],MD[4],ME[4],VCKM[4][4],Mch[3],MsqU[7],MsqD[7],Msn[4],mintmp;
 	double kappa,ag,aY,cosb,sinb,st,ct,alphas_mg;
 	int ae,be,ce,de,ee,fe,ge,je,ke;
 	
@@ -1293,45 +1293,65 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 		
 		Msn[1]=param->mass_nuel;
 		Msn[2]=param->mass_numl;
-		Msn[3]=param->mass_nutl;
+		Msn[3]=param->mass_nutl;		
+		if(param->sU_mix[1][1]*param->sU_mix[1][2]*param->sU_mix[1][3]*param->sU_mix[1][4]*param->sU_mix[1][5]*param->sU_mix[1][6]!=0.)
+		{
 		
-		Gamma_UL[1][1]=1.;
-		Gamma_UL[2][1]=0.;
-		Gamma_UL[3][1]=0.;
-		Gamma_UL[4][1]=0.;
-		Gamma_UL[5][1]=0.;
-		Gamma_UL[6][1]=0.;
-		Gamma_UL[1][2]=0.;
-		Gamma_UL[2][2]=1.;
-		Gamma_UL[3][2]=0.;
-		Gamma_UL[4][2]=0.;
-		Gamma_UL[5][2]=0.;
-		Gamma_UL[6][2]=0.;
-		Gamma_UL[1][3]=0.;
-		Gamma_UL[2][3]=0.;
-		Gamma_UL[3][3]=ct;
-		Gamma_UL[4][3]=0.;
-		Gamma_UL[5][3]=0.;
-		Gamma_UL[6][3]=-st;
+			for(je=1;je<=5;je++)
+			{
+				for(ie=je+1;ie<=6;ie++) if (MsqU[je]>MsqU[ie])
+				{
+					mintmp=MsqU[je];
+					MsqU[je]=MsqU[ie];
+					MsqU[ie]=mintmp;
+				}
+			}
 		
-		Gamma_UR[1][1]=0.;
-		Gamma_UR[2][1]=0.;
-		Gamma_UR[3][1]=0.;
-		Gamma_UR[4][1]=1.;
-		Gamma_UR[5][1]=0.;
-		Gamma_UR[6][1]=0.;
-		Gamma_UR[1][2]=0.;
-		Gamma_UR[2][2]=0.;
-		Gamma_UR[3][2]=0.;
-		Gamma_UR[4][2]=0.;
-		Gamma_UR[5][2]=1.;
-		Gamma_UR[6][2]=0.;
-		Gamma_UR[1][3]=0.;
-		Gamma_UR[2][3]=0.;
-		Gamma_UR[3][3]=st;
-		Gamma_UR[4][3]=0.;
-		Gamma_UR[5][3]=0.;
-		Gamma_UR[6][3]=ct;
+		
+			for(ae=1;ae<=6;ae++) for(ie=1;ie<=3;ie++) Gamma_UL[ae][ie]=param->sU_mix[ae][ie];
+			for(ae=1;ae<=6;ae++) for(ie=1;ie<=3;ie++) Gamma_UR[ae][ie]=param->sU_mix[ae][ie+3];
+		}
+		else
+		{
+			Gamma_UL[1][1]=1.;
+			Gamma_UL[2][1]=0.;
+			Gamma_UL[3][1]=0.;
+			Gamma_UL[4][1]=0.;
+			Gamma_UL[5][1]=0.;
+			Gamma_UL[6][1]=0.;
+			Gamma_UL[1][2]=0.;
+			Gamma_UL[2][2]=1.;
+			Gamma_UL[3][2]=0.;
+			Gamma_UL[4][2]=0.;
+			Gamma_UL[5][2]=0.;
+			Gamma_UL[6][2]=0.;
+			Gamma_UL[1][3]=0.;
+			Gamma_UL[2][3]=0.;
+			Gamma_UL[3][3]=ct;
+			Gamma_UL[4][3]=0.;
+			Gamma_UL[5][3]=0.;
+			Gamma_UL[6][3]=-st;
+		
+			Gamma_UR[1][1]=0.;
+			Gamma_UR[2][1]=0.;
+			Gamma_UR[3][1]=0.;
+			Gamma_UR[4][1]=1.;
+			Gamma_UR[5][1]=0.;
+			Gamma_UR[6][1]=0.;
+			Gamma_UR[1][2]=0.;
+			Gamma_UR[2][2]=0.;
+			Gamma_UR[3][2]=0.;
+			Gamma_UR[4][2]=0.;
+			Gamma_UR[5][2]=1.;
+			Gamma_UR[6][2]=0.;
+			Gamma_UR[1][3]=0.;
+			Gamma_UR[2][3]=0.;
+			Gamma_UR[3][3]=st;
+			Gamma_UR[4][3]=0.;
+			Gamma_UR[5][3]=0.;
+			Gamma_UR[6][3]=ct;
+		}
+
 
 		for(ae=1;ae<=6;ae++) for(ie=1;ie<=3;ie++)
 		{
@@ -1406,8 +1426,8 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 		for(ie=1;ie<=2;ie++) for(ae=1;ae<=6;ae++) D90c+=pow(param->mass_W/Mch[ie],2.)*X_UL[ie][ae][2]*X_UL[ie][ae][3]*h30(pow(MsqU[ae]/Mch[ie],2.));
 		D90c*=kappa;
 
-		C9charg_0=(1.-4.*sw*sw)/sw/sw*C90c-B90c/sw/sw-D90c;
-		C10charg_0=(B100c-C90c)/sw/sw;
+		C9charg_0=(1.-4.*sw2)/sw2*C90c-B90c/sw2-D90c;
+		C10charg_0=(B100c-C90c)/sw2;
 
 
 		/* NLO */
@@ -1465,8 +1485,8 @@ void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct
 		for(ie=1;ie<=2;ie++) for(ae=1;ae<=6;ae++) D91c+=pow(param->mass_W/Mch[ie],2.)*X_UL[ie][ae][2]*X_UL[ie][ae][3]*h31(pow(MsqU[ae]/Mch[ie],2.),log(pow(mu_W/MsqU[ae],2.)));
 		D91c*=kappa;
 
-		C9charg_1=(1.-4.*sw*sw)/sw/sw*C91c-B91c/sw/sw-D91c;
-		C10charg_1=(B101c-C91c)/sw/sw;
+		C9charg_1=(1.-4.*sw2)/sw2*C91c-B91c/sw2-D91c;
+		C10charg_1=(B101c-C91c)/sw2;
 
 
 		C7four_1=0.;
@@ -1519,8 +1539,8 @@ f50(pow(MsqU[ae]/Mch[ie],2.),pow(MsqU[ce]/Mch[ie],2.),pow(MsqU[de]/Mch[ie],2.))*
 		for(ie=1;ie<=2;ie++) for(ae=1;ae<=6;ae++) for(be=1;be<=6;be++) for(ce=1;ce<=6;ce++) D91f+= pow(param->mass_W/Mch[ie],2.)*P_U[ae][be]*pow(MsqU[be]/Mch[ie],2.)*P_U[be][ce]*(1.+log(pow(mu_W/MsqU[be],2.)))*X_UL[ie][ae][2]*X_UL[ie][ce][3]*q51(pow(MsqU[ae]/Mch[ie],2.),pow(MsqU[ce]/Mch[ie],2.));
 		D91f*=kappa; 
 
-		C9four_1=(1.-4.*sw*sw)/sw/sw*C91f-B91f/sw/sw-D91f;
-		C10four_1=(B101f-C91f)/sw/sw;
+		C9four_1=(1.-4.*sw2)/sw2*C91f-B91f/sw2-D91f;
+		C10four_1=(B101f-C91f)/sw2;
 
 
 		/* NNLO */
@@ -1881,9 +1901,6 @@ void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, d
 	-135.3141*pow(eta_mu,14./23.-1.)+146.6159*pow(eta_mu,16./23.-1.)
 	+36.4636*pow(eta_mu,14./23.-2.)-44.4043*pow(eta_mu,16./23.-2.)));
 	
-	C0b[9]=C0w[9]+4.*pi/alphas_muW*(-4./33.*(1.-pow(eta_mu,11./23.))+8./87.*(1.-pow(eta_mu,29./23.)))*C0w[2];
-	C1b[9]=C1w[9]+4.*pi/alphas_muW*(-4./33.*(1.-pow(eta_mu,11./23.))+8./87.*(1.-pow(eta_mu,29./23.)))*C1w[2];
-
 	C0b[10]=C0w[10];
 	C1b[10]=C1w[10];
 	
@@ -1977,8 +1994,7 @@ void Cprime_calculator(double Cpb[], double complex CQpb[], double mu_W, double 
 	
 	if((param->SM==1)||(param->THDM_model>0)||(param->mass_A02!=0.)||(param->mass_H03!=0.)) return;
 
-	double sw=sin(atan(param->gp/param->g2));
-	
+	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
 	double MU[4];
 	
 	double mass_c_muW=running_mass(param->mass_c,param->mass_c,mu_W,param->mass_top_pole,param->mass_b_pole,param);
@@ -2003,7 +2019,7 @@ void Cprime_calculator(double Cpb[], double complex CQpb[], double mu_W, double 
 	double Gamma_UL[7][4],Gamma_UR[7][4],Gamma_NL[4][4],Gamma_NR[4][4];
 	double Gamma_U[7][7], G_aimn[7][3][4][4];
 	double X_UL[3][7][4],X_UR[3][7][4],X_NL[3][4][4],X_NR[3][4][4];
-	double MD[4],ME[4],VCKM[4][4],Mch[3],MsqU[7],MsqD[7],Msn[4];
+	double MD[4],ME[4],VCKM[4][4],Mch[3],MsqU[7],MsqD[7],Msn[4],mintmp;
 	double kappa,ag,aY,cosb,sinb,st,ct,alphas_mg;
 	double a0a,a0b,a0c,a0Q1,a0Q2,a1,Dp,Dm;
 	int ae,be,ce,de,ee,fe,ge,je,ke,me,ne;
@@ -2052,44 +2068,63 @@ void Cprime_calculator(double Cpb[], double complex CQpb[], double mu_W, double 
 		aY=1.+alphas_mg/4./pi;
 		
 		kappa=1./(param->g2*param->g2*param->Vtb*param->Vts);
-				
-		Gamma_UL[1][1]=1.;
-		Gamma_UL[2][1]=0.;
-		Gamma_UL[3][1]=0.;
-		Gamma_UL[4][1]=0.;
-		Gamma_UL[5][1]=0.;
-		Gamma_UL[6][1]=0.;
-		Gamma_UL[1][2]=0.;
-		Gamma_UL[2][2]=1.;
-		Gamma_UL[3][2]=0.;
-		Gamma_UL[4][2]=0.;
-		Gamma_UL[5][2]=0.;
-		Gamma_UL[6][2]=0.;
-		Gamma_UL[1][3]=0.;
-		Gamma_UL[2][3]=0.;
-		Gamma_UL[3][3]=ct;
-		Gamma_UL[4][3]=0.;
-		Gamma_UL[5][3]=0.;
-		Gamma_UL[6][3]=-st;
+					if(param->sU_mix[1][1]*param->sU_mix[1][2]*param->sU_mix[1][3]*param->sU_mix[1][4]*param->sU_mix[1][5]*param->sU_mix[1][6]!=0.)
+		{
 		
-		Gamma_UR[1][1]=0.;
-		Gamma_UR[2][1]=0.;
-		Gamma_UR[3][1]=0.;
-		Gamma_UR[4][1]=1.;
-		Gamma_UR[5][1]=0.;
-		Gamma_UR[6][1]=0.;
-		Gamma_UR[1][2]=0.;
-		Gamma_UR[2][2]=0.;
-		Gamma_UR[3][2]=0.;
-		Gamma_UR[4][2]=0.;
-		Gamma_UR[5][2]=1.;
-		Gamma_UR[6][2]=0.;
-		Gamma_UR[1][3]=0.;
-		Gamma_UR[2][3]=0.;
-		Gamma_UR[3][3]=st;
-		Gamma_UR[4][3]=0.;
-		Gamma_UR[5][3]=0.;
-		Gamma_UR[6][3]=ct;
+			for(je=1;je<=5;je++)
+			{
+				for(ie=je+1;ie<=6;ie++) if (MsqU[je]>MsqU[ie])
+				{
+					mintmp=MsqU[je];
+					MsqU[je]=MsqU[ie];
+					MsqU[ie]=mintmp;
+				}
+			}
+		
+		
+			for(ae=1;ae<=6;ae++) for(ie=1;ie<=3;ie++) Gamma_UL[ae][ie]=param->sU_mix[ae][ie];
+			for(ae=1;ae<=6;ae++) for(ie=1;ie<=3;ie++) Gamma_UR[ae][ie]=param->sU_mix[ae][ie+3];
+		}
+		else
+		{
+			Gamma_UL[1][1]=1.;
+			Gamma_UL[2][1]=0.;
+			Gamma_UL[3][1]=0.;
+			Gamma_UL[4][1]=0.;
+			Gamma_UL[5][1]=0.;
+			Gamma_UL[6][1]=0.;
+			Gamma_UL[1][2]=0.;
+			Gamma_UL[2][2]=1.;
+			Gamma_UL[3][2]=0.;
+			Gamma_UL[4][2]=0.;
+			Gamma_UL[5][2]=0.;
+			Gamma_UL[6][2]=0.;
+			Gamma_UL[1][3]=0.;
+			Gamma_UL[2][3]=0.;
+			Gamma_UL[3][3]=ct;
+			Gamma_UL[4][3]=0.;
+			Gamma_UL[5][3]=0.;
+			Gamma_UL[6][3]=-st;
+		
+			Gamma_UR[1][1]=0.;
+			Gamma_UR[2][1]=0.;
+			Gamma_UR[3][1]=0.;
+			Gamma_UR[4][1]=1.;
+			Gamma_UR[5][1]=0.;
+			Gamma_UR[6][1]=0.;
+			Gamma_UR[1][2]=0.;
+			Gamma_UR[2][2]=0.;
+			Gamma_UR[3][2]=0.;
+			Gamma_UR[4][2]=0.;
+			Gamma_UR[5][2]=1.;
+			Gamma_UR[6][2]=0.;
+			Gamma_UR[1][3]=0.;
+			Gamma_UR[2][3]=0.;
+			Gamma_UR[3][3]=st;
+			Gamma_UR[4][3]=0.;
+			Gamma_UR[5][3]=0.;
+			Gamma_UR[6][3]=ct;
+		}
 
 		for(ae=1;ae<=6;ae++) for(ie=1;ie<=3;ie++)
 		{
@@ -2147,7 +2182,7 @@ void Cprime_calculator(double Cpb[], double complex CQpb[], double mu_W, double 
 	
 	double BQ1pH=param->mass_mu*param->tan_beta*param->tan_beta/4./param->mass_W/param->mass_W*f70(xt,z);
 	
-	double complex CQ1pH=(NQ1pH+BQ1pH)*param->mass_s/sw/sw;
+	double complex CQ1pH=(NQ1pH+BQ1pH)*param->mass_s/sw2;
 	
 	double complex CQ2pH=CQ1pH;
 	
@@ -2161,8 +2196,8 @@ void Cprime_calculator(double Cpb[], double complex CQpb[], double mu_W, double 
 	); 	BQ1pc2+=X_UR[je][ae][2]*X_UL[ie][ae][3]/Mch[ie]/Mch[ie]*(X_NR[ie][be][2]*X_NL[je][be][2]*fabs(Mch[je]/Mch[ie])*f60(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.),pow(Msn[be]/Mch[ie],2.)));
 	}
 	
-	double BQ1pc=(BQ1pc1+BQ1pc2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw/sw;
-	double BQ2pc=(BQ1pc1-BQ1pc2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw/sw;
+	double BQ1pc=(BQ1pc1+BQ1pc2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw2;
+	double BQ2pc=(BQ1pc1-BQ1pc2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw2;
 
 	
 	double NQ1pc=0.;
@@ -2187,7 +2222,7 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 		NQ2pc+=G_aimn[ae][ie][me][ne]*Gamma_UL[be][me]*param->charg_Umix[je][2]*(a0Q2+a1*param->tan_beta);
 
 	}
-	NQ1pc*=param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*param->mass_s/sw/sw;	NQ2pc*=param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*param->mass_s/sw/sw;
+	NQ1pc*=param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*param->mass_s/sw2;	NQ2pc*=param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*param->mass_s/sw2;
 	
 	double complex CQ1pcharg=NQ1pc+BQ1pc;
 	
@@ -2224,7 +2259,7 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 	
 	if(param->SM==1) return;
 
-	double sw=sin(atan(param->gp/param->g2));
+	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
 
 	double MU[4];
 	
@@ -2255,24 +2290,24 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 
 	/* Wilson coefficients CQ1 et CQ2 in 2HDM */ 
  
-	double complex CQ1box=-param->mass_mu*(param->lambda_d[3][3]-MU[3]/mass_b_muW*param->lambda_u[3][3])*param->lambda_l[2][2]*pow(1./2./sw/param->mass_W,2.)*Bplus(param->mass_H*param->mass_H/param->mass_W/param->mass_W,MU[3]*MU[3]/param->mass_W/param->mass_W)/4.;
+	double complex CQ1box=-param->mass_mu*(param->lambda_d[3][3]-MU[3]/mass_b_muW*param->lambda_u[3][3])*param->lambda_l[2][2]*pow(1./2./param->mass_W,2.)/sw2*Bplus(param->mass_H*param->mass_H/param->mass_W/param->mass_W,MU[3]*MU[3]/param->mass_W/param->mass_W)/4.;
 
 	double complex CQ2box=-CQ1box;
 		
 	double Pplus=-D2(param->mass_H*param->mass_H/param->mass_W/param->mass_W,MU[3]*MU[3]/param->mass_W/param->mass_W)*MU[3]*MU[3]/param->mass_W/param->mass_W;
 	
-	double complex CQ1peng1=-param->mass_mu*(param->lambda_d[3][3]-MU[3]/mass_b_muW*param->lambda_u[3][3])*param->lambda_l[2][2]*pow(1./2./sw,2.)*Pplus*(sin(param->alpha)*sin(param->alpha)/param->mass_h0/param->mass_h0+cos(param->alpha)*cos(param->alpha)/param->mass_H0/param->mass_H0)/4.;
+	double complex CQ1peng1=-param->mass_mu*(param->lambda_d[3][3]-MU[3]/mass_b_muW*param->lambda_u[3][3])*param->lambda_l[2][2]/4./sw2*Pplus*(sin(param->alpha)*sin(param->alpha)/param->mass_h0/param->mass_h0+cos(param->alpha)*cos(param->alpha)/param->mass_H0/param->mass_H0)/4.;
 	
-	double complex CQ2peng1=param->mass_mu*(param->lambda_d[3][3]-MU[3]/mass_b_muW*param->lambda_u[3][3])*param->lambda_l[2][2]*pow(1./2./sw,2.)*Pplus/param->mass_A0/param->mass_A0/4.;
+	double complex CQ2peng1=param->mass_mu*(param->lambda_d[3][3]-MU[3]/mass_b_muW*param->lambda_u[3][3])*param->lambda_l[2][2]/4./sw2*Pplus/param->mass_A0/param->mass_A0/4.;
 		
-	double complex CQ1peng2=param->mass_mu*(param->lambda_d[3][3]-MU[3]/mass_b_muW*param->lambda_u[3][3])*param->lambda_l[2][2]*pow(1./2./sw,2.)*Pplus*(sin(param->alpha)*sin(param->alpha)/param->mass_h0/param->mass_h0*(param->mass_H*param->mass_H-param->mass_h0*param->mass_h0)/param->mass_W/param->mass_W+cos(param->alpha)*cos(param->alpha)/param->mass_H0/param->mass_H0*(param->mass_H*param->mass_H-param->mass_H0*param->mass_H0)/param->mass_W/param->mass_W)/4.;
+	double complex CQ1peng2=param->mass_mu*(param->lambda_d[3][3]-MU[3]/mass_b_muW*param->lambda_u[3][3])*param->lambda_l[2][2]/4./sw2*Pplus*(sin(param->alpha)*sin(param->alpha)/param->mass_h0/param->mass_h0*(param->mass_H*param->mass_H-param->mass_h0*param->mass_h0)/param->mass_W/param->mass_W+cos(param->alpha)*cos(param->alpha)/param->mass_H0/param->mass_H0*(param->mass_H*param->mass_H-param->mass_H0*param->mass_H0)/param->mass_W/param->mass_W)/4.;
 	
-	double complex CQ2peng2=-param->mass_mu*(param->lambda_d[3][3]-MU[3]/mass_b_muW*param->lambda_u[3][3])*param->lambda_l[2][2]*pow(1./2./sw,2.)*Pplus/param->mass_A0/param->mass_A0*(param->mass_H*param->mass_H-param->mass_A0*param->mass_A0)/param->mass_W/param->mass_W/4.;
+	double complex CQ2peng2=-param->mass_mu*(param->lambda_d[3][3]-MU[3]/mass_b_muW*param->lambda_u[3][3])*param->lambda_l[2][2]/4./sw2*Pplus/param->mass_A0/param->mass_A0*(param->mass_H*param->mass_H-param->mass_A0*param->mass_A0)/param->mass_W/param->mass_W/4.;
  
 	
-	double complex CQ1self=-param->mass_mu*param->lambda_d[3][3]*param->lambda_l[2][2]*pow(1./2./sw,2.)*(param->mass_H*param->mass_H/param->mass_W/param->mass_W+((param->lambda_d[3][3]+param->mass_s/mass_b_muW*param->lambda_d[2][2])*param->lambda_u[3][3]))*Pplus*(sin(param->alpha)*sin(param->alpha)/param->mass_h0/param->mass_h0+cos(param->alpha)*cos(param->alpha)/param->mass_H0/param->mass_H0)/4.;
+	double complex CQ1self=-param->mass_mu*param->lambda_d[3][3]*param->lambda_l[2][2]/4./sw2*(param->mass_H*param->mass_H/param->mass_W/param->mass_W+((param->lambda_d[3][3]+param->mass_s/mass_b_muW*param->lambda_d[2][2])*param->lambda_u[3][3]))*Pplus*(sin(param->alpha)*sin(param->alpha)/param->mass_h0/param->mass_h0+cos(param->alpha)*cos(param->alpha)/param->mass_H0/param->mass_H0)/4.;
 	
-	double complex CQ2self=param->mass_mu*param->lambda_d[3][3]*param->lambda_l[2][2]*pow(1./2./sw,2.)*(param->mass_H*param->mass_H/param->mass_W/param->mass_W+((param->lambda_d[3][3]-param->mass_s/mass_b_muW*param->lambda_d[2][2])*param->lambda_u[3][3]))*Pplus/param->mass_A0/param->mass_A0/4.;
+	double complex CQ2self=param->mass_mu*param->lambda_d[3][3]*param->lambda_l[2][2]/4./sw2*(param->mass_H*param->mass_H/param->mass_W/param->mass_W+((param->lambda_d[3][3]-param->mass_s/mass_b_muW*param->lambda_d[2][2])*param->lambda_u[3][3]))*Pplus/param->mass_A0/param->mass_A0/4.;
 		
 	
 	CQ1box *= 1.+param->mass_s/mass_b_muW*(param->lambda_d[2][2]-MU[3]/param->mass_s*param->lambda_u[3][3])/(param->lambda_d[3][3]-MU[3]/param->mass_s*param->lambda_u[3][3]);
@@ -2294,12 +2329,10 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 	CQ1H_0=(CQ1box+CQ1peng1+CQ1peng2+CQ1self);
 	CQ2H_0=(CQ2box+CQ2peng1+CQ2peng2+CQ2self);
 		
- 	/* printf("THDM CQ1H=%.5e\n",CQ1H_0*mass_b_muW/sw/sw); */
-	
 	if(param->THDM_model>0)
 	{
-		CQ0b[1]=(CQ1H_0)*mass_b_muW/sw/sw;
-		CQ0b[2]=(CQ2H_0)*mass_b_muW/sw/sw;
+		CQ0b[1]=(CQ1H_0)*mass_b_muW/sw2;
+		CQ0b[2]=(CQ2H_0)*mass_b_muW/sw2;
 	
 		CQ0b[1]*=pow(eta,-4./beta0);
 		CQ0b[2]*=pow(eta,-4./beta0);
@@ -2317,7 +2350,7 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 	double Gamma_UL[7][4],Gamma_UR[7][4],Gamma_NL[4][4],Gamma_NR[4][4];
 	double Gamma_U[7][7], G_aimn[7][3][4][4],I_LR[7][7],P_U[7][7];
 	double X_UL[3][7][4],X_UR[3][7][4],X_NL[3][4][4],X_NR[3][4][4];
-	double MD[4],ME[4],VCKM[4][4],Mch[3],MsqU[7],MsqD[7],Msn[4];
+	double MD[4],ME[4],VCKM[4][4],Mch[3],MsqU[7],MsqD[7],Msn[4],mintmp;
 	double kappa,ag,aY,cosb,sinb,st,ct,alphas_mg,temp;
 	double a0,a0Q1,a0Q2,a1,a0a,a0b,a0c,a0p,a2p,Dp,Dm,Dpm;
 	int ae,be,ce,de,ee,fe,ge,je,ke,me,ne;
@@ -2362,89 +2395,109 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 
 	if((param->mass_A02==0.)&&(param->mass_H03==0.))
 	{
-	alphas_mg=alphas_running(param->mass_gluino,param->mass_top_pole,param->mass_b_pole,param);
-	ag=1.-7./12./pi*alphas_mg;
-	aY=1.+alphas_mg/4./pi;
+		alphas_mg=alphas_running(param->mass_gluino,param->mass_top_pole,param->mass_b_pole,param);
+		ag=1.-7./12./pi*alphas_mg;
+		aY=1.+alphas_mg/4./pi;
 	
-	kappa=1./(param->g2*param->g2*param->Vtb*param->Vts);
+		kappa=1./(param->g2*param->g2*param->Vtb*param->Vts);
 		
-	Gamma_UL[1][1]=1.;
-	Gamma_UL[2][1]=0.;
-	Gamma_UL[3][1]=0.;
-	Gamma_UL[4][1]=0.;
-	Gamma_UL[5][1]=0.;
-	Gamma_UL[6][1]=0.;
-	Gamma_UL[1][2]=0.;
-	Gamma_UL[2][2]=1.;
-	Gamma_UL[3][2]=0.;
-	Gamma_UL[4][2]=0.;
-	Gamma_UL[5][2]=0.;
-	Gamma_UL[6][2]=0.;
-	Gamma_UL[1][3]=0.;
-	Gamma_UL[2][3]=0.;
-	Gamma_UL[3][3]=ct;
-	Gamma_UL[4][3]=0.;
-	Gamma_UL[5][3]=0.;
-	Gamma_UL[6][3]=-st;
+	if(param->sU_mix[1][1]*param->sU_mix[1][2]*param->sU_mix[1][3]*param->sU_mix[1][4]*param->sU_mix[1][5]*param->sU_mix[1][6]!=0.)
+		{
 		
-	Gamma_UR[1][1]=0.;
-	Gamma_UR[2][1]=0.;
-	Gamma_UR[3][1]=0.;
-	Gamma_UR[4][1]=1.;
-	Gamma_UR[5][1]=0.;
-	Gamma_UR[6][1]=0.;
-	Gamma_UR[1][2]=0.;
-	Gamma_UR[2][2]=0.;
-	Gamma_UR[3][2]=0.;
-	Gamma_UR[4][2]=0.;
-	Gamma_UR[5][2]=1.;
-	Gamma_UR[6][2]=0.;
-	Gamma_UR[1][3]=0.;
-	Gamma_UR[2][3]=0.;
-	Gamma_UR[3][3]=st;
-	Gamma_UR[4][3]=0.;
-	Gamma_UR[5][3]=0.;
-	Gamma_UR[6][3]=ct;
+			for(je=1;je<=5;je++)
+			{
+				for(ie=je+1;ie<=6;ie++) if (MsqU[je]>MsqU[ie])
+				{
+					mintmp=MsqU[je];
+					MsqU[je]=MsqU[ie];
+					MsqU[ie]=mintmp;
+				}
+			}
+		
+		
+			for(ae=1;ae<=6;ae++) for(ie=1;ie<=3;ie++) Gamma_UL[ae][ie]=param->sU_mix[ae][ie];
+			for(ae=1;ae<=6;ae++) for(ie=1;ie<=3;ie++) Gamma_UR[ae][ie]=param->sU_mix[ae][ie+3];
+		}
+		else
+		{
+			Gamma_UL[1][1]=1.;
+			Gamma_UL[2][1]=0.;
+			Gamma_UL[3][1]=0.;
+			Gamma_UL[4][1]=0.;
+			Gamma_UL[5][1]=0.;
+			Gamma_UL[6][1]=0.;
+			Gamma_UL[1][2]=0.;
+			Gamma_UL[2][2]=1.;
+			Gamma_UL[3][2]=0.;
+			Gamma_UL[4][2]=0.;
+			Gamma_UL[5][2]=0.;
+			Gamma_UL[6][2]=0.;
+			Gamma_UL[1][3]=0.;
+			Gamma_UL[2][3]=0.;
+			Gamma_UL[3][3]=ct;
+			Gamma_UL[4][3]=0.;
+			Gamma_UL[5][3]=0.;
+			Gamma_UL[6][3]=-st;
+		
+			Gamma_UR[1][1]=0.;
+			Gamma_UR[2][1]=0.;
+			Gamma_UR[3][1]=0.;
+			Gamma_UR[4][1]=1.;
+			Gamma_UR[5][1]=0.;
+			Gamma_UR[6][1]=0.;
+			Gamma_UR[1][2]=0.;
+			Gamma_UR[2][2]=0.;
+			Gamma_UR[3][2]=0.;
+			Gamma_UR[4][2]=0.;
+			Gamma_UR[5][2]=1.;
+			Gamma_UR[6][2]=0.;
+			Gamma_UR[1][3]=0.;
+			Gamma_UR[2][3]=0.;
+			Gamma_UR[3][3]=st;
+			Gamma_UR[4][3]=0.;
+			Gamma_UR[5][3]=0.;
+			Gamma_UR[6][3]=ct;
+		}
 
-	for(ae=1;ae<=6;ae++) for(ie=1;ie<=3;ie++)
-	{
-		Gamma_U[ae][ie]=Gamma_UL[ae][ie];
-		Gamma_U[ae][ie+3]=Gamma_UR[ae][ie];
-	}
+		for(ae=1;ae<=6;ae++) for(ie=1;ie<=3;ie++)
+		{
+			Gamma_U[ae][ie]=Gamma_UL[ae][ie];
+			Gamma_U[ae][ie+3]=Gamma_UR[ae][ie];
+		}
 		
-	for(ae=1;ae<=6;ae++) for(be=1;be<=6;be++) I_LR[ae][be]=0.;
-	for(ae=1;ae<=3;ae++) I_LR[ae][ae]=1.;
-	for(ae=4;ae<=6;ae++) I_LR[ae][ae]=-1.;
+		for(ae=1;ae<=6;ae++) for(be=1;be<=6;be++) I_LR[ae][be]=0.;
+		for(ae=1;ae<=3;ae++) I_LR[ae][ae]=1.;
+		for(ae=4;ae<=6;ae++) I_LR[ae][ae]=-1.;
 		
-	for(ae=1;ae<=6;ae++) for(be=1;be<=6;be++) for(ce=1;ce<=6;ce++) for(de=1;de<=6;de++) P_U[ae][be]=Gamma_U[ae][ce]*I_LR[ce][de]*Gamma_U[be][de];
+		for(ae=1;ae<=6;ae++) for(be=1;be<=6;be++) for(ce=1;ce<=6;ce++) for(de=1;de<=6;de++) P_U[ae][be]=Gamma_U[ae][ce]*I_LR[ce][de]*Gamma_U[be][de];
 		
-	for(ae=1;ae<=3;ae++) for(be=1;be<=3;be++) if(ae==be) Gamma_NL[ae][be]=Gamma_NR[ae][be]=1.; else Gamma_NL[ae][be]=Gamma_NR[ae][be]=0.;
+		for(ae=1;ae<=3;ae++) for(be=1;be<=3;be++) if(ae==be) Gamma_NL[ae][be]=Gamma_NR[ae][be]=1.; else Gamma_NL[ae][be]=Gamma_NR[ae][be]=0.;
 				
-	for(ie=1;ie<=2;ie++) for(ae=1;ae<=6;ae++) for(be=1;be<=3;be++)
-	{
-		X_UL[ie][ae][be]=0.;
-		for(ce=1;ce<=3;ce++) X_UL[ie][ae][be]+=-param->g2*(ag*param->charg_Vmix[ie][1]*Gamma_UL[ae][ce]-aY*param->charg_Vmix[ie][2]*Gamma_UR[ae][ce]*MU[ce]/(sqrt(2.)*param->mass_W*sinb))*VCKM[ce][be];
+		for(ie=1;ie<=2;ie++) for(ae=1;ae<=6;ae++) for(be=1;be<=3;be++)
+		{
+			X_UL[ie][ae][be]=0.;
+			for(ce=1;ce<=3;ce++) X_UL[ie][ae][be]+=-param->g2*(ag*param->charg_Vmix[ie][1]*Gamma_UL[ae][ce]-aY*param->charg_Vmix[ie][2]*Gamma_UR[ae][ce]*MU[ce]/(sqrt(2.)*param->mass_W*sinb))*VCKM[ce][be];
 		
-		X_UR[ie][ae][be]=0.;
-		for(ce=1;ce<=3;ce++) X_UR[ie][ae][be]+=param->g2*aY*param->charg_Umix[ie][2]*Gamma_UL[ae][ce]*VCKM[ce][be]*MD[be]/(sqrt(2)*param->mass_W*cosb);
-	}
+			X_UR[ie][ae][be]=0.;
+			for(ce=1;ce<=3;ce++) X_UR[ie][ae][be]+=param->g2*aY*param->charg_Umix[ie][2]*Gamma_UL[ae][ce]*VCKM[ce][be]*MD[be]/(sqrt(2)*param->mass_W*cosb);
+		}
 	
-	for(ie=1;ie<=2;ie++) for(ae=1;ae<=3;ae++) for(be=1;be<=3;be++)
-	{
-		X_NL[ie][ae][be]=-param->g2*param->charg_Vmix[ie][1]*Gamma_NL[ae][be];
-		X_NR[ie][ae][be]=param->g2*param->charg_Umix[ie][2]*Gamma_NL[ae][be]*ME[be]/(sqrt(2.)*param->mass_W*cosb);
-	}
+		for(ie=1;ie<=2;ie++) for(ae=1;ae<=3;ae++) for(be=1;be<=3;be++)
+		{
+			X_NL[ie][ae][be]=-param->g2*param->charg_Vmix[ie][1]*Gamma_NL[ae][be];
+			X_NR[ie][ae][be]=param->g2*param->charg_Umix[ie][2]*Gamma_NL[ae][be]*ME[be]/(sqrt(2.)*param->mass_W*cosb);
+		}
 		
-	for(ae=1;ae<=6;ae++) for(ie=1;ie<=2;ie++) for(me=1;me<=3;me++) for(ne=1;ne<=3;ne++)
-	{
-		G_aimn[ae][ie][me][ne]=0.5/sqrt(2.)*(sqrt(2.)*param->mass_W*param->charg_Vmix[ie][1]*Gamma_UL[ae][ne]*ag-MU[ne]*param->charg_Vmix[ie][2]*Gamma_UR[ae][ne]*aY)*(VCKM[me][3]*VCKM[ne][2]/VCKM[3][3]/VCKM[3][2]);
-	}
+		for(ae=1;ae<=6;ae++) for(ie=1;ie<=2;ie++) for(me=1;me<=3;me++) for(ne=1;ne<=3;ne++)
+		{
+			G_aimn[ae][ie][me][ne]=0.5/sqrt(2.)*(sqrt(2.)*param->mass_W*param->charg_Vmix[ie][1]*Gamma_UL[ae][ne]*ag-MU[ne]*param->charg_Vmix[ie][2]*Gamma_UR[ae][ne]*aY)*(VCKM[me][3]*VCKM[ne][2]/VCKM[3][3]/VCKM[3][2]);
+		}
 	
 	/* LO */
 	
 	double NQ10H=-param->mass_mu*param->tan_beta*param->tan_beta/4./param->mass_W/param->mass_W*xt*f30(xt,z);
 	double BQ10H=param->mass_mu*param->tan_beta*param->tan_beta/4./param->mass_W/param->mass_W*f70(xt,z);
-	CQ1H_0=(NQ10H+BQ10H)*mass_b_muW/sw/sw; 
+	CQ1H_0=(NQ10H+BQ10H)*mass_b_muW/sw2; 
 	CQ2H_0=-CQ1H_0;
 	
 	
@@ -2455,8 +2508,8 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 	{ BQ10c1+=X_UL[je][ae][2]*X_UR[ie][ae][3]/Mch[ie]/Mch[ie]*(X_NR[ie][be][2]*X_NL[je][be][2]*f50(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.),pow(Msn[be]/Mch[ie],2.)));
 BQ10c2+=X_UL[je][ae][2]*X_UR[ie][ae][3]/Mch[ie]/Mch[ie]*(X_NL[ie][be][2]*X_NR[je][be][2]*fabs(Mch[je]/Mch[ie])*f60(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.),pow(Msn[be]/Mch[ie],2.)));
 	}
-	double BQ10c=(BQ10c1+BQ10c2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw/sw;
-	double BQ20c=-(BQ10c1-BQ10c2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw/sw;
+	double BQ10c=(BQ10c1+BQ10c2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw2;
+	double BQ20c=-(BQ10c1-BQ10c2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw2;
 	
 	
 	double NQ10c=0.;
@@ -2480,8 +2533,8 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 		NQ10c+=G_aimn[ae][ie][me][ne]*Gamma_UL[be][me]*param->charg_Umix[je][2]*(a0Q1+a1*param->tan_beta);
 		NQ20c+=G_aimn[ae][ie][me][ne]*Gamma_UL[be][me]*param->charg_Umix[je][2]*(a0Q2+a1*param->tan_beta);
 	}
-	NQ10c*=param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw/sw;
-        NQ20c*=-param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw/sw;
+	NQ10c*=param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw2;
+        NQ20c*=-param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw2;
 
 
 	double complex CQ1charg_0=NQ10c+BQ10c;
@@ -2501,7 +2554,7 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 	
 	double NQ11H=-param->mass_mu*param->tan_beta*param->tan_beta/4./param->mass_W/param->mass_W*(f141(xt,z)+8.*xt*(f30(xt,z)+xt*(f30(xt*1.0001,z)-f30(xt*0.9999,z))/0.0002)*log(mu_W*mu_W/mass_top_muW/mass_top_muW));
 	double BQ11H=param->mass_mu*param->tan_beta*param->tan_beta/4./param->mass_W/param->mass_W*(f111(xt,z)+8.*(f70(xt*1.0001,z)-f70(xt*0.9999,z))/0.0002*log(mu_W*mu_W/mass_top_muW/mass_top_muW));
-	double CQ1H_1=(NQ11H+BQ11H)*mass_b_muW/sw/sw;
+	double CQ1H_1=(NQ11H+BQ11H)*mass_b_muW/sw2;
 	double CQ2H_1=-CQ1H_1;
 
 	/* NLO - charginos */
@@ -2512,8 +2565,8 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 	for(ie=1;ie<=2;ie++) for(je=1;je<=2;je++) for(ae=1;ae<=6;ae++) for(be=1;be<=3;be++) BQ11c1+=X_UL[je][ae][2]*X_UR[ie][ae][3]/Mch[ie]/Mch[ie]*(X_NR[ie][be][2]*X_NL[je][be][2]*(f121(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.),pow(Msn[be]/Mch[ie],2.))+4.*(f50(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.)*1.0001,pow(Msn[be]/Mch[ie],2.))-f50(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.)*0.9999,pow(Msn[be]/Mch[ie],2.)))/0.0002*log(pow(mass_top_muW/MsqU[ae],2.))));
 	for(ie=1;ie<=2;ie++) for(je=1;je<=2;je++) for(ae=1;ae<=6;ae++) for(be=1;be<=3;be++) BQ11c2+=X_UL[je][ae][2]*X_UR[ie][ae][3]/Mch[ie]/Mch[ie]*(X_NL[ie][be][2]*X_NR[je][be][2]*fabs(Mch[je]/Mch[ie])*(f131(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.),pow(Msn[be]/Mch[ie],2.))+4.*(f60(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.)*1.0001,pow(Msn[be]/Mch[ie],2.))-f60(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.)*0.9999,pow(Msn[be]/Mch[ie],2.)))/0.0002*log(pow(mass_top_muW/MsqU[ae],2.))));
 	
-	double BQ11c=(BQ11c1+BQ11c2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw/sw;
-	double BQ21c=-(BQ11c1-BQ11c2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw/sw;
+	double BQ11c=(BQ11c1+BQ11c2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw2;
+	double BQ21c=-(BQ11c1-BQ11c2)*kappa*param->mass_W*param->mass_W/2./param->g2/param->g2/sw2;
 	
 	
 	double NQ11c=0.;
@@ -2544,8 +2597,8 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 		+G_aimn[ae][ie][me][ne]*param->charg_Umix[je][2]*a0p
 		+Gamma_UL[be][me]*param->charg_Umix[je][2]*a2p*pow(param->mass_s*param->tan_beta,2.);
 	}
-		NQ11c*=param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw/sw;
-	NQ21c*=-param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw/sw;
+		NQ11c*=param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw2;
+	NQ21c*=-param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw2;
 	
 	double complex CQ1charg_1=NQ11c+BQ11c;
 
@@ -2574,8 +2627,8 @@ a0b=-(f40(pow(Mch[ie]/Mch[je],2.),pow(MsqU[ae]/Mch[je],2.))*param->charg_Umix[je
 		BQ11f2+=-X_UL[je][be][2]*X_UR[ie][ae][3]*pow(param->mass_W/Mch[ie],2.)*P_U[ae][ce]*MsqU[ce]/Mch[ie]*P_U[ce][be]*(1.+log(pow(mass_top_muW/MsqU[ce],2.)))	*(fabs(Mch[je]/Mch[ie])*f100(pow(Mch[je]/Mch[ie],2.),pow(MsqU[ae]/Mch[ie],2.),pow(MsqU[be]/Mch[ie],2.),pow(Msn[fe]/Mch[ie],2.))*X_NL[ie][fe][2]*X_NR[je][fe][2]);
 	}
 		
-	double BQ11f=(BQ11f1+BQ11f2)*2./3.*kappa/param->g2/param->g2/sw/sw;
-	double BQ21f=-(BQ11f1-BQ11f2)*2./3.*kappa/param->g2/param->g2/sw/sw;
+	double BQ11f=(BQ11f1+BQ11f2)*2./3.*kappa/param->g2/param->g2/sw2;
+	double BQ21f=-(BQ11f1-BQ11f2)*2./3.*kappa/param->g2/param->g2/sw2;
 	
 	double NQ11f=0.;
 	double NQ21f=0.;
@@ -2631,9 +2684,9 @@ Dm+=MU[fe]/sqrt(2.)/Mch[ie]*param->mu_Q*(Gamma_UR[ee][fe]*Gamma_UL[ge][fe]-Gamma
 	NQ11f+=Dp*temp;
 	NQ21f+=Dm*temp;
 	}
-		NQ11f*=-4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw/sw;
+		NQ11f*=-4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw2;
 
-NQ21f*=4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw/sw;
+NQ21f*=4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param->mass_W/(param->mass_H*param->mass_H-param->mass_W*param->mass_W)*aY*mass_b_muW/sw2;
 
 
 	double complex CQ1four_1=NQ11f+BQ11f;
@@ -2698,8 +2751,8 @@ NQ21f*=4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param-
 		
 		for(ae=1;ae<=2;ae++) for(ie=1;ie<=3;ie++) for(ke=1;ke<=3;ke++) T1[ae][ie][ke]=(TU[ie][3]*TU[ke][2]-TU[ie][2]*TU[ke][3])*((param->lambdaNMSSM/sqrt(2.)*(vd*param->A0_mix[ae][3]+s*param->A0_mix[ae][1]))-param->A_u*param->A0_mix[ae][2]);
 		
-		for(ae=1;ae<=3;ae++) for(ie=1;ie<=3;ie++) for(ke=1;ke<=3;ke++) T2[ae][ie][ke]=-mass_top_muW/2./param->mass_W*(2.*mass_top_muW*param->H0_mix[ae][2]*(TU[ie][2]*TU[ke][2]+TU[ie][3]*TU[ke][3])	+((param->lambdaNMSSM/sqrt(2.)*(vd*param->H0_mix[ae][3]+s*param->H0_mix[ae][1]))+param->A_u*param->H0_mix[ae][2])*(TU[ie][3]*TU[ke][2]+TU[ie][2]*TU[ke][3]))	+param->mass_Z/2./cos(asin(sw))*(1.-4./3.*sw*sw)*param->H0_mix[ae][2]*(TU[ie][1]*TU[ke][1]+TU[ie][2]*TU[ke][2])
-	+2./3.*param->mass_W*pow(tan(asin(sw)),2.)*param->H0_mix[ae][2]*TU[ie][3]*TU[ke][3];
+		for(ae=1;ae<=3;ae++) for(ie=1;ie<=3;ie++) for(ke=1;ke<=3;ke++) T2[ae][ie][ke]=-mass_top_muW/2./param->mass_W*(2.*mass_top_muW*param->H0_mix[ae][2]*(TU[ie][2]*TU[ke][2]+TU[ie][3]*TU[ke][3])	+((param->lambdaNMSSM/sqrt(2.)*(vd*param->H0_mix[ae][3]+s*param->H0_mix[ae][1]))+param->A_u*param->H0_mix[ae][2])*(TU[ie][3]*TU[ke][2]+TU[ie][2]*TU[ke][3]))	+param->mass_Z/2./sqrt(1.-sw2)*(1.-4./3.*sw2)*param->H0_mix[ae][2]*(TU[ie][1]*TU[ke][1]+TU[ie][2]*TU[ke][2])
+	+2./3.*param->mass_W*sw2/(1.-sw2)*param->H0_mix[ae][2]*TU[ie][3]*TU[ke][3];
 			
 		double complex CQ1H=0.;
 		for(ae=1;ae<=3;ae++) CQ1H+=(param->mass_H*param->mass_H/param->mass_W/param->mass_W*param->H0_mix[ae][1]*param->H0_mix[ae][1]*f30(param->mass_H*param->mass_H/mass_top_muW/mass_top_muW,param->mass_W*param->mass_W/mass_top_muW/mass_top_muW)	+mass_top_muW*mass_top_muW*mH0[ae]*mH0[ae]/param->mass_W/param->mass_W/param->mass_H/param->mass_H*f30(mass_top_muW*mass_top_muW/param->mass_H/param->mass_H,mass_top_muW*mass_top_muW/param->mass_W/param->mass_W))
@@ -2736,12 +2789,12 @@ NQ21f*=4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param-
 		double complex CAc=0.;
 		for(ie=1;ie<=3;ie++) for(je=1;je<=2;je++) for(le=1;le<=2;le++) CAc+=I*param->tan_beta/sqrt(2.)*G1[ie][ie][je][le]*(v_deltam_x*kron(le,je)*fabs(Mch[je]/param->mass_W)*f80(pow(mstop[ie-1]/Mch[je],2.))-(Ralj[1][je][le]*fabs(Mch[je]/Mch[le])*f30(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))-Ralj[1][le][je]*f40(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))));
 				
-		CQ0b[1]=(CQ1H+CQ1c)*mass_b_muW/sw/sw/epsfac;
-		CQ0b[2]=(CQ2H+CQ2c)*mass_b_muW/sw/sw/epsfac;
+		CQ0b[1]=(CQ1H+CQ1c)*mass_b_muW/sw2/epsfac;
+		CQ0b[2]=(CQ2H+CQ2c)*mass_b_muW/sw2/epsfac;
 
 		double complex CA=CAH+CAc;
 
-		if(param->mass_A0>mu_W) CQ0b[2]+=-v_deltam_x/2.*mass_b_muW/sw/sw*param->mass_mu*CA/param->mass_A0/param->mass_A0;
+		if(param->mass_A0>mu_W) CQ0b[2]+=-v_deltam_x/2.*mass_b_muW/sw2*param->mass_mu*CA/param->mass_A0/param->mass_A0;
 
 		CQ0b[1]*=pow(eta,-4./beta0);
 		CQ0b[2]*=pow(eta,-4./beta0);
@@ -2753,12 +2806,13 @@ NQ21f*=4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param-
 			double alphas_Ma1=alphas_running(param->mass_A0,param->mass_top_pole,param->mass_b_pole,param);	
 			double eta_a1=alphas_Ma1/alphas_mu;
 			double mass_b_ma1=running_mass(param->mass_b,param->mass_b,param->mass_A0,param->mass_top_pole,param->mass_b,param);
-	CQ0b[2]+=-v_deltam_x/2.*mass_b_ma1/sw/sw*param->mass_mu*CA/param->mass_A0/param->mass_A0*pow(eta_a1,-4./beta0);		
+	CQ0b[2]+=-v_deltam_x/2.*mass_b_ma1/sw2*param->mass_mu*CA/param->mass_A0/param->mass_A0*pow(eta_a1,-4./beta0);		
 		}
 		
 		if(param->mass_A0<param->mass_b_pole)
-		{	
-CQ0b[2]+=v_deltam_x/2.*param->mass_b/sw/sw*param->mass_mu*CA/(param->m_Bs*param->m_Bs-param->mass_A0*param->mass_A0+I*param->mass_A0*param->width_A0);
+		{
+			double width_A0=1.e-6;	
+CQ0b[2]+=v_deltam_x/2.*param->mass_b/sw2*param->mass_mu*CA/(param->m_Bs*param->m_Bs-param->mass_A0*param->mass_A0+I*param->mass_A0*width_A0);
 		}
 	}
 		

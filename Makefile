@@ -1,9 +1,9 @@
 .KEEP_STATE:
 
 #
-VERSION = v3.0
+VERSION = v3.1
 
-# Choose your compilers here (in general gcc/gfortran on Linux systems):
+# Choose your compilers here (usually gcc/gfortran on Linux systems):
 CC = gcc
 CFLAGS= -O3 -pipe -fomit-frame-pointer
 
@@ -26,9 +26,10 @@ SPHENO = ~/spheno/bin/SPheno
 NMSSMTOOLS = ~/nmssmtools/main
 # Add the link to 2HDMC directory, if available.
 THDMC = ~/2HDMC
-# Add the links to Hdecay and HiggsBounds, if available.
-HDECAY = ~/hdecay
-HIGGSBOUNDS = ~/higgsbounds/HiggsBounds-f77/HiggsBounds
+# To use Higgsbounds, add the links to HBwithFH, if available (see more details in README).
+# You must uncomment "#define USE_HIGGSBOUNDS" in the main programs.
+HBwithFH = ~/higgsbounds/HiggsBounds-f90/example_programs/HBwithFH
+
 
 CINCLUDE= -I./src -L./src
 
@@ -77,9 +78,7 @@ libisospin.a:
 	echo SPHENO = $(SPHENO) >> src/FlagsForMake;\
 	echo SUSPECT = $(SUSPECT) >> src/FlagsForMake;\
 	echo THDMC = $(THDMC) >> src/FlagsForMake;\
-        echo FEYNHIGGS = $(FEYNHIGGS)/build/FeynHiggs >> src/FlagsForMake;\
- 	echo HDECAY = $(HDECAY)/run >> src/FlagsForMake;\
- 	echo HIGGSBOUNDS = $(HIGGSBOUNDS) >> src/FlagsForMake;\
+ 	echo HBwithFH = $(HBwithFH) >> src/FlagsForMake;\
  	echo NMSSMTools = $(NMSSMTOOLS) >> src/FlagsForMake;
 	$(MAKE) -C src/ libisospin.a
 

@@ -472,7 +472,7 @@ double muon_gm2(struct parameters* param)
 	/* --- */
 
 	double mass_stop[3],mass_sbot[3],mass_stau[3],mass_H[4],mass_A[3];
-	double sw=sin(atan(param->gp/param->g2));
+	double sw2=pow(sin(atan(param->gp/param->g2)),2.);
 
 	mass_H[1]=param->mass_h0;
 	mass_H[2]=param->mass_H0;
@@ -537,7 +537,7 @@ double muon_gm2(struct parameters* param)
 			a_charH += lmu[3]*lcharg[3][ke]*fPS(mass_charg[ke]*mass_charg[ke]/param->mass_A0/param->mass_A0);	
 		}
 		
-		double const1=param->mass_mu*param->mass_mu/8./pi/pi/param->inv_alpha_em/param->inv_alpha_em/param->mass_W/param->mass_W/sw/sw;
+		double const1=param->mass_mu*param->mass_mu/8./pi/pi/param->inv_alpha_em/param->inv_alpha_em/param->mass_W/param->mass_W/sw2;
 		a_charH*=const1;
 	
 	/* --- */
@@ -610,7 +610,7 @@ double muon_gm2(struct parameters* param)
 			for(je=1;je<=2;je++) a_charH += lmua[je]*lcharga[je][ke]*fPS(mass_charg[ke]*mass_charg[ke]/mass_A[je]/mass_A[je]);	
 		}
 		
-		double const1=param->mass_mu*param->mass_mu/8./pi/pi/param->inv_alpha_em/param->inv_alpha_em/param->mass_W/param->mass_W/sw/sw;
+		double const1=param->mass_mu*param->mass_mu/8./pi/pi/param->inv_alpha_em/param->inv_alpha_em/param->mass_W/param->mass_W/sw2;
 		a_charH*=const1;
 	
 	/* --- */
@@ -634,8 +634,8 @@ double muon_gm2(struct parameters* param)
 	
 	/* --- */
 	
-	double cbos_L=(98.+9.*c_Lh+23.*pow(1.-4.*sw*sw,2.))/30.;
-	double cbos_L_SM=(107.+23.*pow(1.-4.*sw*sw,2.))/30.;
+	double cbos_L=(98.+9.*c_Lh+23.*pow(1.-4.*sw2,2.))/30.;
+	double cbos_L_SM=(107.+23.*pow(1.-4.*sw2,2.))/30.;
 	double cbos_0=0;
 	double cbos_0_SM=0;
 	 a_bosEW=5.*param->Gfermi*param->mass_mu*param->mass_mu/24./sqrt(2.)/pi/pi/pi/param->inv_alpha_em*((cbos_L-cbos_L_SM)*log(param->mass_mu*param->mass_mu/param->mass_W/param->mass_W)+cbos_0-cbos_0_SM); 

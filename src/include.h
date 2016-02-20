@@ -55,7 +55,7 @@ typedef struct parameters
 	/* SLHA2 */
 	int NMSSM,RV,CPV,FV;
 	double mass_nutau2,mass_e2,mass_nue2,mass_mu2,mass_numu2,mass_d2,mass_u2,mass_s2,mass_c2;
-	double CKM_lambda,CKM_A,CKM_rho,CKM_eta;
+	double CKM_lambda,CKM_A,CKM_rhobar,CKM_etabar;
 	double PMNS_theta12,PMNS_theta23,PMNS_theta13,PMNS_delta13,PMNS_alpha1,PMNS_alpha2;
 	double lambdaNMSSM_Min,kappaNMSSM_Min,AlambdaNMSSM_Min,AkappaNMSSM_Min,lambdaSNMSSM_Min,xiFNMSSM_Min,xiSNMSSM_Min,mupNMSSM_Min,mSp2NMSSM_Min,mS2NMSSM_Min,mass_H03,mass_A02,NMSSMRUN_Q,lambdaNMSSM,kappaNMSSM,AlambdaNMSSM,AkappaNMSSM,lambdaSNMSSM,xiFNMSSM,xiSNMSSM,mupNMSSM,mSp2NMSSM,mS2NMSSM; /* NMSSM parameters */
 	double PMNSU_Q,CKM_Q,IMCKM_Q,MSE2_Q,MSU2_Q,MSD2_Q,MSL2_Q,MSQ2_Q,TU_Q,TD_Q,TE_Q;
@@ -75,32 +75,12 @@ typedef struct parameters
 	double m_B,m_Bs,m_pi,m_Ds,m_K,m_Kstar,m_D0,m_D;
 	double life_pi,life_K,life_B,life_Bs,life_D,life_Ds;
 	
-	/* Decay widths */
-	double width_h0,width_H0,width_A0,width_H,width_Z,width_W,width_top,width_H03,width_A02;
-	int widthcalc; /* 0=none, 1=hdecay, 2=feynhiggs */
-
 	/* CKM matrix */
 	double complex Vud,Vus,Vub,Vcd,Vcs,Vcb,Vtd,Vts,Vtb;
 	
 	/* 2HDM */
 	int THDM_model;
 	double lambda_u[4][4],lambda_d[4][4],lambda_l[4][4];
-
-	/* HiggsBounds */
-	double mass_hSM[6],width_hSM[6];
-	double g2hss_SM[6],g2hcc_SM[6],g2hbb_SM[6],g2htoptop_SM[6],g2htautau_SM[6],g2hWW_SM[6],g2hgg_SM[6],g2hZga_SM[6],g2hgaga_SM[6],g2hZZ_SM[6];
-	double g2h0ss,g2h0cc,g2h0bb,g2h0toptop,g2h0tautau,g2h0WW,g2h0gg,g2h0gaga,g2h0Zga,g2h0ZZ;
-	double g2H0ss,g2H0cc,g2H0bb,g2H0toptop,g2H0tautau,g2H0WW,g2H0gg,g2H0gaga,g2H0Zga,g2H0ZZ;
-	double g2A0ss,g2A0cc,g2A0bb,g2A0toptop,g2A0tautau,g2A0WW,g2A0gg,g2A0gaga,g2A0Zga,g2A0ZZ;
-	double g2A02ss,g2A02cc,g2A02bb,g2A02toptop,g2A02tautau,g2A02WW,g2A02gg,g2A02gaga,g2A02Zga,g2A02ZZ;
-	double g2H03ss,g2H03cc,g2H03bb,g2H03toptop,g2H03tautau,g2H03WW,g2H03gg,g2H03gaga,g2H03Zga,g2H03ZZ;
-	double g2h0Zh0,g2h0ZH0,g2h0ZA0,g2h0ZA02,g2h0ZH03,BRh0H0H0,BRh0A0A0,BRh0A02A02,BRh0H03H03;
-	double g2H0Zh0,g2H0ZH0,g2H0ZA0,g2H0ZA02,g2H0ZH03,BRH0h0h0,BRH0A0A0,BRH0A02A02,BRH0H03H03;
-	double g2A0Zh0,g2A0ZH0,g2A0ZA0,g2A0ZA02,g2A0ZH03,BRA0h0h0,BRA0H0H0,BRA0A02A02,BRA0H03H03;
-	double g2A02Zh0,g2A02ZH0,g2A02ZA0,g2A02ZA02,g2A02ZH03,BRA02h0h0,BRA02H0H0,BRA02A0A0,BRA02H03H03;
-	double g2H03Zh0,g2H03ZH0,g2H03ZA0,g2H03ZA02,g2H03ZH03,BRH03h0h0,BRH03H0H0,BRH03A0A0,BRH03A02A02;
-	double BRh0invisible,BRH0invisible,BRA0invisible,BRA02invisible,BRH03invisible;
-	double BRHcs,BRHcb,BRHtaunu,BRtWb,BRtHb;
 
 	/* NMSSMTools */
 	int NMSSMcoll,NMSSMtheory,NMSSMups1S,NMSSMetab1S;
@@ -379,13 +359,9 @@ int suspect_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, d
 int suspect_gmsb(double Lambda, double Mmess, double tanb, int N5, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int suspect_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 
-/* hdecay.c */
-int Hdecay(char name[], struct parameters* param);
-int HdecayTree(char name[], struct parameters* param);
-int HdecaySM(char name[], int ie, struct parameters* param);
-
 /* higgsbounds.c */
-int higgsbounds_calculator(char name[]);
+double higgsbounds(char name[], struct parameters* param);
+double higgsbounds_calculator(char name[]);
 
 /* flha.c */
 void flha_generator(char name[], char name_output[]);

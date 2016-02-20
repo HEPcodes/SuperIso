@@ -1,10 +1,7 @@
 #include "src/include.h"
 #include "src/nmssmtools.h"
-#include "src/higgsbounds.h"
-#include "src/hdecay.h"
 
 #define USE_NMSSMTOOLS /* to be commented if NMSSMTOOLS is unavailable */
-#define USE_HIGGSBOUNDS /* to be commented if HIGGSBOUNDS or HDECAY is unavailable */
 
 
 /*--------------------------------------------------------------------*/
@@ -45,7 +42,7 @@ int main(int argc,char** argv)
      		if(argc>8) sscanf(argv[8],"%lf",&del_h); else del_h=0.;
      		if(argc>8) sscanf(argv[8],"%lf",&mtop); else mtop=173.3;   
      		if(argc>9) sscanf(argv[9],"%lf",&mbot); else mbot=4.19;
-     		if(argc>10) sscanf(argv[10],"%lf",&alphas_mz); else alphas_mz=0.1184;
+     		if(argc>10) sscanf(argv[10],"%lf",&alphas_mz); else alphas_mz=0.1176;
   	}	
 
 	int filesOK=1;
@@ -53,18 +50,6 @@ int main(int argc,char** argv)
 	if(!test_file(NMSSMTools)) 
 	{
 		printf("\"%s\" absent. Please check the NMSSMTOOLS path or comment \"#define USE_NMSSMTOOLS\" in ngmsb.c\n",NMSSMTools);
-		filesOK=0;
-	}
-#endif
-#ifdef USE_HIGGSBOUNDS
-	if(!test_file(HIGGSBOUNDS)) 
-	{
-		printf("\"%s\" absent. Please check the HIGGSBOUNDS path or comment \"#define USE_HIGGSBOUNDS\" in ngmsb.c\n",HIGGSBOUNDS);
-		filesOK=0;
-	}
-	if(!test_file(HDECAY)) 
-	{
-		printf("\"%s\" absent. Please check the HDECAY path or comment \"#define USE_HIGGSBOUNDS\" in ngmsb.c\n",HDECAY);
 		filesOK=0;
 	}
 #endif
@@ -95,9 +80,6 @@ int main(int argc,char** argv)
      		printf("Rl23=%.3e\n",Rl23_calculator(name));
 		printf("a_muon=%.3e\n",muon_gm2_calculator(name));
 
-#ifdef USE_HIGGSBOUNDS
-		printf("excluded_HiggsBounds=%d\n",higgsbounds_calculator(name));
-#endif
  		printf("excluded_collider_NMSSMTools=%d\n",NMSSM_collider_excluded(name));
 		printf("theory_excluded=%d\n",NMSSM_theory_excluded(name));
 		flha_generator(name,"../output.flha");

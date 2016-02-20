@@ -1,18 +1,18 @@
 #include "include.h"
 
 
-double F_orth(double a1_orth, double a2_orth)
+double F_perp(double a1_perp, double a2_perp)
 {
 	int n1=500;
 	int ie;
 
 	double t=0.;
-	double int1=6.*t*(1.+3.*a1_orth*(2.*t-1.)+a2_orth*3./2.*(5.*pow(2.*t-1.,2.)-1.));
+	double int1=6.*t*(1.+3.*a1_perp*(2.*t-1.)+a2_perp*3./2.*(5.*pow(2.*t-1.,2.)-1.));
 	
 	for(ie=1;ie<=n1;ie++)
 	{
 		t+=1./n1;
-		int1 +=6.*t*(1.+3.*a1_orth*(2.*t-1.)+a2_orth*3./2.*(5.*pow(2.*t-1.,2.)-1.));
+		int1 +=6.*t*(1.+3.*a1_perp*(2.*t-1.)+a2_perp*3./2.*(5.*pow(2.*t-1.,2.)-1.));
 	}
 	int1 *= 1./n1;
 	
@@ -21,19 +21,19 @@ double F_orth(double a1_orth, double a2_orth)
 
 /*--------------------------------------------------------------------*/
 
-double X_orth1(double a1_orth, double a2_orth)
+double X_perp1(double a1_perp, double a2_perp)
 {
 	int n1=500;
 	int ie;
 
 	double t=0.;
-	double int1 = 6.*t*(-6.*a1_orth-a2_orth*30.*t)+6.*(t-1.)*(1.+3.*a1_orth*(2.*t-1.)+a2_orth*3./2.*(5.*pow(2.*t-1.,2.)-1.));
+	double int1 = 6.*t*(-6.*a1_perp-a2_perp*30.*t)+6.*(t-1.)*(1.+3.*a1_perp*(2.*t-1.)+a2_perp*3./2.*(5.*pow(2.*t-1.,2.)-1.));
 	
 	for(ie=1;ie<=n1;ie++)
 	{
 		t+=1./n1;
-		int1 += 6.*t*(-6.*a1_orth-a2_orth*30.*t)
-		+6.*(t-1.)*(1.+3.*a1_orth*(2.*t-1.)+a2_orth*3./2.*(5.*pow(2.*t-1.,2.)-1.));
+		int1 += 6.*t*(-6.*a1_perp-a2_perp*30.*t)
+		+6.*(t-1.)*(1.+3.*a1_perp*(2.*t-1.)+a2_perp*3./2.*(5.*pow(2.*t-1.,2.)-1.));
 	}
 	int1 *= 1./n1;
 	
@@ -42,9 +42,9 @@ double X_orth1(double a1_orth, double a2_orth)
 
 /*--------------------------------------------------------------------*/
 
-double X_orth2(double a1_orth, double a2_orth)
+double X_perp2(double a1_perp, double a2_perp)
 {
-	return 2.*(1.+3.*a1_orth+6.*a2_orth);
+	return 2.*(1.+3.*a1_perp+6.*a2_perp);
 }
 
 /*--------------------------------------------------------------------*/
@@ -69,18 +69,18 @@ double complex G(double s, double x)
 
 /*--------------------------------------------------------------------*/
 
-double complex G_orth(double s, double a1_orth, double a2_orth)
+double complex G_perp(double s, double a1_perp, double a2_perp)
 {
 	int n1=100.;
 	int ie;
 
 	double t=0.;
-	double complex int1=6.*t*(1.+3.*a1_orth*(2.*t-1.)+a2_orth*3./2.*(5.*pow(2.*t-1.,2.)-1.))*G(s,1.-t);
+	double complex int1=6.*t*(1.+3.*a1_perp*(2.*t-1.)+a2_perp*3./2.*(5.*pow(2.*t-1.,2.)-1.))*G(s,1.-t);
 	
 	for(ie=1;ie<=n1;ie++)
 	{
 		t+=1./n1;
-		int1 +=6.*t*(1.+3.*a1_orth*(2.*t-1.)+a2_orth*3./2.*(5.*pow(2.*t-1.,2.)-1.))*G(s,1.-t);
+		int1 +=6.*t*(1.+3.*a1_perp*(2.*t-1.)+a2_perp*3./2.*(5.*pow(2.*t-1.,2.)-1.))*G(s,1.-t);
 	}
 	int1 *= 1./n1;
 	
@@ -89,16 +89,8 @@ double complex G_orth(double s, double a1_orth, double a2_orth)
 
 /*--------------------------------------------------------------------*/
 
-double complex H_orth(double s, double a1_par, double a2_par)
+double complex H_perp(double s, double a1_par, double a2_par, double zeta3A, double zeta3V, double wA10, double deltatp, double deltatm)
 {
-	double zeta3A=0.032;
-	double zeta3V=0.013;
-	/* double zeta3T=0.024; */
-	double wA10=-2.1;
-
-	double deltatp=0.16;
-	double deltatm=-0.16;
-		
 	int n1=100;
 	int ie;
 
@@ -129,18 +121,18 @@ double complex H_orth(double s, double a1_par, double a2_par)
 
 /*--------------------------------------------------------------------*/
 
-double H8_orth(double a1_orth, double a2_orth)
+double H8_perp(double a1_perp, double a2_perp)
 {
 	int n1=500;
 	int ie;
 
 	double t=0.;
-	double int1=6.*(1.-t)*(1.+3.*a1_orth*(2.*t-1.)+a2_orth*3./2.*(5.*pow(2.*t-1.,2.)-1.));
+	double int1=6.*(1.-t)*(1.+3.*a1_perp*(2.*t-1.)+a2_perp*3./2.*(5.*pow(2.*t-1.,2.)-1.));
 	
 	for(ie=1;ie<=n1;ie++)
 	{
 		t+=1./n1;
-		int1 +=6.*(1.-t)*(1.+3.*a1_orth*(2.*t-1.)+a2_orth*3./2.*(5.*pow(2.*t-1.,2.)-1.));
+		int1 +=6.*(1.-t)*(1.+3.*a1_perp*(2.*t-1.)+a2_perp*3./2.*(5.*pow(2.*t-1.,2.)-1.));
 	}
 	int1 *= 1./n1;
 	
@@ -156,7 +148,7 @@ double complex h(double u,double s)
 
 /*--------------------------------------------------------------------*/
 
-double complex H2_orth(double s, double a1_orth, double a2_orth)
+double complex H2_perp(double s, double a1_perp, double a2_perp)
 {
 	int n1=100;
 	int ie;
@@ -167,7 +159,7 @@ double complex H2_orth(double s, double a1_orth, double a2_orth)
 	for(ie=1;ie<=n1-1.;ie++)
 	{
 		t+=1./n1;
-		int1 +=h(1.-t,s)*6.*t*(1.-t)*(1.+3.*a1_orth*(2.*t-1.)+a2_orth*3./2.*(5.*pow(2.*t-1.,2.)-1.));
+		int1 +=h(1.-t,s)*6.*t*(1.-t)*(1.+3.*a1_perp*(2.*t-1.)+a2_perp*3./2.*(5.*pow(2.*t-1.,2.)-1.));
 	}
 	int1 *= 1./n1;
 	
@@ -189,29 +181,37 @@ double delta0(double C0[],double C0_spec[],double C1[],double C1_spec[],struct p
 	double alphas_muspec=alphas_running(muspec,param->mass_top_pole,param->mass_b_pole,param);	
 	
 	double T1=0.268;
-	double lambda_B=0.51;
-	
-	double f_K=0.220;
-	double f_K_orth=0.163;
 
-	double a1_orth=0.03;
-	double a2_orth=0.08;
+	double lambda_B=param->lambda_Bp;
+	lambda_B /= 1.+alphas_muspec/3./pi*log(pow(mub,2.))*(1.-2.*1.4);
 	
-	double a1_par=0.03;
-	double a2_par=0.08;
+	double f_K=param->f_K_par;
+	double f_K_perp=param->f_K_perp;
+
+	double a1_perp=param->a1perp;
+	double a2_perp=param->a2perp;
+	
+	double a1_par=param->a1par;
+	double a2_par=param->a2par;
+
+	double zeta3A=param->zeta3A;
+	double zeta3V=param->zeta3V;
+	double wA10=param->wA10;
+	double deltatp=param->deltatp;
+	double deltatm=param->deltatm;
 
 	double eta=alphas_mub /
-	alphas_running(sqrt(1.),param->mass_top_pole,param->mass_b_1S,param);
+	alphas_running(1.,param->mass_top_pole,param->mass_b_pole,param);
 
 	int nf=5;
-	f_K_orth *= pow(eta,4./3./(11.-2./3.*nf));
+	f_K_perp *= pow(eta,4./3./(11.-2./3.*nf));
 
 	lambda_B /= 1.+alphas_mub/3./pi*log(pow(mub,2.))*(1.-2.*1.4);
 
-	a1_orth*=pow(eta,4./(11.-2./3.*nf));
-	a2_orth*=pow(eta,4./3.*(1.+4.*(1./2.+1./3.))/(11.-2./3.*nf));
+	a1_perp*=pow(eta,4./(11.-2./3.*nf));
+	a2_perp*=pow(eta,4./3.*(1.+4.*(1./2.+1./3.))/(11.-2./3.*nf));
 
-	a1_par*=pow(eta,4./3.*(1.-1./3.+2.)*(11.-2./3.*nf));
+	a1_par*=pow(eta,4./3.*(1.-1./3.+2.)/(11.-2./3.*nf));
 	a2_par*=pow(eta,4./3.*(1.-1./6.+4.*(1./2.+1./3.))/(11.-2./3.*nf));
 		 
 	for (ie=1;ie<=8;ie++) 
@@ -223,7 +223,7 @@ double delta0(double C0[],double C0_spec[],double C1[],double C1_spec[],struct p
 	int N=3;
 	
 	double mu0=mub;
-	double r1=(8./3.*C[3]+4./3.*nf*(C[4]+C[6])-8.*(N*C[6]+C[5]))*F_orth(a1_orth,a2_orth)*log(mub/mu0);
+	double r1=(8./3.*C[3]+4./3.*nf*(C[4]+C[6])-8.*(N*C[6]+C[5]))*F_perp(a1_perp,a2_perp)*log(mub/mu0);
 	double r2=(-44./3.*C[3]-4./3.*nf*(C[4]+C[6]))*log(mub/mu0);
 	
 	double lambda_u_lambda_c=creal((conj(param->Vus)*param->Vub)/(conj(param->Vcs)*param->Vcb));
@@ -231,13 +231,13 @@ double delta0(double C0[],double C0_spec[],double C1[],double C1_spec[],struct p
 	double mass_c_mub=running_mass(param->mass_c,param->mass_c,mub,param->mass_top_pole,param->mass_b_pole,param);
  	double sc=pow(mass_c_mub/mass_b_mub,2.);
 	
-	double complex Horth= H_orth(sc,a1_par,a2_par);
-	double Forth=F_orth(a1_orth,a2_orth);
-	double complex Gorth=G_orth(sc,a1_orth,a2_orth);
+	double complex Hperp=H_perp(sc,a1_par,a2_par,zeta3A,zeta3V,wA10,deltatp,deltatm);
+	double Fperp=F_perp(a1_perp,a2_perp);
+	double complex Gperp=G_perp(sc,a1_perp,a2_perp);
 
-	double H8a7= 4./3./N*pi*pi*param->f_B*f_K_orth/T1/param->m_B/lambda_B*H8_orth(a1_orth,a2_orth);
+	double H8a7= 4./3./N*pi*pi*param->f_B*f_K_perp/T1/param->m_B/lambda_B*H8_perp(a1_perp,a2_perp);
 	
-	double complex H2a7= -2./3./N*pi*pi*param->f_B*f_K_orth/T1/param->m_B/lambda_B*H2_orth(sc,a1_orth,a2_orth);
+	double complex H2a7= -2./3./N*pi*pi*param->f_B*f_K_perp/T1/param->m_B/lambda_B*H2_perp(sc,a1_perp,a2_perp);
 	
 	double complex G8a7= -104./27.*log(mub/param->mass_b_1S)+11./3.-2.*pi*pi/9.+2.*I*pi/3.;
 	
@@ -248,17 +248,17 @@ double delta0(double C0[],double C0_spec[],double C1[],double C1_spec[],struct p
 	double rho=0.;
 	double phi=0.;
 	
-	double complex  Xorth=X_orth1(a1_orth,a2_orth)+X_orth2(a1_orth,a2_orth)*log(param->m_B/lambda_h)*(1.+rho*(cos(phi)+I*sin(phi)));
+	double complex  Xperp=X_perp1(a1_perp,a2_perp)+X_perp2(a1_perp,a2_perp)*log(param->m_B/lambda_h)*(1.+rho*(cos(phi)+I*sin(phi)));
 
-	double complex K1=-(C[6]+C[5]/3.)*Forth + 4./9.*alphas_mub/4./pi*(pow(mass_b_mub/param->m_B,2.)*C[8]*Xorth-C[2]*((4./3.*log(param->mass_b_1S/mub)+2./3.)*Forth-Gorth)+r1); 	
+	double complex K1=-(C[6]+C[5]/3.)*Fperp + 4./9.*alphas_mub/4./pi*(pow(mass_b_mub/param->m_B,2.)*C[8]*Xperp-C[2]*((4./3.*log(param->mass_b_1S/mub)+2./3.)*Fperp-Gperp)+r1); 	
 
-	double complex K2u=lambda_u_lambda_c*(C[2]+C[1]/3.)+(C[4]+C[3]/3.)+4./9.*alphas_mub/4./pi*(C[2]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Horth)+r2);
+	double complex K2u=lambda_u_lambda_c*(C[2]+C[1]/3.)+(C[4]+C[3]/3.)+4./9.*alphas_mub/4./pi*(C[2]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Hperp)+r2);
 	
-	double complex K2d=(C[4]+C[3]/3.)+4./9.*alphas_mub/4./pi*(C[2]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Horth)+r2);
+	double complex K2d=(C[4]+C[3]/3.)+4./9.*alphas_mub/4./pi*(C[2]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Hperp)+r2);
 		
-	double complex b_d=12.*pi*pi*param->f_B*(-1./3.)/mass_b_mub/T1/a7c*(f_K_orth/mass_b_mub*K1+f_K*param->m_Kstar/6./lambda_B/param->m_B*K2d);
+	double complex b_d=12.*pi*pi*param->f_B*(-1./3.)/mass_b_mub/T1/a7c*(f_K_perp/mass_b_mub*K1+f_K*param->m_Kstar/6./lambda_B/param->m_B*K2d);
 	
-	double complex b_u=12.*pi*pi*param->f_B*(2./3.)/mass_b_mub/T1/a7c*(f_K_orth/mass_b_mub*K1+f_K*param->m_Kstar/6./lambda_B/param->m_B*K2u);
+	double complex b_u=12.*pi*pi*param->f_B*(2./3.)/mass_b_mub/T1/a7c*(f_K_perp/mass_b_mub*K1+f_K*param->m_Kstar/6./lambda_B/param->m_B*K2u);
 	
 #ifdef DEBUG
 	printf("-----------------\n");
@@ -285,7 +285,7 @@ double delta0_calculator(char name[])
 
 	double mu_W=2.*param.mass_W;
 	
-	double mu_b=param.mass_b;
+	double mu_b=param.mass_b_1S/2.;
 	
 	double lambda_h=0.5;
 	double mu_spec=sqrt(lambda_h*param.mass_b);

@@ -501,7 +501,9 @@ double mb_pole(struct parameters* param)
 	
 	double alphas_mb=alphas_running(param->mass_b,param->mass_top_pole,param->mass_b,param);	
 
- 	return param->mass_b*(1.+alphas_mb/pi*(4./3.+alphas_mb/pi*((13.4434-1.0414*4.+1.0414*4./3.*((param->mass_u+param->mass_d+param->mass_s+param->mass_c)/param->mass_b))+alphas_mb/pi*(190.595-4.*(26.655-4.*0.6527)))));
+ 	return param->mass_b*(1.+alphas_mb/pi*(4./3.+alphas_mb/pi*((13.4434-1.0414*4.+1.0414*4./3.*((param->mass_u+param->mass_d+param->mass_s+param->mass_c)/param->mass_b))
+	/* +alphas_mb/pi*(190.595-4.*(26.655-4.*0.6527)) */
+	)));
 }
 
 /*--------------------------------------------------------------------*/
@@ -529,9 +531,13 @@ double mb_1S(struct parameters* param)
 	double a2=(4343./162.+4.*pi*pi-pow(pi,4.)/4.+22./3.*zeta3)*9.-(1798./81.+56./3.*zeta3)*6.
 	-(55./3.-16.*zeta3)*8./3.+1600./81.;
 	
-	return mb*(1.-2./9.*pow(as,2.)-2./9.*pow(as,3.)/pi*(beta0*(L+1.)+a1/2.))
-	-2./9.*pow(as,2.)-2./9.*pow(as,4.)/pi/pi*(beta0*beta0*(3./4.*L*L+L+zeta3/2.+pi*pi/24.+1./4.)
-	+beta0*a1/2.*(3./2.*L+1.)+beta1/4.*(L+1.)+a1*a1/16.+a2/8.+(3.-1./36.)*4./3.*pi*pi);
+	return mb*(1.-2./9.*pow(as,2.)
+	/* -2./9.*pow(as,3.)/pi*(beta0*(L+1.)+a1/2.) */
+	)
+	-2./9.*pow(as,2.)
+	/* -2./9.*pow(as,4.)/pi/pi*(beta0*beta0*(3./4.*L*L+L+zeta3/2.+pi*pi/24.+1./4.)
+	+beta0*a1/2.*(3./2.*L+1.)+beta1/4.*(L+1.)+a1*a1/16.+a2/8.+(3.-1./36.)*4./3.*pi*pi) */
+	;
 }
 
 /*--------------------------------------------------------------------*/

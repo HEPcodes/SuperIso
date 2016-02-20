@@ -20,7 +20,7 @@ all: libisospin.a
 	   esac
 	   
 clean:
-	rm -f *.a isajet.h softsusy.h spheno.h suspect.h 2hdmc.h higgsbounds.h	nmssmtools.h feynhiggs.h
+	rm -f *.a isajet.h softsusy.h spheno.h suspect.h 2hdmc.h higgsbounds.h nmssmtools.h
 
 distclean: 
 	rm -f *.a *.o *.x isajet.h softsusy.h spheno.h suspect.h 2hdmc.h higgsbounds.h nmssmtools.h
@@ -33,6 +33,7 @@ libisospin.a: libisospin.a(softsusy.o) libisospin.a(leshouches.o)\
 	  libisospin.a(bsmumu.o) libisospin.a(dslnu.o) libisospin.a(dmunu.o)\
 	  libisospin.a(spheno.o) libisospin.a(suspect.o) libisospin.a(2hdmc.o)\
 	  libisospin.a(nmssmtools.o) libisospin.a(higgsbounds.o) libisospin.a(flha.o)\
+	  libisospin.a(bsll.o) libisospin.a(bsll_extra.o) libisospin.a(bkll.o)\
 	  $(RANL)
 
 libisospin.a(softsusy.o): softsusy.c include.h softsusy.h
@@ -58,6 +59,9 @@ libisospin.a(nmssmtools.o): nmssmtools.c include.h nmssmtools.h
 libisospin.a(2hdmc.o): 2hdmc.c include.h 2hdmc.h
 libisospin.a(higgsbounds.o): higgsbounds.c higgsbounds.h include.h
 libisospin.a(flha.o): flha.c include.h
+libisospin.a(bsll.o): bsll.c include.h
+libisospin.a(bsll_extra.o): bsll_extra.c include.h
+libisospin.a(bkll.o): bkll.c include.h
 
 softsusy.h:
 	@echo \#define SOFTSUSY \"$(SOFTSUSY)\" > softsusy.h;
@@ -79,4 +83,3 @@ nmssmtools.h:
 
 higgsbounds.h:
 	@echo \#define HBwithFH \"$(HBwithFH)\" > higgsbounds.h;
-

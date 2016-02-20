@@ -15,13 +15,15 @@ double alphas_running(double Q, double mtop, double mbot, struct parameters* par
 	beta1=51.-19./3.*nf;
 	beta2=2857.-5033.*nf/9.+325./27.*nf*nf;
 
+	if(param->Lambda5==-1.) return -1.;
+
 	if(param->Lambda5==0.)
 	{
 		Lambda_min=1.e-3;
 		Lambda_max=1.;
 		alphas_min=0.;
 
-		while(fabs(1.-alphas_min/alphas_MZ)>=1.e-4)
+		while((fabs(1.-alphas_min/alphas_MZ)>=1.e-4)&&(fabs(1.-Lambda_min/Lambda_max)>1.e-5))
 		{
 			alphas_min=4.*pi/beta0/log(pow(MZ/Lambda_min,2.))*(1.-2.*beta1/beta0/beta0*log(log(pow(MZ/Lambda_min,2.)))/log(pow(MZ/Lambda_min,2.))+4.*beta1*beta1/pow(beta0*beta0*log(pow(MZ/Lambda_min,2.)),2.)*(pow(log(log(pow(MZ/Lambda_min,2.)))-1./2.,2.)+beta2*beta0/8./beta1/beta1-5./4.));
 
@@ -38,6 +40,12 @@ double alphas_running(double Q, double mtop, double mbot, struct parameters* par
 
 		Lambda5=Lambda_min;
 		param->Lambda5=Lambda5;
+		
+		if(fabs(1.-Lambda_min/Lambda_max)<=1.e-5)
+		{
+			param->Lambda5=-1.;
+			return -1.;
+		}
 	}
 	else Lambda5=param->Lambda5;
 
@@ -61,7 +69,7 @@ double alphas_running(double Q, double mtop, double mbot, struct parameters* par
 		Lambda_max=1.;
 		alphas_min=0.;
 
-		while(fabs(1.-alphas_min/alphas_running)>=1.e-4)
+		while((fabs(1.-alphas_min/alphas_running)>=1.e-4)&&(fabs(1.-Lambda_min/Lambda_max)>1.e-5))
 		{
 			alphas_min=4.*pi/beta0/log(pow(mtop/Lambda_min,2.))*(1.-2.*beta1/beta0/beta0*log(log(pow(mtop/Lambda_min,2.)))/log(pow(mtop/Lambda_min,2.))+4.*beta1*beta1/pow(beta0*beta0*log(pow(mtop/Lambda_min,2.)),2.)*(pow(log(log(pow(mtop/Lambda_min,2.)))-1./2.,2.)+beta2*beta0/8./beta1/beta1-5./4.));
 
@@ -76,6 +84,12 @@ double alphas_running(double Q, double mtop, double mbot, struct parameters* par
 		}
 
 		Lambda6=Lambda_min;
+		
+		if(fabs(1.-Lambda_min/Lambda_max)<=1.e-5)
+		{
+			param->Lambda5=-1.;
+			return -1.;
+		}
 	alphas_running=4.*pi/beta0/log(pow(Q/Lambda6,2.))*(1.-2.*beta1/beta0/beta0*log(log(pow(Q/Lambda6,2.)))/log(pow(Q/Lambda6,2.))+4.*beta1*beta1/pow(beta0*beta0*log(pow(Q/Lambda6,2.)),2.)*(pow(log(log(pow(Q/Lambda6,2.)))-1./2.,2.)+beta2*beta0/8./beta1/beta1-5./4.));
 
 		return alphas_running;
@@ -94,7 +108,7 @@ double alphas_running(double Q, double mtop, double mbot, struct parameters* par
 		Lambda_max=1.;
 		alphas_min=0.;
 
-		while(fabs(1.-alphas_min/alphas_running)>=1.e-4)
+		while((fabs(1.-alphas_min/alphas_running)>=1.e-4)&&(fabs(1.-Lambda_min/Lambda_max)>1.e-5))
 		{
 			alphas_min=4.*pi/beta0/log(pow(mbot/Lambda_min,2.))*(1.-2.*beta1/beta0/beta0*log(log(pow(mbot/Lambda_min,2.)))/log(pow(mbot/Lambda_min,2.))+4.*beta1*beta1/pow(beta0*beta0*log(pow(mbot/Lambda_min,2.)),2.)*(pow(log(log(pow(mbot/Lambda_min,2.)))-1./2.,2.)+beta2*beta0/8./beta1/beta1-5./4.));
 
@@ -108,6 +122,12 @@ double alphas_running(double Q, double mtop, double mbot, struct parameters* par
 			else Lambda_min=Lambda_moy;
 		}
 		Lambda4=Lambda_min;
+		
+		if(fabs(1.-Lambda_min/Lambda_max)<=1.e-5)
+		{
+			param->Lambda5=-1.;
+			return -1.;
+		}
 	alphas_running=4.*pi/beta0/log(pow(Q/Lambda4,2.))*(1.-2.*beta1/beta0/beta0*log(log(pow(Q/Lambda4,2.)))/log(pow(Q/Lambda4,2.))+4.*beta1*beta1/pow(beta0*beta0*log(pow(Q/Lambda4,2.)),2.)*(pow(log(log(pow(Q/Lambda4,2.)))-1./2.,2.)+beta2*beta0/8./beta1/beta1-5./4.));
 
 		return alphas_running;

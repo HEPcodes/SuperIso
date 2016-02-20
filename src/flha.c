@@ -15,7 +15,7 @@ void flha_generator(char name[], char name_output[])
 	fprintf(output,"# SuperIso output in Flavour Les Houches Accord format\n");
 	fprintf(output,"Block FCINFO  # Program information\n");
 	fprintf(output,"     1     SUPERISO         # flavour calculator\n");
-	fprintf(output,"     2     3.2              # version number\n");
+	fprintf(output,"     2     3.3              # version number\n");
 	
 	fprintf(output,"Block MODSEL  # Model selection\n");
 
@@ -78,14 +78,14 @@ void flha_generator(char name[], char name_output[])
 	fprintf(output,"   531     %.8e   # B_s\n",param.life_Bs);
 
 	fprintf(output,"Block FCONST  # Decay constant in GeV\n");
-	fprintf(output,"#PDG_code number decay_constant particle\n");
-	fprintf(output,"   431     1   %.8e   # D_s+\n",param.f_Ds);
-	fprintf(output,"   521     1   %.8e   # B+\n",param.f_B);
-	fprintf(output,"   531     1   %.8e   # B_s\n",param.f_Bs);
+	fprintf(output,"#PDG_code number decay_constant scheme scale particle\n");
+	fprintf(output,"   431     1   %.8e     0      0   # D_s+\n",param.f_Ds);
+	fprintf(output,"   521     1   %.8e     0      0   # B+\n",param.f_B);
+	fprintf(output,"   531     1   %.8e     0      0   # B_s\n",param.f_Bs);
 
 	fprintf(output,"Block FCONSTRATIO  # Ratio of decay constants\n");
-	fprintf(output,"#PDG_code1 code2  nb1 nb2 ratio            comment\n");
-	fprintf(output,"   321     211    1   1   %.8e   # f_K/f_pi\n",param.fK_fpi);
+	fprintf(output,"#PDG_code1 code2  nb1 nb2 ratio            scheme scale comment\n");
+	fprintf(output,"   321     211    1   1   %.8e     0      0   # f_K/f_pi\n",param.fK_fpi);
 
 	double C0w[11],C1w[11],C2w[11],C0b1[11],C1b1[11],C2b1[11],C0b2[11],C1b2[11],C0spec[11],C1spec[11],C0b3[11],C1b3[11],Cpb[11];
 	double complex CQ0b[3],CQ1b[3],CQpb[3];
@@ -97,14 +97,13 @@ void flha_generator(char name[], char name_output[])
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b1,C1b1,C2b1,mu_b1,&param);
 	
-	mu_b2=param.mass_b_1S;
+	mu_b2=param.mass_b_1S/2.;
 	lambda_h=0.5;
 	mu_spec=sqrt(lambda_h*param.mass_b);
-	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base2(C0w,C1w,mu_W,C0b2,C1b2,mu_b2,&param);
 	C_calculator_base2(C0w,C1w,mu_W,C0spec,C1spec,mu_spec,&param);
 	
-	mu_b3=param.mass_b;			
+	mu_b3=param.mass_b_pole;			
 	C_calculator_base2(C0w,C1w,mu_W,C0b3,C1b3,mu_b3,&param);
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b3,&param);
 	Cprime_calculator(Cpb,CQpb,mu_W,mu_b3,&param);
@@ -130,14 +129,14 @@ void flha_generator(char name[], char name_output[])
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b1,C1b1,C2b1,mu_b1,&param);
 	
-	mu_b2=param.mass_b_1S;
+	mu_b2=param.mass_b_1S/2.;
 	lambda_h=0.5;
 	mu_spec=sqrt(lambda_h*param.mass_b);
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base2(C0w,C1w,mu_W,C0b2,C1b2,mu_b2,&param);
 	C_calculator_base2(C0w,C1w,mu_W,C0spec,C1spec,mu_spec,&param);
 	
-	mu_b3=param.mass_b;		
+	mu_b3=param.mass_b_pole;		
 	C_calculator_base2(C0w,C1w,mu_W,C0b3,C1b3,mu_b3,&param);
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b3,&param);
 	Cprime_calculator(Cpb,CQpb,mu_W,mu_b3,&param);

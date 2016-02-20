@@ -658,10 +658,8 @@ double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, st
 	-0.0185*pow(eta_mu,-0.8994)-0.0057*pow(eta_mu,0.1456);
 
 	double Kt0=pow(eta_mu,4./23.)*(C0w[7]+23./36.)-8./3.*(pow(eta_mu,4./23.)-pow(eta_mu,2./23.))*(C0w[8]+1./3.);
-	
-	double lambda2=0.12;
 
-	double N_E0= -1./18.*(Kc0+r*Kt0)*(pow(eta_mu,6./23.)+pow(eta_mu,-12./23.))*lambda2/param->mass_c/param->mass_c;
+	double N_E0= -1./18.*(Kc0+r*Kt0)*(pow(eta_mu,6./23.)+pow(eta_mu,-12./23.))*param->lambda2/param->mass_c/param->mass_c;
 	
 	/* if((P2_1==0.)&&(P2_2==0.)&&(P2_3==0.)) N_E0=0.; */
 

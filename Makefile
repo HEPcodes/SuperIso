@@ -1,11 +1,12 @@
 .KEEP_STATE:
 
 #
-VERSION = v3.2
+VERSION = v3.3
 
-# Choose your compilers here (usually gcc/gfortran on Linux systems):
+# Choose your compilers here (in general gcc/gfortran on Linux systems):
 CC = gcc
 CFLAGS= -O3 -pipe -fomit-frame-pointer
+
 # CC = icc
 # CFLAGS = -O3
 
@@ -13,7 +14,7 @@ MAKE = make
 AR = ar
 
 .SUFFIXES:	.o .c .h
-.PRECIOUS:	.c .h libisospin.a
+.PRECIOUS:	.c .h libisospin.a librelic.a
 
 # Add the link to Softsusy, Isajet, SuSpect, SPheno and NMSSMTools main programs, if available.
 # Otherwise, comment them in the main programs */
@@ -21,12 +22,11 @@ AR = ar
 SOFTSUSY = ~/softsusy/softpoint.x
 ISAJET = ~/isajet/isasugra.x
 SUSPECT = ~/suspect/suspect2
-SPHENO = ~/spheno/bin/SPheno/bin
+SPHENO = ~/spheno/bin/SPheno
 NMSSMTOOLS = ~/nmssmtools/main
 # Add the link to 2HDMC directory, if available.
 THDMC = ~/2HDMC
-# To use Higgsbounds, add the links to HBwithFH, if available (see more details in README).
-# You must uncomment "#define USE_HIGGSBOUNDS" in the main programs.
+# Add the links to HiggsBounds, if available.
 HBwithFH = ~/higgsbounds/HiggsBounds-f90/example_programs/HBwithFH
 
 
@@ -66,7 +66,7 @@ distclean:
 	
 libisospin.a: 
 	@echo;
-	@echo SuperIso $(VERSION) - F.N. Mahmoudi 2011;
+	@echo SuperIso $(VERSION) - F.N. Mahmoudi 2012;
 	@echo;
 	@echo CC = $(CC) > src/FlagsForMake;\
 	echo CFLAGS = $(CFLAGS) >> src/FlagsForMake;\
@@ -78,7 +78,7 @@ libisospin.a:
 	echo SUSPECT = $(SUSPECT) >> src/FlagsForMake;\
 	echo THDMC = $(THDMC) >> src/FlagsForMake;\
  	echo HBwithFH = $(HBwithFH) >> src/FlagsForMake;\
- 	echo NMSSMTools = $(NMSSMTOOLS) >> src/FlagsForMake;
+	echo NMSSMTools = $(NMSSMTOOLS) >> src/FlagsForMake;\
 	$(MAKE) -C src/ libisospin.a
 
 save: 

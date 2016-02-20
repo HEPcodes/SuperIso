@@ -104,7 +104,9 @@ void Init_param(struct parameters* param)
 	param->mass_tau2=0.;
 	param->gp=0.;
 	param->g2=0.;
-	param->g3=0.;
+	param->gp_Q=0.;
+	param->g2_Q=0.;
+	param->g3_Q=0.;
 	param->YU_Q=0.;
 	param->YD_Q=0.;
 	param->YE_Q=0.;
@@ -261,33 +263,47 @@ void Init_param(struct parameters* param)
 		param->lambda_l[ie][je]=0.;
 	}
 	
-	/* Flavor physics */
-	param->f_B=0.1928;
-	param->f_Bs=0.2388;
+	/* Flavour physics */
+	param->f_B=0.194;
+	param->f_Bs=0.234;
 	param->f_Ds=0.248;
 	param->f_D=0.207;
 	param->fK_fpi=1.193;
+	param->f_K_par=0.220;
+	param->f_K_perp=0.185;
 	param->m_B=5.27917;
 	param->m_Bs=5.3663;
 	param->m_Bd=5.27950;
 	param->m_pi=0.1396;
 	param->m_K=0.4937;
-	param->m_Kstar=0.8917;
+	param->m_Kstar=0.89594;
 	param->m_D0=1.86483;
 	param->m_D=1.86960;
 	param->m_Ds=1.96847;
 	param->life_pi=2.6033e-8;
 	param->life_K=1.2380e-8;  
-	param->life_B=1.638e-12;
-	param->life_Bs=1.425e-12;
+	param->life_B=1.641e-12;
+	param->life_Bs=1.472e-12;
 	param->life_Bd=1.519e-12;
 	param->life_D=1.040e-12;
 	param->life_Ds=5.e-13;
+	param->a1perp=0.10;
+	param->a2perp=0.13;
+	param->a1par=0.10;
+	param->a2par=0.09;
+	param->zeta3A=0.032;
+	param->zeta3V=0.013;
+	param->wA10=-2.1;
+	param->deltatp=0.16;
+	param->deltatm=-0.16;
+	param->lambda_Bp=0.46;
+	param->rho1=0.06;
+	param->lambda2=0.12;
 	
 	/* CKM matrix */
 	param->Vud=0.97428;
 	param->Vus=0.2253;
-	param->Vub=0.00392;
+	param->Vub=0.00347;
 	param->Vcd=-0.2252;
 	param->Vcs=0.97345;
 	param->Vcb=0.0410;
@@ -308,7 +324,7 @@ void Init_param(struct parameters* param)
 	param->mass_u = 2.49e-3;
 	param->mass_d = 5.05e-3;
 	param->mass_s = 0.101;
-	param->mass_c = 1.27;
+	param->mass_c = 1.29;
 	param->mass_b = 4.19;
 	param->mass_top_pole = 172.9;
 	
@@ -321,10 +337,13 @@ void Init_param(struct parameters* param)
 	param->alphas_MZ=0.1184;
 	param->mass_W=80.399;
 
-	param->gp=3.58051564e-1;
-	param->g2=6.48408288e-1;	
-	param->inv_alpha_em=1.27910000e2;
+	param->gp=param->gp_Q=3.57458e-1;
+	param->g2=param->g2_Q=6.51908e-1;	
+	param->inv_alpha_em=1.27916e2;
 	param->Gfermi=1.16637000e-5;
+
+	param->width_Z=2.495;
+	param->width_W=2.085;
 
 	return;
 }
@@ -424,7 +443,15 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 						}
 						break;
 						
-					case 4: param->model=-1; fclose(lecture); return 0;
+					case 4: if(param->generator==3)
+						{
+							if(EOF!=fscanf(lecture,"%s",dummy)) sprintf(dummy2,"%s",dummy);											while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) sprintf(dummy2,"%s%c",dummy2,dummy[0]);
+							if(strcasecmp("Point invalid: stau LSP",dummy2)) {param->model=-1; fclose(lecture); return 0;}
+						}
+						else
+						{
+							param->model=-1; fclose(lecture); return 0;
+						}
 				}
 			}	
 			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
@@ -830,9 +857,9 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
-					case 1: fscanf(lecture,"%lf",&param->gp); break;
-					case 2: fscanf(lecture,"%lf",&param->g2); break;
-					case 3: fscanf(lecture,"%lf",&param->g3); break;	
+					case 1: fscanf(lecture,"%lf",&param->gp_Q); break;
+					case 2: fscanf(lecture,"%lf",&param->g2_Q); break;
+					case 3: fscanf(lecture,"%lf",&param->g3_Q); break;	
 				}
 			}
 			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
@@ -1605,7 +1632,19 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 	fclose(lecture);
 
 	if(param->model<0) return 0;	
- 			
+
+	if(alphas_running(param->mass_b/2.,param->mass_top_pole, param->mass_b,param)<0.) 
+	{	
+		param->model=-3;
+		return 0;
+	}
+	
+	if(alphas_running(2.*param->mass_top_pole,param->mass_top_pole, param->mass_b,param)<0.)
+	{	
+		param->model=-3;
+		return 0;
+	}
+	
 	slha_adjust(param);
 	
 	return 1;	

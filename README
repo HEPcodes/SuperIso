@@ -1,5 +1,5 @@
-SuperIso Version 3.2 (26 October 2011)
---------------------------------------
+SuperIso Version 3.3 (16 June 2012)
+-----------------------------------
 By Farvah Nazila Mahmoudi (mahmoudi@in2p3.fr)
 
 
@@ -8,7 +8,7 @@ INTRODUCTION
 The most recent version of this program can be obtained from: 
 http://superiso.in2p3.fr
 
-This C code (in C99 standard) provides the calculation of several flavour physics observables as well as the muon anomalous magnetic moment, for a set of supersymmetric or 2HDM parameters which can be either calculated within this program thanks to Isajet, Softsusy, SuSpect, SPheno, NMSSMTools or 2HDMC, or directly provided by user thanks to a SUSY Les Houches Accord (SLHA1 or SLHA2) file.
+This C code (in C99 standard) provides the calculation of several flavour physics observables as well as the muon anomalous magnetic moment, for a set of supersymmetric or 2HDM parameters which can be either calculated within this program using the provided interfaces with Isajet, Softsusy, SuSpect, SPheno, NMSSMTools or 2HDMC, or directly supplied by user thanks to a SUSY Les Houches Accord (SLHA1 or SLHA2) file.
 
 
 If you use this program to write a paper, please cite: 
@@ -50,9 +50,9 @@ They can be run with: ./name.x
 Note that an example of SLHA file is also provided: example.lha
 
 To use Higgsbounds limits when using SuperIso, the user has to have compiled HBwithFH (provided in the Higgsbound package) as well as FeynHiggs. More details are given in the following:
-- In HiggsBounds-f90/configure choose the same compilor as the one with which FeynHiggs is compiled. Also, provide the link to FHINCLUDE and FHLIBS. For example 
-FHINCLUDE = -I/path/FeynHiggs-2.8.5/build/include
-FHLIBS = -L/path/FeynHiggs-2.8.5/build/ -lFH
+- In HiggsBounds-f90/configure choose the same compiler as the one with which FeynHiggs is compiled. Also, provide the link to FHINCLUDE and FHLIBS. For example 
+FHINCLUDE = -I/path/FeynHiggs-2.8.6/build/include
+FHLIBS = -L/path/FeynHiggs-2.8.6/build/ -lFH
 - In HiggsBounds-f90/example_programs/HBwithFH.F comment "call setPara" and uncomment "call setSLHA("tmp.slha")" instead.
 - In HiggsBounds-f90/example_programs, run: ./demonstrateHiggsBounds_HBwithFH.bat to compile HBwithFH.
 - In the SuperIso Makefile, add the path to HBwithFH.
@@ -63,12 +63,16 @@ Included Files
 - Procedures in src/
 alphas.c: calculation of the strong coupling constant
 bdtaunu.c: calculation of the observables related to B-> D tau nu
+bkll.c: calculation of the observables related to B-> K* mu+ mu-
 bsgamma.c: calculation of the inclusive branching ratio of B-> Xs gamma
+bsll.c: calculation of the observables related to B-> Xs l+ l-
+bsll_extra.c: extra functions for bsll.c
 bsmumu.c: calculation of the branching ratios of B(s,d)-> mu+ mu-
 btaunu.c: calculation of the branching ratio of B-> tau nu
 dmunu.c: calculation of the branching ratios of D-> mu nu
 dslnu.c: calculation of the branching ratios of Ds-> tau nu and Ds-> mu nu
-excluded_masses.c: procedures which check the charge of the LSP, and the agreement with the collider lower mass limits
+excluded_masses.c: procedures which check the charge of the LSP, and the agreement with the collider lower mass limits (LEP and Tevatron)
+flha.c: generation of FLHA output files
 general.c: some useful mathematical functions 
 gmuon.c: calculation of the muon anomalous magnetic moment
 higgsbounds.c: procedures calling HiggsBounds
@@ -82,7 +86,7 @@ spheno.c: procedures calling SPheno
 softsusy.c: procedures calling Softsusy
 suspect.c: procedures calling SuSpect
 2hdmc.c: procedures calling 2HDMC
-wilson.c: calculation of the Wilson coefficients
+wilson.c: calculation of the Wilson coefficients and RGE runnings
 
 - Main programs
 sm.c: calculation of the observables in the SM
@@ -102,13 +106,20 @@ nnuhm.c: calculation of the observables for a NMSSM NUHM point
 include.h: definitions and prototypes
 
 - Other
-example.lha: example of a SLHA file
+example.lha: example SLHA file
 Makefile(s)
 README
 
 
 History
 -------
+v3.3 - 06/16/2012 - 	Addition of observables related to B->K* mu+ mu-.
+			Addition of observables related to B->Xs l+ l-.
+			Addition of untagged BR(Bs -> mu+ mu-).
+			Addition of more Cprime Wilson coefficients.
+			Minor corrections and improvements.
+			Updated parameter values.
+
 v3.2 - 10/26/2011 - 	Addition of BR(Bd -> mu+ mu-).
 			Minor corrections and improvements.
 			Updated parameter values.
@@ -164,7 +175,7 @@ v1.0 - 09/17/2007 - 	First public release.
 
 LICENSE
 -------
-    SuperIso Copyright (C) 2011 F. Mahmoudi
+    SuperIso Copyright (C) 2012 F. Mahmoudi
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

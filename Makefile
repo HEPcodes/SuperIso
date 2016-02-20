@@ -1,14 +1,14 @@
 .KEEP_STATE:
 
 #
-VERSION = v2.7
+VERSION = v2.8
 
 # Choose your compilers here (in general gcc/gfortran on Linux systems):
 CC = gcc
-CFLAGS= -O2 -pipe -fomit-frame-pointer
+CFLAGS= -O3 -pipe -fomit-frame-pointer
 
 #CC = icc
-#CFLAGS = -O2
+#CFLAGS = -O3
 
 MAKE = make
 AR = ar
@@ -16,12 +16,18 @@ AR = ar
 .SUFFIXES:	.o .c .h
 .PRECIOUS:	.c .h libisospin.a librelic.a
 
-# Add the link to Softsusy and Isajet main programs, if available.
+# Add the link to Softsusy, Isajet, SuSpect and SPheno main programs, if available.
 # Otherwise, comment them in the main programs */
+# If you change the path, you must "make distclean" first.
 SOFTSUSY = ~/softsusy/softpoint.x
 ISAJET = ~/isajet/isasugra.x
+SUSPECT = ~/suspect/suspect2
+SPHENO = ~/spheno/bin/SPheno
 # Add the link to 2HDMC directory, if available.
 THDMC = ~/2HDMC
+# Add the links to Hdecay and HiggsBounds, if available.
+HDECAY = ~/hdecay
+HIGGSBOUNDS = ~/higgsbounds/HiggsBounds-f77/HiggsBounds
 
 CINCLUDE= -I./src -L./src
 
@@ -48,18 +54,18 @@ all: libisospin.a
 	@touch $*.x
 
 clean:
-	rm -f *.x;
+	rm -rf tmp *.x *.bin .*.bin *.tmplha *.hbtmp *.fhtmp *.hdtmp *.fh *.is? *.ss *.sptmp *.sutmp *.fhmod;
 	@echo > src/FlagsForMake;
 	$(MAKE) -C src/ clean
 	
 distclean: 
-	rm -f *.a *.o *.x;
+	rm -rf tmp *.x *.bin .*.bin *.tmplha *.hbtmp *.fhtmp *.hdtmp *.fh *.is? *.ss *.sptmp *.sutmp *.fhmod;
 	@echo > src/FlagsForMake;
 	$(MAKE) -C src/ distclean
 	
 libisospin.a: 
 	@echo;
-	@echo SuperIso $(VERSION) - F.N. Mahmoudi 2009;
+	@echo SuperIso $(VERSION) - F.N. Mahmoudi 2010;
 	@echo;
 	@echo CC = $(CC) > src/FlagsForMake;\
 	echo CFLAGS = $(CFLAGS) >> src/FlagsForMake;\
@@ -67,7 +73,12 @@ libisospin.a:
 	echo AR = $(AR) >> src/FlagsForMake;\
 	echo SOFTSUSY = $(SOFTSUSY) >> src/FlagsForMake;\
 	echo ISAJET = $(ISAJET) >> src/FlagsForMake;\
+	echo SPHENO = $(SPHENO) >> src/FlagsForMake;\
+	echo SUSPECT = $(SUSPECT) >> src/FlagsForMake;\
 	echo THDMC = $(THDMC) >> src/FlagsForMake;\
+        echo FEYNHIGGS = $(FEYNHIGGS)/build/FeynHiggs >> src/FlagsForMake;\
+ 	echo HDECAY = $(HDECAY)/run >> src/FlagsForMake;\
+ 	echo HIGGSBOUNDS = $(HIGGSBOUNDS) >> src/FlagsForMake;
 	$(MAKE) -C src/ libisospin.a
 
 save: 
@@ -76,6 +87,8 @@ save:
 	cp -p README superiso_$(VERSION)/;\
 	cp -p example.lha superiso_$(VERSION)/;\
 	cp -p amsb.c superiso_$(VERSION)/;\
+	cp -p hcamsb.c superiso_$(VERSION)/;\
+	cp -p mmamsb.c superiso_$(VERSION)/;\
 	cp -p gmsb.c superiso_$(VERSION)/;\
 	cp -p msugra.c superiso_$(VERSION)/;\
 	cp -p nuhm.c superiso_$(VERSION)/;\

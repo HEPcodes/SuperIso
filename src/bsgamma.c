@@ -692,7 +692,7 @@ double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, st
 double bsgamma_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating the inclusive branching ratio of b -> s gamma */
 {
-	double C0w[9],C1w[9],C2w[9],C0b[9],C1b[9],C2b[9];
+	double C0w[11],C1w[11],C2w[11],C0b[11],C1b[11],C2b[11];
 	struct parameters param;
 		
 	Init_param(&param);

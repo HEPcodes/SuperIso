@@ -1,6 +1,6 @@
 #include "include.h"
 
-int excluded_masses(struct parameters* param)
+int excluded_Higgs_masses(struct parameters* param)
 /* tests whether the SUSY point is excluded by the collider contraints */
 /* if excluded, return 1, otherwise 0 */
 {
@@ -12,6 +12,19 @@ int excluded_masses(struct parameters* param)
 	if(param->mass_H!=0.) excluded=(excluded||(fabs(param->mass_H)<79.3)); /* charged Higgs */
 	if(param->mass_A0!=0.) excluded=(excluded||(fabs(param->mass_A0)<93.4)); /* CP-odd Higgs */
 
+	return excluded;
+}
+
+/*--------------------------------------------------------------------*/
+
+int excluded_SUSY_masses(struct parameters* param)
+/* tests whether the SUSY point is excluded by the collider contraints */
+/* if excluded, return 1, otherwise 0 */
+{
+	int excluded=0;
+
+	if(param->SM==1) return excluded;
+
 #ifdef SM_ChargedHiggs	
 	return excluded;
 #endif
@@ -21,8 +34,10 @@ int excluded_masses(struct parameters* param)
 	if(param->mass_neut[3]!=0.) if(param->tan_beta<40.) excluded=(excluded||(fabs(param->mass_neut[3])<99.9)); /* neutralino 3 */
 	if(param->mass_neut[4]!=0.) if(param->tan_beta<40.) excluded=(excluded||(fabs(param->mass_neut[4])<116.)); /* neutralino 4 */
 	if(param->mass_cha1!=0.) if((param->tan_beta<40.)&&(fabs(param->mass_cha1)-fabs(param->mass_neut[1])>3.)) excluded=(excluded||(fabs(param->mass_cha1)<94.)); /* chargino */
-	if(param->mass_er!=0.) excluded=(excluded||(fabs(param->mass_er)<73.)); /* slepton R */
-	if(param->mass_mur!=0.) if((param->tan_beta<40.)&&(fabs(param->mass_mur)-fabs(param->mass_neut[1])>10.)) excluded=(excluded||(fabs(param->mass_mur)<94.)); /* slepton R */
+	if(param->mass_er!=0.) excluded=(excluded||(fabs(param->mass_er)<107.)); /* selectron R */
+	if(param->mass_el!=0.) excluded=(excluded||(fabs(param->mass_el)<107.)); /* selectron L */
+	if(param->mass_mur!=0.) if((param->tan_beta<40.)&&(fabs(param->mass_mur)-fabs(param->mass_neut[1])>10.)) excluded=(excluded||(fabs(param->mass_mur)<94.)); /* smuon R*/
+	if(param->mass_mul!=0.) if((param->tan_beta<40.)&&(fabs(param->mass_mur)-fabs(param->mass_neut[1])>10.)) excluded=(excluded||(fabs(param->mass_mul)<94.)); /* smuon L*/
 	if(param->mass_nuel!=0.) if((param->tan_beta<40.)&&(fabs(param->mass_er)-fabs(param->mass_neut[1])>10.)) excluded=(excluded||(fabs(param->mass_nuel)<94.)); /* sneutrino */
 	if(param->mass_numl!=0.) if((param->tan_beta<40.)&&(fabs(param->mass_mur)-fabs(param->mass_neut[1])>10.)) excluded=(excluded||(fabs(param->mass_numl)<94.)); /* sneutrino */
 	if(param->mass_nutl!=0.) if((param->tan_beta<40.)&&(fabs(param->mass_tau1)-fabs(param->mass_neut[1])>10.)) excluded=(excluded||(fabs(param->mass_nutl)<94.)); /* sneutrino */
@@ -40,6 +55,26 @@ int excluded_masses(struct parameters* param)
 
 /*--------------------------------------------------------------------*/
 
+int excluded_masses(struct parameters* param)
+{
+	return excluded_Higgs_masses(param)||excluded_SUSY_masses(param);
+}
+
+/*--------------------------------------------------------------------*/
+
+int excluded_Higgs_mass_calculator(char name[])
+/* "container" function scanning the SLHA file "name" and checking if the SUSY point is excluded by the Higgs mass contraints */
+{
+	struct parameters param;
+		
+	Init_param(&param);
+	
+	if(!Les_Houches_Reader(name,&param)) return -1;
+
+	return excluded_Higgs_masses(&param);
+}
+/*--------------------------------------------------------------------*/
+
 int excluded_mass_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and checking if the SUSY point is excluded by the mass contraints */
 {
@@ -50,6 +85,20 @@ int excluded_mass_calculator(char name[])
 	if(!Les_Houches_Reader(name,&param)) return -1;
 
 	return excluded_masses(&param);
+}
+
+/*--------------------------------------------------------------------*/
+
+int excluded_SUSY_mass_calculator(char name[])
+/* "container" function scanning the SLHA file "name" and checking if the SUSY point is excluded by the SUSY mass contraints */
+{
+	struct parameters param;
+		
+	Init_param(&param);
+	
+	if(!Les_Houches_Reader(name,&param)) return -1;
+
+	return excluded_SUSY_masses(&param);
 }
 
 /*--------------------------------------------------------------------*/

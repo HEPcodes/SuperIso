@@ -188,17 +188,17 @@ double delta0(double C0[],double C0_spec[],double C1[],double C1_spec[],struct p
 	double alphas_mub=alphas_running(mub,param->mass_top_pole,param->mass_b_pole,param);
 	double alphas_muspec=alphas_running(muspec,param->mass_top_pole,param->mass_b_pole,param);	
 	
-	double T1=0.31;
-	double lambda_B=0.46;
+	double T1=0.268;
+	double lambda_B=0.51;
 	
 	double f_K=0.220;
-	double f_K_orth=0.185;
+	double f_K_orth=0.163;
 
-	double a1_orth=0.04;
-	double a2_orth=0.15;
+	double a1_orth=0.03;
+	double a2_orth=0.08;
 	
 	double a1_par=0.03;
-	double a2_par=0.11;
+	double a2_par=0.08;
 
 	double eta=alphas_mub /
 	alphas_running(sqrt(1.),param->mass_top_pole,param->mass_b_1S,param);
@@ -231,34 +231,34 @@ double delta0(double C0[],double C0_spec[],double C1[],double C1_spec[],struct p
 	double mass_c_mub=running_mass(param->mass_c,param->mass_c,mub,param->mass_top_pole,param->mass_b_pole,param);
  	double sc=pow(mass_c_mub/mass_b_mub,2.);
 	
-	complex double Horth= H_orth(sc,a1_par,a2_par);
+	double complex Horth= H_orth(sc,a1_par,a2_par);
 	double Forth=F_orth(a1_orth,a2_orth);
-	complex double Gorth=G_orth(sc,a1_orth,a2_orth);
+	double complex Gorth=G_orth(sc,a1_orth,a2_orth);
 
 	double H8a7= 4./3./N*pi*pi*param->f_B*f_K_orth/T1/param->m_B/lambda_B*H8_orth(a1_orth,a2_orth);
 	
-	complex double H2a7= -2./3./N*pi*pi*param->f_B*f_K_orth/T1/param->m_B/lambda_B*H2_orth(sc,a1_orth,a2_orth);
+	double complex H2a7= -2./3./N*pi*pi*param->f_B*f_K_orth/T1/param->m_B/lambda_B*H2_orth(sc,a1_orth,a2_orth);
 	
-	complex double G8a7= -104./27.*log(mub/param->mass_b_1S)+11./3.-2.*pi*pi/9.+2.*I*pi/3.;
+	double complex G8a7= -104./27.*log(mub/param->mass_b_1S)+11./3.-2.*pi*pi/9.+2.*I*pi/3.;
 	
-	complex double G2a7= 8./3.*log(mub/param->mass_b_1S)+(-833./162. - 20.*I*pi/27. + 8.*pi*pi/9.*pow(sc,3./2.) + 2./9.*(48.+30.*I*pi-5.*pi*pi-2.*I*pi*pi*pi-36.*zeta3+(36.+6.*I*pi-9.*pi*pi)*log(sc) + (3.+6.*I*pi)*pow(log(sc),2.) + pow(log(sc),3.))*sc + 2./9.*(18.+2.*pi*pi-2.*I*pi*pi*pi+(12.-6.*pi*pi)*log(sc)+6.*I*pi*pow(log(sc),2.)+pow(log(sc),3.))*sc*sc + 1./27.*(-9.+112.*I*pi-14.*pi*pi+(182.-48.*I*pi)*log(sc)-126.*pow(log(sc),2.))*sc*sc*sc);
+	double complex G2a7= 8./3.*log(mub/param->mass_b_1S)+(-833./162. - 20.*I*pi/27. + 8.*pi*pi/9.*pow(sc,3./2.) + 2./9.*(48.+30.*I*pi-5.*pi*pi-2.*I*pi*pi*pi-36.*zeta3+(36.+6.*I*pi-9.*pi*pi)*log(sc) + (3.+6.*I*pi)*pow(log(sc),2.) + pow(log(sc),3.))*sc + 2./9.*(18.+2.*pi*pi-2.*I*pi*pi*pi+(12.-6.*pi*pi)*log(sc)+6.*I*pi*pow(log(sc),2.)+pow(log(sc),3.))*sc*sc + 1./27.*(-9.+112.*I*pi-14.*pi*pi+(182.-48.*I*pi)*log(sc)-126.*pow(log(sc),2.))*sc*sc*sc);
 
-	complex double a7c=C[7] + alphas_mub/4./pi*4./3.*(C[2]*G2a7+C[8]*G8a7) + alphas_muspec/4./pi*4./3.*(C_spec[8]*H8a7+C_spec[2]*H2a7);
+	double complex a7c=C[7] + alphas_mub/4./pi*4./3.*(C[2]*G2a7+C[8]*G8a7) + alphas_muspec/4./pi*4./3.*(C_spec[8]*H8a7+C_spec[2]*H2a7);
 
 	double rho=0.;
 	double phi=0.;
 	
-	complex double  Xorth=X_orth1(a1_orth,a2_orth)+X_orth2(a1_orth,a2_orth)*log(param->m_B/lambda_h)*(1.+rho*(cos(phi)+I*sin(phi)));
+	double complex  Xorth=X_orth1(a1_orth,a2_orth)+X_orth2(a1_orth,a2_orth)*log(param->m_B/lambda_h)*(1.+rho*(cos(phi)+I*sin(phi)));
 
-	complex double K1=-(C[6]+C[5]/3.)*Forth + 4./9.*alphas_mub/4./pi*(pow(mass_b_mub/param->m_B,2.)*C[8]*Xorth-C[2]*((4./3.*log(param->mass_b_1S/mub)+2./3.)*Forth-Gorth)+r1); 	
+	double complex K1=-(C[6]+C[5]/3.)*Forth + 4./9.*alphas_mub/4./pi*(pow(mass_b_mub/param->m_B,2.)*C[8]*Xorth-C[2]*((4./3.*log(param->mass_b_1S/mub)+2./3.)*Forth-Gorth)+r1); 	
 
-	complex double K2u=lambda_u_lambda_c*(C[2]+C[1]/3.)+(C[4]+C[3]/3.)+4./9.*alphas_mub/4./pi*(C[2]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Horth)+r2);
+	double complex K2u=lambda_u_lambda_c*(C[2]+C[1]/3.)+(C[4]+C[3]/3.)+4./9.*alphas_mub/4./pi*(C[2]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Horth)+r2);
 	
-	complex double K2d=(C[4]+C[3]/3.)+4./9.*alphas_mub/4./pi*(C[2]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Horth)+r2);
+	double complex K2d=(C[4]+C[3]/3.)+4./9.*alphas_mub/4./pi*(C[2]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Horth)+r2);
 		
-	complex double b_d=12.*pi*pi*param->f_B*(-1./3.)/mass_b_mub/T1/a7c*(f_K_orth/mass_b_mub*K1+f_K*param->m_Kstar/6./lambda_B/param->m_B*K2d);
+	double complex b_d=12.*pi*pi*param->f_B*(-1./3.)/mass_b_mub/T1/a7c*(f_K_orth/mass_b_mub*K1+f_K*param->m_Kstar/6./lambda_B/param->m_B*K2d);
 	
-	complex double b_u=12.*pi*pi*param->f_B*(2./3.)/mass_b_mub/T1/a7c*(f_K_orth/mass_b_mub*K1+f_K*param->m_Kstar/6./lambda_B/param->m_B*K2u);
+	double complex b_u=12.*pi*pi*param->f_B*(2./3.)/mass_b_mub/T1/a7c*(f_K_orth/mass_b_mub*K1+f_K*param->m_Kstar/6./lambda_B/param->m_B*K2u);
 	
 #ifdef DEBUG
 	printf("-----------------\n");
@@ -276,7 +276,7 @@ double delta0(double C0[],double C0_spec[],double C1[],double C1_spec[],struct p
 double delta0_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating the isospin asymmetry */
 {
-	double C0b[9],C0spec[9],C1b[9],C1spec[9],C0w[9],C1w[9],C2w[9];
+	double C0b[11],C0spec[11],C1b[11],C1spec[11],C0w[11],C1w[11],C2w[11];
 	struct parameters param;
 		
 	Init_param(&param);
@@ -288,7 +288,7 @@ double delta0_calculator(char name[])
 	double mu_b=param.mass_b_1S;
 	
 	double lambda_h=0.5;
-	double mu_spec=sqrt(lambda_h*param.mass_b_1S);
+	double mu_spec=sqrt(lambda_h*param.mass_b);
 			
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base2(C0w,C1w,mu_W,C0b,C1b,mu_b,&param);

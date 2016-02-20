@@ -1,7 +1,7 @@
 #include "include.h"
 
 void Init_param(struct parameters* param)
-/* initializes the "param" structure by initializing the parameters with either 0 or a value from the PDG2008 */
+/* initializes the "param" structure by initializing the parameters with either 0 or a value from the PDG2010 */
 {
 	int ie,je;
 	
@@ -160,9 +160,9 @@ void Init_param(struct parameters* param)
 
 	/* SLHA2 */
 	param->NMSSM=0;
-	param->Rparity=0;
-	param->CPviolation=0;
-	param->Flavor=0;
+	param->RV=0;
+	param->CPV=0;
+	param->FV=0;
 	param->mass_nutau2=0.;
 	param->mass_e2=0.;
 	param->mass_nue2=0.;
@@ -247,6 +247,9 @@ void Init_param(struct parameters* param)
 	param->width_H0=0.;
 	param->width_A0=0.;
 	param->width_H=0.;
+	param->widthcalc=0;
+	param->width_H03=0.;
+	param->width_A02=0.;
 	
 	/* non-SLHA*/
 	param->mass_b_1S=0.;
@@ -265,18 +268,18 @@ void Init_param(struct parameters* param)
 	
 	/* Flavor physics */
 	param->f_B=0.1928;
-	param->f_Bs=0.245;
-	param->f_Ds=0.241;
-	param->f_D=0.206;
+	param->f_Bs=0.2388;
+	param->f_Ds=0.248;
+	param->f_D=0.207;
 	param->fK_fpi=1.189;
-	param->m_B=5.2795;
+	param->m_B=5.27917;
 	param->m_Bs=5.3663;
 	param->m_pi=0.1396;
 	param->m_K=0.4937;
 	param->m_Kstar=0.8917;
-	param->m_D0=1.86484;
-	param->m_D=1.86962;
-	param->m_Ds=1.96849;
+	param->m_D0=1.86483;
+	param->m_D=1.86960;
+	param->m_Ds=1.96847;
 	param->life_pi=2.6033e-8;
 	param->life_K=1.2380e-8;  
 	param->life_B=1.638e-12;
@@ -287,36 +290,68 @@ void Init_param(struct parameters* param)
 	/* CKM matrix */
 	param->Vud=0.97419;
 	param->Vus=0.2257;
-	param->Vub=0.00379;
+	param->Vub=0.00392;
 	param->Vcd=-0.2256;
 	param->Vcs=0.97334;
 	param->Vcb=0.0415;
 	param->Vtd=0.00874;
 	param->Vts=-0.0407;
 	param->Vtb=0.999133;
+	param->CKM[1][1]=param->Vud;
+	param->CKM[1][2]=param->Vus;
+	param->CKM[1][3]=param->Vub;
+	param->CKM[2][1]=param->Vcd;
+	param->CKM[2][2]=param->Vcs;
+	param->CKM[2][3]=param->Vcb;
+	param->CKM[3][1]=param->Vtd;
+	param->CKM[3][2]=param->Vts;
+	param->CKM[3][3]=param->Vtb;
 	
-	/* masses and coupling from PDG 2008 */
-	param->mass_u = 2.55e-3;
-	param->mass_d = 5.04e-3;
-	param->mass_s = 0.104;
+	/* masses and coupling from PDG 2010 */
+	param->mass_u = 2.49e-3;
+	param->mass_d = 5.05e-3;
+	param->mass_s = 0.101;
 	param->mass_c = 1.27;
-	param->mass_b = 4.20;
-	param->mass_top_pole = 173.1; /* from arXiv:0903.2503 */
+	param->mass_b = 4.19;
+	param->mass_top_pole = 173.3; /* from arXiv:1007.3178 */
 	
 	param->mass_e = 0.511e-3;
-	param->mass_mu= 0.106;
-	param->mass_tau_pole=1.7769;
+	param->mass_mu= 0.1056;
+	param->mass_tau_pole=1.7768;
 	param->mass_tau=param->mass_tau_pole;
 	
 	param->mass_Z=91.1876;
 	param->alphas_MZ=0.1176;
-	param->mass_W=80.403;
+	param->mass_W=80.399;
 
 	param->gp=3.58051564e-1;
 	param->g2=6.48408288e-1;	
 	param->inv_alpha_em=1.27910000e2;
 	param->Gfermi=1.16637000e-5;
 
+	param->width_Z=2.495;
+	param->width_W=2.085;
+	param->width_top=1.;
+
+	param->widthcalc=2; /* 2 = FeynHiggs */
+
+	/* HiggsBound */
+	for(ie=1;ie<=5;ie++) param->mass_hSM[ie]=param->width_hSM[ie]=param->g2hss_SM[ie]=param->g2hcc_SM[ie]=param->g2hbb_SM[ie]=param->g2htoptop_SM[ie]=param->g2htautau_SM[ie]=param->g2hWW_SM[ie]=param->g2hgg_SM[ie]=param->g2hgaga_SM[ie]=param->g2hZga_SM[ie]=param->g2hZZ_SM[ie]=-1.;
+	
+	param->g2h0ss=param->g2h0cc=param->g2h0bb=param->g2h0toptop=param->g2h0tautau=param->g2h0WW=param->g2h0gg=param->g2h0gaga=param->g2h0Zga=param->g2h0ZZ=0.;
+	param->g2H0ss=param->g2H0cc=param->g2H0bb=param->g2H0toptop=param->g2H0tautau=param->g2H0WW=param->g2H0gg=param->g2H0gaga=param->g2H0Zga=param->g2H0ZZ=0.;
+	param->g2A0ss=param->g2A0cc=param->g2A0bb=param->g2A0toptop=param->g2A0tautau=param->g2A0WW=param->g2A0gg=param->g2A0gaga=param->g2A0Zga=param->g2A0ZZ=0.;
+	param->g2H03ss=param->g2H03cc=param->g2H03bb=param->g2H03toptop=param->g2H03tautau=param->g2H03WW=param->g2H03gg=param->g2H03gaga=param->g2H03Zga=param->g2H03ZZ=0.;
+	param->g2A02ss=param->g2A02cc=param->g2A02bb=param->g2A02toptop=param->g2A02tautau=param->g2A02WW=param->g2A02gg=param->g2A02gaga=param->g2A02Zga=param->g2A02ZZ=0.;
+
+param->g2h0Zh0=param->g2h0ZH0=param->g2h0ZA0=param->g2h0ZA02=param->g2h0ZH03=param->BRh0H0H0=param->BRh0A0A0=param->BRh0A02A02=param->BRh0H03H03=0.;	param->g2H0Zh0=param->g2H0ZH0=param->g2H0ZA0=param->g2H0ZA02=param->g2H0ZH03=param->BRH0h0h0=param->BRH0A0A0=param->BRH0A02A02=param->BRH0H03H03=0.;	param->g2A0Zh0=param->g2A0ZH0=param->g2A0ZA0=param->g2A0ZA02=param->g2A0ZH03=param->BRA0h0h0=param->BRA0H0H0=param->BRA0A02A02=param->BRA0H03H03=0.;	param->g2A02Zh0=param->g2A02ZH0=param->g2A02ZA0=param->g2A02ZA02=param->g2A02ZH03=param->BRA02h0h0=param->BRA02H0H0=param->BRA02A0A0=param->BRA02H03H03=0.;	param->g2H03Zh0=param->g2H03ZH0=param->g2H03ZA0=param->g2H03ZA02=param->g2H03ZH03=param->BRH03h0h0=param->BRH03H0H0=param->BRH03A0A0=param->BRH03A02A02=0.;
+	
+	param->BRh0invisible=param->BRH0invisible=param->BRA0invisible=param->BRA02invisible=param->BRH03invisible=0.;
+
+	param->BRHcs=param->BRHcb=param->BRHtaunu=0.;
+	
+	param->BRtWb=param->BRtHb=0.;
+	
 	return;
 }
 
@@ -326,9 +361,15 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 /* reads the SLHA file "name" and puts all the values into the "param" structure */
 {
 	FILE *lecture;
-	char dummy[500];
-	double version;
+	char dummy[500],dummy2[500],nda[500],id1[500],id2[500];
+	double version,Qtemp;
 	int ie,je;
+	
+	if(!test_file(name))
+	{
+		param->model=-4;
+		return 0;
+	}
 	
 	lecture = fopen(name,"r");
 	while(EOF != fscanf(lecture,"%s",dummy))
@@ -345,23 +386,26 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 0: fscanf(lecture,"%d",&param->THDM_model); break;
 					case 1:	fscanf(lecture,"%d",&param->model); break;
 					case 3:	fscanf(lecture,"%d",&param->NMSSM); break;
-					case 4:	fscanf(lecture,"%d",&param->Rparity); break;
-					case 5:	fscanf(lecture,"%d",&param->CPviolation); break;
-					case 6:	fscanf(lecture,"%d",&param->Flavor); break;
+					case 4:	fscanf(lecture,"%d",&param->RV); break;
+					case 5:	fscanf(lecture,"%d",&param->CPV); break;
+					case 6:	fscanf(lecture,"%d",&param->FV); break;
 					case 12: fscanf(lecture,"%lf",&param->Q); break;
 				}	
 			}
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 	}
 	fclose(lecture);		
 
 	if(param->NMSSM != 0) param->model=-2; 
-	if(param->Rparity != 0) param->model=-2;
-	if(param->CPviolation != 0) param->model=-2;
+	if(param->RV != 0) param->model=-2;
+	if(param->CPV != 0) param->model=-2;
 	if(param->THDM_model !=0) param->model=param->THDM_model;
 	
 	if(param->model<0) return 0;	
 	
+	param->BRh0invisible=param->BRH0invisible=param->BRA0invisible=0.;
+
 	lecture = fopen(name,"r");
 	while(EOF != fscanf(lecture,"%s",dummy))
 	{
@@ -376,6 +420,10 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 1: 	fscanf(lecture,"%s",dummy); 
 							if(!strncasecmp(dummy,"ISA",3)) param->generator=1; 
 							if(!strncasecmp(dummy,"SOFTSUSY",8)) param->generator=3; 
+							if(!strncasecmp(dummy,"SPHENO",6)) param->generator=4; 
+							if(!strncasecmp(dummy,"SUSPECT",7)) param->generator=5; 
+							if(!strncasecmp(dummy,"NMSSMTOOLS",10)) param->generator=6; 
+							if(!strncasecmp(dummy,"2HDMC",5)) param->generator=10; 
 							break;
 					case 2: if(param->generator==1) 
 						{
@@ -383,9 +431,11 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 							if(version>=7.80) param->generator=2;
 						}
 						break;
+						
 					case 4: param->model=-1; fclose(lecture); return 0;
 				}
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"SMINPUTS"))
 		{
@@ -412,6 +462,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 24: fscanf(lecture,"%lf",&param->mass_c2); break;
 				}
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"VCKMIN"))
 		{
@@ -426,6 +477,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 4: fscanf(lecture,"%lf",&param->CKM_eta); break;
 				}
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"UPMNSIN"))
 		{
@@ -442,6 +494,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 6: fscanf(lecture,"%lf",&param->PMNS_alpha2); break;
 				}
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"MINPAR"))
 		{
@@ -511,6 +564,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					break;
 				}
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"EXTPAR"))
 		{
@@ -562,6 +616,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 70: fscanf(lecture,"%lf",&param->mS2NMSSM_Min); break;
 				}
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"MASS"))
 		{
@@ -570,63 +625,64 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 				if(test_integer(dummy)) switch(atoi(dummy))
 				{
-					case 1: fscanf(lecture,"%lf",&param->mass_d); break;
-					case 2: fscanf(lecture,"%lf",&param->mass_u); break;
-					case 3: fscanf(lecture,"%lf",&param->mass_s); break;
-					case 4: fscanf(lecture,"%lf",&param->mass_c); break;
-					case 6: fscanf(lecture,"%lf",&param->mass_t); break;
-					case 11: fscanf(lecture,"%lf",&param->mass_e); break;
-					case 12: fscanf(lecture,"%lf",&param->mass_nue); break;
-					case 13: fscanf(lecture,"%lf",&param->mass_mu); break;
-					case 14: fscanf(lecture,"%lf",&param->mass_num); break;
-					case 15: fscanf(lecture,"%lf",&param->mass_tau); break;
-					case 16: fscanf(lecture,"%lf",&param->mass_nut); break;
+					case 1: fscanf(lecture,"%lf",&param->mass_d); if(isnan(param->mass_d)) {param->model=-3; return 0;} break;
+					case 2: fscanf(lecture,"%lf",&param->mass_u); if(isnan(param->mass_s)) {param->model=-3; return 0;} break;
+					case 3: fscanf(lecture,"%lf",&param->mass_s); if(isnan(param->mass_s)) {param->model=-3; return 0;} break;
+					case 4: fscanf(lecture,"%lf",&param->mass_c); if(isnan(param->mass_c)) {param->model=-3; return 0;} break;
+					case 6: fscanf(lecture,"%lf",&param->mass_t); if(isnan(param->mass_t)) {param->model=-3; return 0;} break;
+					case 11: fscanf(lecture,"%lf",&param->mass_e); if(isnan(param->mass_e)) {param->model=-3; return 0;} break;
+					case 12: fscanf(lecture,"%lf",&param->mass_nue); if(isnan(param->mass_nue)) {param->model=-3; return 0;} break;
+					case 13: fscanf(lecture,"%lf",&param->mass_mu); if(isnan(param->mass_mu)) {param->model=-3; return 0;} break;
+					case 14: fscanf(lecture,"%lf",&param->mass_num); if(isnan(param->mass_num)) {param->model=-3; return 0;} break;
+					case 15: fscanf(lecture,"%lf",&param->mass_tau); if(isnan(param->mass_tau)) {param->model=-3; return 0;} break;
+					case 16: fscanf(lecture,"%lf",&param->mass_nut); if(isnan(param->mass_nut)) {param->model=-3; return 0;} break;
 					case 21: fscanf(lecture,"%lf",&param->mass_gluon); break;
 					case 22: fscanf(lecture,"%lf",&param->mass_photon); break;
-					case 23: fscanf(lecture,"%lf",&param->mass_Z0); break;
-					case 24: fscanf(lecture,"%lf",&param->mass_W); break;
-					case 25: fscanf(lecture,"%lf",&param->mass_h0); break;
-					case 35: fscanf(lecture,"%lf",&param->mass_H0); break;
-					case 36: fscanf(lecture,"%lf",&param->mass_A0); break;
-					case 37: fscanf(lecture,"%lf",&param->mass_H); break;
+					case 23: fscanf(lecture,"%lf",&param->mass_Z0); if(isnan(param->mass_Z0)) {param->model=-3; return 0;} break;
+					case 24: fscanf(lecture,"%lf",&param->mass_W); if(isnan(param->mass_W)) {param->model=-3; return 0;} break;
+					case 25: fscanf(lecture,"%lf",&param->mass_h0); if(isnan(param->mass_h0)) {param->model=-3; return 0;} break;
+					case 35: fscanf(lecture,"%lf",&param->mass_H0); if(isnan(param->mass_H0)) {param->model=-3; return 0;} break;
+					case 36: fscanf(lecture,"%lf",&param->mass_A0); if(isnan(param->mass_A0)) {param->model=-3; return 0;} break;
+					case 37: fscanf(lecture,"%lf",&param->mass_H); if(isnan(param->mass_H)) {param->model=-3; return 0;} break;
 					case 39: fscanf(lecture,"%lf",&param->mass_graviton); break;
-					case 45: fscanf(lecture,"%lf",&param->mass_H03); break;
-					case 46: fscanf(lecture,"%lf",&param->mass_A02); break;
-					case 1000001: fscanf(lecture,"%lf",&param->mass_dnl); break;
-					case 1000002: fscanf(lecture,"%lf",&param->mass_upl); break;
-					case 1000003: fscanf(lecture,"%lf",&param->mass_stl); break;
-					case 1000004: fscanf(lecture,"%lf",&param->mass_chl); break;
-					case 1000005: fscanf(lecture,"%lf",&param->mass_b1); break;
-					case 1000006: fscanf(lecture,"%lf",&param->mass_t1); break;
-					case 1000011: fscanf(lecture,"%lf",&param->mass_el); break;
-					case 1000012: fscanf(lecture,"%lf",&param->mass_nuel); break;
-					case 1000013: fscanf(lecture,"%lf",&param->mass_mul); break;
-					case 1000014: fscanf(lecture,"%lf",&param->mass_numl); break;
-					case 1000015: fscanf(lecture,"%lf",&param->mass_tau1); break;
-					case 1000016: fscanf(lecture,"%lf",&param->mass_nutl); break;
-					case 1000021: fscanf(lecture,"%lf",&param->mass_gluino); break;
-					case 1000022: fscanf(lecture,"%lf",&param->mass_neut[1]); break;
-					case 1000023: fscanf(lecture,"%lf",&param->mass_neut[2]); break;
-					case 1000024: fscanf(lecture,"%lf",&param->mass_cha1); break;
-					case 1000025: fscanf(lecture,"%lf",&param->mass_neut[3]); break;
-					case 1000035: fscanf(lecture,"%lf",&param->mass_neut[4]); break;
-					case 1000037: fscanf(lecture,"%lf",&param->mass_cha2); break;
+					case 45: fscanf(lecture,"%lf",&param->mass_H03); if(isnan(param->mass_H03)) {param->model=-3; return 0;} break;
+					case 46: fscanf(lecture,"%lf",&param->mass_A02); if(isnan(param->mass_A02)) {param->model=-3; return 0;} break;
+					case 1000001: fscanf(lecture,"%lf",&param->mass_dnl); if(isnan(param->mass_dnl)) {param->model=-3; return 0;} break;
+					case 1000002: fscanf(lecture,"%lf",&param->mass_upl); if(isnan(param->mass_upl)) {param->model=-3; return 0;} break;
+					case 1000003: fscanf(lecture,"%lf",&param->mass_stl); if(isnan(param->mass_stl)) {param->model=-3; return 0;} break;
+					case 1000004: fscanf(lecture,"%lf",&param->mass_chl); if(isnan(param->mass_chl)) {param->model=-3; return 0;} break;
+					case 1000005: fscanf(lecture,"%lf",&param->mass_b1); if(isnan(param->mass_b1)) {param->model=-3; return 0;} break;
+					case 1000006: fscanf(lecture,"%lf",&param->mass_t1); if(isnan(param->mass_t1)) {param->model=-3; return 0;} break;
+					case 1000011: fscanf(lecture,"%lf",&param->mass_el); if(isnan(param->mass_el)) {param->model=-3; return 0;} break;
+					case 1000012: fscanf(lecture,"%lf",&param->mass_nuel); if(isnan(param->mass_nuel)) {param->model=-3; return 0;} break;
+					case 1000013: fscanf(lecture,"%lf",&param->mass_mul); if(isnan(param->mass_mul)) {param->model=-3; return 0;} break;
+					case 1000014: fscanf(lecture,"%lf",&param->mass_numl); if(isnan(param->mass_numl)) {param->model=-3; return 0;} break;
+					case 1000015: fscanf(lecture,"%lf",&param->mass_tau1); if(isnan(param->mass_tau1)) {param->model=-3; return 0;} break;
+					case 1000016: fscanf(lecture,"%lf",&param->mass_nutl); if(isnan(param->mass_nutl)) {param->model=-3; return 0;} break;
+					case 1000021: fscanf(lecture,"%lf",&param->mass_gluino); if(isnan(param->mass_gluino)) {param->model=-3; return 0;} break;
+					case 1000022: fscanf(lecture,"%lf",&param->mass_neut[1]); if(isnan(param->mass_neut[1])) {param->model=-3; return 0;} break;
+					case 1000023: fscanf(lecture,"%lf",&param->mass_neut[2]); if(isnan(param->mass_neut[2])) {param->model=-3; return 0;} break;
+					case 1000024: fscanf(lecture,"%lf",&param->mass_cha1); if(isnan(param->mass_cha1)) {param->model=-3; return 0;} break;
+					case 1000025: fscanf(lecture,"%lf",&param->mass_neut[3]); if(isnan(param->mass_neut[3])) {param->model=-3; return 0;} break;
+					case 1000035: fscanf(lecture,"%lf",&param->mass_neut[4]); if(isnan(param->mass_neut[4])) {param->model=-3; return 0;} break;
+					case 1000037: fscanf(lecture,"%lf",&param->mass_cha2); if(isnan(param->mass_cha2)) {param->model=-3; return 0;} break;
 					case 1000039: fscanf(lecture,"%lf",&param->mass_gravitino); break;
-					case 1000045: fscanf(lecture,"%lf",&param->mass_neut[5]); break;
-					case 2000001: fscanf(lecture,"%lf",&param->mass_dnr); break;
-					case 2000002: fscanf(lecture,"%lf",&param->mass_upr); break;
-					case 2000003: fscanf(lecture,"%lf",&param->mass_str); break;
-					case 2000004: fscanf(lecture,"%lf",&param->mass_chr); break;
-					case 2000005: fscanf(lecture,"%lf",&param->mass_b2); break;
-					case 2000006: fscanf(lecture,"%lf",&param->mass_t2); break;
-					case 2000011: fscanf(lecture,"%lf",&param->mass_er); break;
+					case 1000045: fscanf(lecture,"%lf",&param->mass_neut[5]); if(isnan(param->mass_neut[5])) {param->model=-3; return 0;} break;
+					case 2000001: fscanf(lecture,"%lf",&param->mass_dnr); if(isnan(param->mass_dnr)) {param->model=-3; return 0;} break;
+					case 2000002: fscanf(lecture,"%lf",&param->mass_upr); if(isnan(param->mass_upr)) {param->model=-3; return 0;} break;
+					case 2000003: fscanf(lecture,"%lf",&param->mass_str); if(isnan(param->mass_str)) {param->model=-3; return 0;} break;
+					case 2000004: fscanf(lecture,"%lf",&param->mass_chr); if(isnan(param->mass_chr)) {param->model=-3; return 0;} break;
+					case 2000005: fscanf(lecture,"%lf",&param->mass_b2); if(isnan(param->mass_b2)) {param->model=-3; return 0;} break;
+					case 2000006: fscanf(lecture,"%lf",&param->mass_t2); if(isnan(param->mass_t2)) {param->model=-3; return 0;} break;
+					case 2000011: fscanf(lecture,"%lf",&param->mass_er); if(isnan(param->mass_er)) {param->model=-3; return 0;} break;
 					case 2000012: fscanf(lecture,"%lf",&param->mass_nuer); break;
-					case 2000013: fscanf(lecture,"%lf",&param->mass_mur); break;
+					case 2000013: fscanf(lecture,"%lf",&param->mass_mur); if(isnan(param->mass_mur)) {param->model=-3; return 0;} break;
 					case 2000014: fscanf(lecture,"%lf",&param->mass_numr); break;
-					case 2000015: fscanf(lecture,"%lf",&param->mass_tau2); break;
+					case 2000015: fscanf(lecture,"%lf",&param->mass_tau2); if(isnan(param->mass_tau2)) {param->model=-3; return 0;} break;
 					case 2000016: fscanf(lecture,"%lf",&param->mass_nutr); break;
 				}
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"ALPHA"))
 		{
@@ -653,6 +709,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"SBOTMIX"))
 		{
@@ -671,6 +728,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"STAUMIX"))
 		{
@@ -688,6 +746,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"NMIX"))
 		{
@@ -705,6 +764,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"NMNMIX"))
 		{
@@ -722,6 +782,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"UMIX"))
 		{
@@ -742,6 +803,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"VMIX"))
 		{
@@ -760,14 +822,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"GAUGE"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->GAUGE_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->GAUGE_Q!=0.)&&(Qtemp>param->GAUGE_Q)) break;
+					param->GAUGE_Q=Qtemp;
+				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
 					case 1: fscanf(lecture,"%lf",&param->gp); break;
@@ -775,14 +843,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 3: fscanf(lecture,"%lf",&param->g3); break;	
 				}
 			}
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"YU"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->YU_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->YU_Q!=0.)&&(Qtemp>param->YU_Q)) break;
+					param->YU_Q=Qtemp;
+				}
 				else 				
 				if(test_integer(dummy))
 				{
@@ -794,14 +868,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"YD"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->YD_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->YD_Q!=0.)&&(Qtemp>param->YD_Q)) break;
+					param->YD_Q=Qtemp;
+				}
 				else
 				if(test_integer(dummy))
 				{
@@ -813,14 +893,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}		
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"YE"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->YE_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->YE_Q!=0.)&&(Qtemp>param->YE_Q)) break;
+					param->YE_Q=Qtemp;
+				}
 				else
 				if(test_integer(dummy))
 				{
@@ -832,14 +918,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}		
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"HMIX"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->HMIX_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->HMIX_Q!=0.)&&(Qtemp>param->HMIX_Q)) break;
+					param->HMIX_Q=Qtemp;
+				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
 					case 1: fscanf(lecture,"%lf",&param->mu_Q); break;
@@ -848,6 +940,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 4: fscanf(lecture,"%lf",&param->mA2_Q); break;
 				}
 			}
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"NMHMIX"))
 		{
@@ -866,6 +959,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"NMAMIX"))
 		{
@@ -884,14 +978,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"MSOFT"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->MSOFT_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->MSOFT_Q!=0.)&&(Qtemp>param->MSOFT_Q)) break;
+					param->MSOFT_Q=Qtemp;
+				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
 					case 1: fscanf(lecture,"%lf",&param->M1_Q); break;
@@ -916,14 +1016,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 49: fscanf(lecture,"%lf",&param->MbR_Q); break;
 				}
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"AU"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->AU_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->AU_Q!=0.)&&(Qtemp>param->AU_Q)) break;
+					param->AU_Q=Qtemp;
+				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
 					case 1: 
@@ -955,14 +1061,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"AD"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->AD_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->AD_Q!=0.)&&(Qtemp>param->AD_Q)) break;
+					param->AD_Q=Qtemp;
+				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
 					case 1: 
@@ -994,14 +1106,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}
 			}
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"AE"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->AE_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->AE_Q!=0.)&&(Qtemp>param->AE_Q)) break;
+					param->AE_Q=Qtemp;
+				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
 					case 1: 
@@ -1033,14 +1151,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}		
 		else if(!strcasecmp(dummy,"NMSSMRUN"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->NMSSMRUN_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->NMSSMRUN_Q!=0.)&&(Qtemp>param->NMSSMRUN_Q)) break;
+					param->NMSSMRUN_Q=Qtemp;
+				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
 					case 1: fscanf(lecture,"%lf",&param->lambdaNMSSM); break;
@@ -1055,6 +1179,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 10: fscanf(lecture,"%lf",&param->mS2NMSSM); break;
 				}
 			}
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"USQMIX"))
 		{
@@ -1073,6 +1198,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"DSQMIX"))
 		{
@@ -1091,6 +1217,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"SELMIX"))
 		{
@@ -1109,6 +1236,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"SELMIX"))
 		{
@@ -1127,14 +1255,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"MSQ2"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->MSQ2_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->MSQ2_Q!=0.)&&(Qtemp>param->MSQ2_Q)) break;
+					param->MSQ2_Q=Qtemp;
+				}
 				else 
 
 				if(test_integer(dummy))
@@ -1148,14 +1282,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"MSL2"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->MSL2_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->MSL2_Q!=0.)&&(Qtemp>param->MSL2_Q)) break;
+					param->MSL2_Q=Qtemp;
+				}
 				else 
 
 				if(test_integer(dummy))
@@ -1169,13 +1309,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"MSD2"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->MSD2_Q!=0.)&&(Qtemp>param->MSD2_Q)) break;
+					param->MSD2_Q=Qtemp;
+				}
 				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->MSD2_Q);
 				else 
 
@@ -1190,14 +1337,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"MSU2"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->MSU2_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->MSU2_Q!=0.)&&(Qtemp>param->MSU2_Q)) break;
+					param->MSU2_Q=Qtemp;
+				}
 				else 
 
 				if(test_integer(dummy))
@@ -1211,14 +1364,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"MSE2"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->MSE2_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->MSE2_Q!=0.)&&(Qtemp>param->MSE2_Q)) break;
+					param->MSE2_Q=Qtemp;
+				}
 				else 
 
 				if(test_integer(dummy))
@@ -1232,14 +1391,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"VCKM"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->CKM_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->CKM_Q!=0.)&&(Qtemp>param->CKM_Q)) break;
+					param->CKM_Q=Qtemp;
+				}
 				else 
 
 				if(test_integer(dummy))
@@ -1253,14 +1418,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"IMVCKM"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->CKM_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->IMCKM_Q!=0.)&&(Qtemp>param->IMCKM_Q)) break;
+					param->IMCKM_Q=Qtemp;
+				}
 				else 
 
 				if(test_integer(dummy))
@@ -1274,14 +1445,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"UPMNS"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->PMNSU_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->PMNSU_Q!=0.)&&(Qtemp>param->PMNSU_Q)) break;
+					param->PMNSU_Q=Qtemp;
+				}
 				else 
 
 				if(test_integer(dummy))
@@ -1295,14 +1472,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"TU"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->TU_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->TU_Q!=0.)&&(Qtemp>param->TU_Q)) break;
+					param->TU_Q=Qtemp;
+				}
 				else 
 
 				if(test_integer(dummy))
@@ -1316,14 +1499,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"TD"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->TD_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->TD_Q!=0.)&&(Qtemp>param->TD_Q)) break;
+					param->TD_Q=Qtemp;
+				}
 				else 
 
 				if(test_integer(dummy))
@@ -1337,14 +1526,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"TE"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
-				if(!strcasecmp(dummy,"Q=MGUT=")) break;
-				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%lf",&param->TE_Q);
+				if(!strncasecmp(dummy,"Q=MGUT=",7)) break;
+				if(!strncasecmp(dummy,"Q=",2))
+				{
+					fscanf(lecture,"%lf",&Qtemp);
+					if((param->TE_Q!=0.)&&(Qtemp>param->TE_Q)) break;
+					param->TE_Q=Qtemp;
+				}
 				else 
 
 				if(test_integer(dummy))
@@ -1358,6 +1553,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"UCOUPL"))
 		{
@@ -1375,6 +1571,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"DCOUPL"))
 		{
@@ -1392,6 +1589,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
 		else if(!strcasecmp(dummy,"LCOUPL"))
 		{
@@ -1409,19 +1607,285 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}			
 			}	
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}		
 		else if(!strcasecmp(dummy,"DECAY"))
 		{
 			fscanf(lecture,"%s",dummy); 
-			switch(abs(atoi(dummy)))
+			switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 			{
-				case 25: fscanf(lecture,"%lf",&param->width_h0); break;
-				case 35: fscanf(lecture,"%lf",&param->width_H0); break;
-				case 36: fscanf(lecture,"%lf",&param->width_A0); break;
-				case 37: fscanf(lecture,"%lf",&param->width_H); break;
-			}		
-		}
+				case 6:
+				{
+					fscanf(lecture,"%lf",&param->width_top);
+					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
+					{
+						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
+						{
+							fscanf(lecture,"%s",nda);
+							fscanf(lecture,"%s",id1);
+							fscanf(lecture,"%s",id2);
+							if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"24")))||((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"5")))) param->BRtWb=atof(dummy);
+							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"37")))||((!strcasecmp(id1,"37"))&&(!strcasecmp(id2,"5")))) param->BRtHb=atof(dummy);
+						}
+					}
+					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
+					break;
+				}
+				case 23: fscanf(lecture,"%lf",&param->width_Z); break;
+				case 24: fscanf(lecture,"%lf",&param->width_W); break;
+				case 25:
+				{
+					fscanf(lecture,"%lf",&param->width_h0);
+					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
+					{
+						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
+						{	
+							fscanf(lecture,"%s",nda);
+							fscanf(lecture,"%s",id1);
+							fscanf(lecture,"%s",id2);
+							if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2h0ss=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2h0cc=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2h0bb=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2h0toptop=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2h0tautau=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2h0WW=atof(dummy)*param->width_h0;
+							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2h0gg=atof(dummy)*param->width_h0;
+							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2h0gaga=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2h0ZH0=atof(dummy)*param->width_h0;
+							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2h0ZZ=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2h0Zh0=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2h0Zh0=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2h0ZH0=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2h0ZA0=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2h0ZA02=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2h0ZH03=atof(dummy)*param->width_h0;
+							else if((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"35"))) param->BRh0H0H0=atof(dummy);
+							else if((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"36"))) param->BRh0A0A0=atof(dummy);
+							else if((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"46"))) param->BRh0A02A02=atof(dummy);
+							else if((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"45"))) param->BRh0H03H03=atof(dummy);
+							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRh0invisible+=atof(dummy);
 
+						}
+					}	
+					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
+					break;
+				}
+				case 26:
+				{
+					fscanf(lecture,"%lf",&param->width_h0);
+					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
+					{
+						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
+						{
+							fscanf(lecture,"%s",nda);
+							fscanf(lecture,"%s",id1);
+							fscanf(lecture,"%s",id2);
+							if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2h0ss=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2h0cc=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2h0bb=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2h0toptop=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2h0tautau=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2h0WW=atof(dummy)*param->width_h0;
+							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2h0gg=atof(dummy)*param->width_h0;
+							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2h0gaga=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"22")))||((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"23")))) param->g2h0Zga=atof(dummy)*param->width_h0;
+							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2h0ZZ=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2h0Zh0=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2h0Zh0=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2h0ZH0=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2h0ZA0=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2h0ZA02=atof(dummy)*param->width_h0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2h0ZH03=atof(dummy)*param->width_h0;
+							else if((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"35"))) param->BRh0H0H0=atof(dummy);
+							else if((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"36"))) param->BRh0A0A0=atof(dummy);
+							else if((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"46"))) param->BRh0A02A02=atof(dummy);
+							else if((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"45"))) param->BRh0H03H03=atof(dummy);
+							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRh0invisible+=atof(dummy);
+
+						}
+					}
+					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
+					break;
+				}
+				case 35:
+				{
+					fscanf(lecture,"%lf",&param->width_H0);
+					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
+					{
+						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
+						{
+							fscanf(lecture,"%s",nda);
+							fscanf(lecture,"%s",id1);
+							fscanf(lecture,"%s",id2);					if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2H0ss=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2H0cc=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2H0bb=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2H0toptop=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2H0tautau=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2H0WW=atof(dummy)*param->width_H0;
+							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2H0gg=atof(dummy)*param->width_H0;
+							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2H0gaga=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"22")))||((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"23")))) param->g2H0Zga=atof(dummy)*param->width_H0;
+							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2H0ZZ=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2H0Zh0=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2H0Zh0=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2H0ZH0=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2H0ZA0=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2H0ZA02=atof(dummy)*param->width_H0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2H0ZH03=atof(dummy)*param->width_H0;
+							else if((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"25"))) param->BRH0h0h0=atof(dummy);
+							else if((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"26"))) param->BRH0h0h0=atof(dummy);
+							else if((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"36"))) param->BRH0A0A0=atof(dummy);
+							else if((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"46"))) param->BRH0A02A02=atof(dummy);
+							else if((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"45"))) param->BRH0H03H03=atof(dummy);
+							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRH0invisible+=atof(dummy);
+						}
+					}	
+					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
+					break;
+				}
+				case 36:
+				{
+					fscanf(lecture,"%lf",&param->width_A0);
+					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
+					{
+						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
+						{
+							fscanf(lecture,"%s",nda);
+							fscanf(lecture,"%s",id1);
+							fscanf(lecture,"%s",id2);
+							if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2A0ss=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2A0cc=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2A0bb=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2A0toptop=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2A0tautau=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2A0WW=atof(dummy)*param->width_A0;
+							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2A0gg=atof(dummy)*param->width_A0;
+							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2A0gaga=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"22")))||((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"23")))) param->g2A0Zga=atof(dummy)*param->width_A0;
+							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2A0ZZ=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2A0Zh0=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2A0Zh0=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2A0ZH0=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2A0ZA0=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2A0ZH0=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2A0ZA0=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2A0ZA02=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2A0ZH03=atof(dummy)*param->width_A0;
+							else if((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"25"))) param->BRA0h0h0=atof(dummy);
+							else if((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"26"))) param->BRA0h0h0=atof(dummy);
+							else if((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"35"))) param->BRA0H0H0=atof(dummy);
+							else if((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"46"))) param->BRA0A02A02=atof(dummy);
+							else if((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"45"))) param->BRA0H03H03=atof(dummy);
+							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRA0invisible+=atof(dummy);
+						}
+					}
+					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
+					break;
+				}
+				case 37: 
+				{
+					fscanf(lecture,"%lf",&param->width_H);
+					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
+					{
+						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
+						{
+							fscanf(lecture,"%s",nda);
+							fscanf(lecture,"%s",id1);
+							fscanf(lecture,"%s",id2);
+							if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"4")))) param->BRHcs=atof(dummy);
+							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"4")))) param->BRHcb=atof(dummy);
+							else if(((!strcasecmp(id1,"16"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"16")))) param->BRHtaunu=atof(dummy);
+						}
+					}
+					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
+					break;
+				}
+				case 45:
+				{
+					fscanf(lecture,"%lf",&param->width_H03);
+					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
+					{
+						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
+						{
+							fscanf(lecture,"%s",nda);
+							fscanf(lecture,"%s",id1);
+							fscanf(lecture,"%s",id2);					if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2H03ss=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2H03cc=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2H03bb=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2H03toptop=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2H03tautau=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2H03WW=atof(dummy)*param->width_H03;
+							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2H03gg=atof(dummy)*param->width_H03;
+							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2H03gaga=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"22")))||((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"23")))) param->g2H03Zga=atof(dummy)*param->width_H03;
+							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2H03ZZ=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2H03Zh0=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2H03Zh0=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2H03ZH0=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2H03ZA0=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2H03ZA02=atof(dummy)*param->width_H03;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2H03ZH03=atof(dummy)*param->width_H03;
+							else if((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"25"))) param->BRH03h0h0=atof(dummy);
+							else if((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"26"))) param->BRH03h0h0=atof(dummy);
+							else if((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"35"))) param->BRH03H0H0=atof(dummy);
+							else if((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"36"))) param->BRH03A0A0=atof(dummy);
+							else if((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"46"))) param->BRH03A02A02=atof(dummy);
+							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRH03invisible+=atof(dummy);
+						}
+					}	
+					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
+					break;
+				}
+				case 46:
+				{
+					fscanf(lecture,"%lf",&param->width_A02);
+					while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block")&&strcasecmp(dummy,"Decay"))) 
+					{
+						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+						if((atof(dummy)*(atoi(dummy)-atof(dummy)))!=0.)
+						{
+							fscanf(lecture,"%s",nda);
+							fscanf(lecture,"%s",id1);
+							fscanf(lecture,"%s",id2);
+							if(((!strcasecmp(id1,"3"))&&(!strcasecmp(id2,"-3")))||((!strcasecmp(id1,"-3"))&&(!strcasecmp(id2,"3")))) param->g2A02ss=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"4"))&&(!strcasecmp(id2,"-4")))||((!strcasecmp(id1,"-4"))&&(!strcasecmp(id2,"4")))) param->g2A02cc=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"5"))&&(!strcasecmp(id2,"-5")))||((!strcasecmp(id1,"-5"))&&(!strcasecmp(id2,"5")))) param->g2A02bb=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"6"))&&(!strcasecmp(id2,"-6")))||((!strcasecmp(id1,"-6"))&&(!strcasecmp(id2,"6")))) param->g2A02toptop=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"15"))&&(!strcasecmp(id2,"-15")))||((!strcasecmp(id1,"-15"))&&(!strcasecmp(id2,"15")))) param->g2A02tautau=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"24"))&&(!strcasecmp(id2,"-24")))||((!strcasecmp(id1,"-24"))&&(!strcasecmp(id2,"24")))) param->g2A02WW=atof(dummy)*param->width_A02;
+							else if((!strcasecmp(id1,"21"))&&(!strcasecmp(id2,"21"))) param->g2A02gg=atof(dummy)*param->width_A02;
+							else if((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"22"))) param->g2A02gaga=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"22")))||((!strcasecmp(id1,"22"))&&(!strcasecmp(id2,"23")))) param->g2A02Zga=atof(dummy)*param->width_A02;
+							else if((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"23"))) param->g2A02ZZ=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"25")))||((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"23")))) param->g2A02Zh0=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"26")))||((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"23")))) param->g2A02Zh0=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2A02ZH0=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2A02ZA0=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"35")))||((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"23")))) param->g2A0ZH0=atof(dummy)*param->width_A0;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"36")))||((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"23")))) param->g2A02ZA0=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"46")))||((!strcasecmp(id1,"46"))&&(!strcasecmp(id2,"23")))) param->g2A02ZA02=atof(dummy)*param->width_A02;
+							else if(((!strcasecmp(id1,"23"))&&(!strcasecmp(id2,"45")))||((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"23")))) param->g2A02ZH03=atof(dummy)*param->width_A02;
+							else if((!strcasecmp(id1,"25"))&&(!strcasecmp(id2,"25"))) param->BRA02h0h0=atof(dummy);
+							else if((!strcasecmp(id1,"26"))&&(!strcasecmp(id2,"26"))) param->BRA02h0h0=atof(dummy);
+							else if((!strcasecmp(id1,"35"))&&(!strcasecmp(id2,"35"))) param->BRA02H0H0=atof(dummy);
+							else if((!strcasecmp(id1,"36"))&&(!strcasecmp(id2,"36"))) param->BRA02A0A0=atof(dummy);
+							else if((!strcasecmp(id1,"45"))&&(!strcasecmp(id2,"45"))) param->BRA02H03H03=atof(dummy);
+							else if((abs(atoi(id1))>1000000)&&(abs(atoi(id2))>1000000)) param->BRA02invisible+=atof(dummy);
+						}
+					}
+					if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
+					break;
+				}
+			}		
+			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
+		}
 	}
 	fclose(lecture);
 
@@ -1688,12 +2152,22 @@ void slha_adjust(struct parameters* param)
 	param->stau_mix[1][2]=sin(dum);
 	param->stau_mix[2][2]=cos(dum);
 
-	if(param->neut_mix[1][1]>0.) for(ie=1;ie<=4;ie++) for(je=1;je<=4;je++) param->neut_mix[ie][je]=-param->neut_mix[ie][je];
+	if(param->neut_mix[1][1]>0.) for(ie=1;ie<=5;ie++) for(je=1;je<=5;je++) param->neut_mix[ie][je]=-param->neut_mix[ie][je];
 	
 	param->mass_b_pole=mb_pole(param);
  	param->mass_b_1S=mb_1S(param);
 	
 	param->mtmt=mt_mt(param);
+
+	param->Vud=param->CKM[1][1];
+	param->Vus=param->CKM[1][2];
+	param->Vub=param->CKM[1][3];
+	param->Vcd=param->CKM[2][1];
+	param->Vcs=param->CKM[2][2];
+	param->Vcb=param->CKM[2][3];
+	param->Vtd=param->CKM[3][1];
+	param->Vts=param->CKM[3][2];
+	param->Vtb=param->CKM[3][3];
 	
 	return;
 }
@@ -1708,7 +2182,9 @@ int test_slha(char name[])
 	Init_param(&param);
 	if(Les_Houches_Reader(name,&param))
 	{
-		if(param.Flavor!=0) return 2;
+		if(param.FV!=0) return 2;
+		if(param.NMSSM!=0) return 3;
+		if(param.THDM_model!=0) return 10;
 		return 1;
 	}
 

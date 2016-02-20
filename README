@@ -1,4 +1,4 @@
-SuperIso Version 2.7 (16 November 2009)
+SuperIso Version 2.8 (2 November 2010)
 ---------------------------------------
 By Farvah Nazila Mahmoudi (mahmoudi@in2p3.fr)
 
@@ -8,7 +8,7 @@ INTRODUCTION
 The most recent version of this program can be obtained from: 
 http://superiso.in2p3.fr
 
-This C code (in C99 standard) provides the calculation of several flavor physics observables as well as the muon anomalous magnetic moment, for a set of supersymmetric or 2HDM parameters which can be either calculated within this program thanks to Isajet, Softsusy or 2HDMC, or directly provided by user thanks to a SUSY Les Houches Accord (SLHA1 or SLHA2) file.
+This C code (in C99 standard) provides the calculation of several flavor physics observables as well as the muon anomalous magnetic moment, for a set of supersymmetric or 2HDM parameters which can be either calculated within this program thanks to Isajet, Softsusy, SuSpect, SPheno or 2HDMC, or directly provided by user thanks to a SUSY Les Houches Accord (SLHA1 or SLHA2) file.
 
 
 If you use this program to write a paper, please cite: 
@@ -24,19 +24,21 @@ Installation and Compilation
 ----------------------------
 - tar xzvf superiso_vX.X.tgz
 - cd superiso_vX.X
-- in Makefile, first define your C compiler, and the path to Isajet, Softsusy or 2HDMC, if you want to use them. If not, you must provide your SLHA file as input.
+- in Makefile, first define your C compiler, and the path to Isajet, Softsusy, SPheno, SuSpect, Hdecay, HiggsBounds or 2HDMC, if you want to use them. If not, you must comment them in the main programs.
 - compile with: make
 
-7 programs are available:
+9 programs are available:
 - sm.c: Standard Model
-- msugra.c: msugra parameter space, linked to isajet or softsusy
-- amsb.c: amsb parameter space, linked to isajet (>=7.80) or softsusy
-- gmsb.c: gmsb parameter space, linked to isajet (>=7.80) or softsusy
+- msugra.c: msugra parameter space, linked to isajet, softsusy, spheno or suspect
+- amsb.c: amsb parameter space, linked to isajet (>=7.80), softsusy, spheno or suspect
+- hcamsb.c: hypercharged amsb parameter space, linked to isajet (>=7.80)
+- gmsb.c: gmsb parameter space, linked to isajet (>=7.80), softsusy, spheno or suspect
+- mmamsb.c: mixed moduli amsb parameter space, linked to isajet (>=7.80)
 - nuhm.c: nuhm parameter space, linked to isajet (>=7.80) or softsusy
 - thdm.c: 2HDM types I-IV parameter space, linked to 2HDMC
 - slha.c: scans the user provided SLHA file
 
-They can be compiled with: make name (or make name.c), where "name" stands for sm, msugra, amsb, gmsb, nuhm, thdm or slha.
+They can be compiled with: make name (or make name.c), where "name" stands for sm, msugra, amsb, gmsb, nuhm, ...
 
 They can be run with: ./name.x
 Note that an example of SLHA file is also provided: example.lha
@@ -55,12 +57,16 @@ dslnu.c: calculation of the branching ratios of Ds-> tau nu and Ds-> mu nu
 excluded_masses.c: procedures which check the charge of the LSP, and the agreement with the lower mass limits
 general.c: some useful mathematical functions 
 gmuon.c: calculation of the muon anomalous magnetic moment
+hdecay.c: procedures calling HDECAY
+higgsbounds.c: procedures calling HiggsBounds
 isajet.c: procedures calling Isajet
 isospin.c: calculation of the isospin asymmetry in B-> K* gamma
 kmunu.c: calculation of the observables related to K-> mu nu
 leshouches.c: procedures reading files in the SLHA format
 quark_masses.c: calculation of the quark masses
+spheno.c: procedures calling SPheno
 softsusy.c: procedures calling Softsusy
+suspect.c: procedures calling SuSpect
 2hdmc.c: procedures calling 2HDMC
 wilson.c: calculation of the Wilson coefficients
 
@@ -68,6 +74,8 @@ wilson.c: calculation of the Wilson coefficients
 sm.c: calculation of the observables in the SM
 msugra.c: calculation of the observables for a mSUGRA point
 amsb.c: calculation of the observables for an AMSB point
+hcamsb.c: calculation of the observables for an HC-AMSB point
+mmamsb.c: calculation of the observables for an MM-AMSB point
 gmsb.c: calculation of the observables for a GMSB point
 nuhm.c: calculation of the observables for a NUHM point
 thdm.c: calculation of the observables for a 2HDM type I-IV point
@@ -84,6 +92,14 @@ README
 
 History
 -------
+v2.8 - 11/02/2010 - 	FLHA compliant.
+			Interface with HiggsBounds v2 and HDECAY. 
+			Interface with SPheno.
+			Interface with SuSpect.
+			Addition of HC-AMSB and MM-AMSB models.
+			Improvement of the BR(Bs -> mu+ mu-) calculation.
+			Updated parameter values.
+
 v2.7 - 11/16/2009 - 	Compatibility with the new Isajet 7.80.
 			Implementation of D-> mu nu.
 			Improvement in the CKM matrix implementation.
@@ -121,7 +137,7 @@ v1.0 - 09/17/2007 - First public release.
 
 LICENSE
 -------
-    SuperIso Copyright (C) 2009 F. Mahmoudi
+    SuperIso Copyright (C) 2010 F. Mahmoudi
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

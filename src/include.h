@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <complex.h>
 #include <string.h>
 #include <strings.h>
@@ -52,7 +53,7 @@ typedef struct parameters
 	double AU_Q,A_u,A_c,A_t,AD_Q,A_d,A_s,A_b,AE_Q,A_e,A_mu,A_tau; /* trilinear couplings */
 	
 	/* SLHA2 */
-	int NMSSM,Rparity,CPviolation,Flavor;
+	int NMSSM,RV,CPV,FV;
 	double mass_nutau2,mass_e2,mass_nue2,mass_mu2,mass_numu2,mass_d2,mass_u2,mass_s2,mass_c2;
 	double CKM_lambda,CKM_A,CKM_rho,CKM_eta;
 	double PMNS_theta12,PMNS_theta23,PMNS_theta13,PMNS_delta13,PMNS_alpha1,PMNS_alpha2;
@@ -76,14 +77,30 @@ typedef struct parameters
 	double life_pi,life_K,life_B,life_Bs,life_D,life_Ds;
 	
 	/* Decay widths */
-	double width_h0,width_H0,width_A0,width_H;
-	
+	double width_h0,width_H0,width_A0,width_H,width_Z,width_W,width_top,width_H03,width_A02;
+	int widthcalc; /* 0=none, 1=hdecay, 2=feynhiggs */
 	/* CKM matrix */
-	complex double Vud,Vus,Vub,Vcd,Vcs,Vcb,Vtd,Vts,Vtb;
-
+	double complex Vud,Vus,Vub,Vcd,Vcs,Vcb,Vtd,Vts,Vtb;
+	
 	/* 2HDM */
 	int THDM_model;
 	double lambda_u[4][4],lambda_d[4][4],lambda_l[4][4];
+
+	/* HiggsBounds */
+	double mass_hSM[6],width_hSM[6];
+	double g2hss_SM[6],g2hcc_SM[6],g2hbb_SM[6],g2htoptop_SM[6],g2htautau_SM[6],g2hWW_SM[6],g2hgg_SM[6],g2hZga_SM[6],g2hgaga_SM[6],g2hZZ_SM[6];
+	double g2h0ss,g2h0cc,g2h0bb,g2h0toptop,g2h0tautau,g2h0WW,g2h0gg,g2h0gaga,g2h0Zga,g2h0ZZ;
+	double g2H0ss,g2H0cc,g2H0bb,g2H0toptop,g2H0tautau,g2H0WW,g2H0gg,g2H0gaga,g2H0Zga,g2H0ZZ;
+	double g2A0ss,g2A0cc,g2A0bb,g2A0toptop,g2A0tautau,g2A0WW,g2A0gg,g2A0gaga,g2A0Zga,g2A0ZZ;
+	double g2A02ss,g2A02cc,g2A02bb,g2A02toptop,g2A02tautau,g2A02WW,g2A02gg,g2A02gaga,g2A02Zga,g2A02ZZ;
+	double g2H03ss,g2H03cc,g2H03bb,g2H03toptop,g2H03tautau,g2H03WW,g2H03gg,g2H03gaga,g2H03Zga,g2H03ZZ;
+	double g2h0Zh0,g2h0ZH0,g2h0ZA0,g2h0ZA02,g2h0ZH03,BRh0H0H0,BRh0A0A0,BRh0A02A02,BRh0H03H03;
+	double g2H0Zh0,g2H0ZH0,g2H0ZA0,g2H0ZA02,g2H0ZH03,BRH0h0h0,BRH0A0A0,BRH0A02A02,BRH0H03H03;
+	double g2A0Zh0,g2A0ZH0,g2A0ZA0,g2A0ZA02,g2A0ZH03,BRA0h0h0,BRA0H0H0,BRA0A02A02,BRA0H03H03;
+	double g2A02Zh0,g2A02ZH0,g2A02ZA0,g2A02ZA02,g2A02ZH03,BRA02h0h0,BRA02H0H0,BRA02A0A0,BRA02H03H03;
+	double g2H03Zh0,g2H03ZH0,g2H03ZA0,g2H03ZA02,g2H03ZH03,BRH03h0h0,BRH03H0H0,BRH03A0A0,BRH03A02A02;
+	double BRh0invisible,BRH0invisible,BRA0invisible,BRA02invisible,BRH03invisible;
+	double BRHcs,BRHcb,BRHtaunu,BRtWb,BRtHb;
 }
 parameters;
 
@@ -95,6 +112,8 @@ int isajet_sugra(double m0, double m12, double tanb, double A0, double sgnmu, do
 int isajet_gmsb(double Lambda, double Mmess, double tanb, int N5, double cGrav, double sgnmu, double mtop, char name[]);
 int isajet_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, char name[]);
 int isajet_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, char name[]);
+int isajet_mmamsb(double alpha, double m32, double tanb, double sgnmu, double mtop, char name[]);
+int isajet_hcamsb(double alpha, double m32, double tanb, double sgnmu, double mtop, char name[]);
 
 /* softsusy.c */
 int softsusy_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
@@ -121,10 +140,14 @@ double mt_mt(struct parameters* param);
 /* general.c */
 double max(double x, double y);
 double min(double x, double y);
+double complex polylog(int n, int m, double x);
 double Li2(double x);
 double Li3(double x);
-complex double CLi2(complex double x);
+double Li4(double x);
+double complex CLi2(double complex x);
+double complex CLi3(double complex x);
 double Cl2(double x);
+double Cl3(double x);
 double I0(double x);
 double I1(double x);
 double K0(double x);
@@ -133,31 +156,100 @@ double K2(double x);
 double K0exp(double x,double z);
 double K1exp(double x,double z);
 double K2exp(double x,double z);
+double kron(int x, int y);
 int test_integer(char name[]);
+int test_file(char *name);
 
 /* wilson.c */
+double Bplus(double x, double y);
+double D2(double x, double y);
+double D3(double x);
+double P1(double x);
+double F1(double x, double y);
+double F2(double x, double y);
+double F3(double x, double y, double z);
+double F4(double x, double y, double z);
+double h10(double x);
+double h20(double x);
+double h30(double x);
+double h40(double x);
+double h50(double x);
+double h60(double x);
+double f20(double x);
+double f30(double x,double y);
+double f40(double x,double y);
+double f50(double x,double y,double z);
+double f60(double x,double y,double z);
+double f70(double x, double y);
+double f80(double x);
+double f90(double w,double x,double y,double z);
+double f100(double w,double x,double y,double z);
+double f110(double x,double y);
+double h11(double x,double y);
+double h21(double x,double y);
+double h31(double x,double y);
+double h41(double x,double y);
+double h51(double x,double y);
+double h61(double x,double y);
+double h71(double x,double y);
+double f31(double x, double y);
+double f41(double x,double y);
+double f51(double x,double y);
+double f61(double x,double y);
+double f71(double x,double y,double z);
+double f81(double x,double y,double z);
+double f91(double x,double y,double z);
+double f111(double x, double y);
+double f121(double x, double y, double z);
+double f131(double x, double y, double z);
+double f141(double x, double y);
+double f151(double x);
+double f161(double x);
+double f171(double x, double y);
+double f181(double x, double y);
+double f191(double x, double y);
+double q11(double x,double y);
+double q21(double x,double y);
+double q31(double x,double y);
+double q41(double x,double y);
+double q51(double x,double y);
+double q61(double x,double y);
 double A0t(double x);
 double A1t(double x, double l);
+double B0t(double x);
+double C0t(double x);
+double D0t(double x);
+double B1t(double x, double l);
+double C1t(double x, double l);
+double D1t(double x, double l);
 double F0t(double x);
 double F1t(double x,double l);
 double E0t(double x);
 double G1t(double x, double l);
 double E1t(double x, double l);
 double T(double x);
-double Ech(double x);
+/* double Ech(double x); */
 double F7_1(double x);
 double F7_2(double x);
-double F7_3(double x);
+/* double F7_3(double x); */
 double F8_1(double x);
 double F8_2(double x);
-double F8_3(double x);
+/* double F8_3(double x); */
 double H2(double x, double y);
 double B(double m1, double m2, double Q);
 double G7H(double x, double lu, double ld);
 double Delta7H(double x, double lu, double ld);
-double EH(double x, double lu);
 double G8H(double x, double lu, double ld);
 double Delta8H(double x, double lu, double ld);
+double EH(double x, double lu);
+double G4H(double x, double lu);
+double Delta4H(double x, double lu);
+double G3H(double x, double lu);
+double Delta3H(double x, double lu);
+double C9llH0(double x, double y, double lu);
+double D9H0(double x, double lu);
+double C9llH1(double x, double y, double lu, double L);
+double D9H1(double x, double lu, double L);
 double C7t2mt(double x);
 double C7c2MW(double x);
 double C8t2mt(double x);
@@ -171,6 +263,8 @@ double epsilon_1p(struct parameters* param);
 void CW_calculator(double C0w[], double C1w[], double C2w[], double mu_W, struct parameters* param); 
 void C_calculator_base1(double C0w[], double C1w[], double C2w[], double mu_W, double C0b[], double C1b[], double C2b[], double mu, struct parameters* param); 
 void C_calculator_base2(double C0w[], double C1w[], double mu_W, double C0b[], double C1b[], double mu, struct parameters* param); 
+void Cprime_calculator(double Cpb[], double complex CQpb[], double mu_W, double mu, struct parameters* param);
+void CQ_calculator(double complex CQ0b[], double complex CQ1b[], double mu_W, double mu, struct parameters* param);
 
 /* bsgamma.c */
 double phi77(double delta);
@@ -211,6 +305,10 @@ double delta0(double C0[],double C0_spec[],double C1[],double C1_spec[],struct p
 double delta0_calculator(char name[]);
 
 /* excluded_masses.c */
+int excluded_Higgs_mass_calculator(char name[]);
+int excluded_Higgs_masses(struct parameters* param);
+int excluded_SUSY_mass_calculator(char name[]);
+int excluded_SUSY_masses(struct parameters* param);
 int excluded_mass_calculator(char name[]);
 int excluded_masses(struct parameters* param);
 int charged_LSP_calculator(char name[]);
@@ -248,11 +346,7 @@ double BDtaunu(struct parameters* param);
 double BDtaunu_calculator(char name[]);
 
 /* bsmumu.c */
-double D3(double x);
-double D2(double x, double y);
-double D1(double x, double y, double z);
-void C_SUSY(struct parameters* param, double *Ccount_S, double *Ccount_P, double *Cbox_S, double *Cbox_P, double *Cpeng_S, double *Cpeng_P, double *CHp_S, double *CHp_P);
-double Bsmumu(struct parameters* param);
+double Bsmumu(double C0b[], double C1b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[],struct parameters* param, double mu_b);
 double Bsmumu_calculator(char name[]);
 
 /* kmunu.c */
@@ -274,3 +368,23 @@ double Dmunu_calculator(char name[]);
 /* 2hdmc.c */
 int thdmc_types(double l1, double l2, double l3, double l4, double l5, double l6, double l7, double m12_2, double tanb, int type, char name[]);
 
+/* spheno.c */
+int spheno_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int spheno_gmsb(double Lambda, double Mmess, double tanb, int N5, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int spheno_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+
+/* suspect.c */
+int suspect_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int suspect_gmsb(double Lambda, double Mmess, double tanb, int N5, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int suspect_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+
+/* hdecay.c */
+int Hdecay(char name[], struct parameters* param);
+int HdecayTree(char name[], struct parameters* param);
+int HdecaySM(char name[], int ie, struct parameters* param);
+
+/* higgsbounds.c */
+int higgsbounds_calculator(char name[]);
+
+/* flha.c */
+void flha_generator(char name[], char name_output[]);

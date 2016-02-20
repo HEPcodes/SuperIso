@@ -59,6 +59,8 @@ int main(int argc,char** argv)
       			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
       			printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
 			printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
+     			printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
+     			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
 			printf("a_muon=%.3e\n",muon_gm2_calculator(name));
 			printf("excluded_mass=%d\n\n",excluded_mass_calculator(name));
 		}

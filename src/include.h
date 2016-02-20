@@ -71,7 +71,7 @@ typedef struct parameters
 	float Lambda5; /* Lambda QCD */
 	
 	/* Flavor constants */
-	float f_B,f_Bs,m_B,m_Bs,m_K,m_Kstar,m_D,life_B,life_Bs;
+	float f_B,f_Bs,f_Ds,m_B,m_Bs,m_Ds,m_K,m_Kstar,m_D,life_B,life_Bs,life_Ds;
 }
 parameters;
 
@@ -90,6 +90,7 @@ int softsusy_nuhm(float m0, float m12, float tanb, float A0, float mu, float mA,
 /* leshouches.c */ 
 int Les_Houches_Reader(char name[], struct parameters* param);
 void Init_param(struct parameters* param);
+void slha_adjust(struct parameters* param);
 int test_slha(char name[]);
 
 /* alphas.c */
@@ -230,4 +231,10 @@ float Kmunu_pimunu(struct parameters* param);
 float Kmunu_pimunu_calculator(char name[]);
 float Rl23(struct parameters* param);
 float Rl23_calculator(char name[]);
+
+/* dslnu.c */
+float Dstaunu(struct parameters* param);
+float Dstaunu_calculator(char name[]);
+float Dsmunu(struct parameters* param);
+float Dsmunu_calculator(char name[]);
 

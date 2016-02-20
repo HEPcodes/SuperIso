@@ -249,13 +249,16 @@ void Init_param(struct parameters* param)
 	/* Flavor physics */
 	param->f_B=0.200;
 	param->f_Bs=0.245;
+	param->f_Ds=0.241;
 	param->m_B=5.2795;
 	param->m_Bs=5.3663;
 	param->m_K=0.4937;
 	param->m_Kstar=0.8917;
 	param->m_D=1.86484;
+	param->m_Ds=1.96849;
 	param->life_B=1.638e-12;
 	param->life_Bs=1.425e-12;
+	param->life_Ds=5.e-13;
 	
 	/* masses and coupling from PDG 2008 */
 	param->mass_u = 2.55e-3;
@@ -329,7 +332,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
 					case 1: 	fscanf(lecture,"%s",dummy); 
-							if(!strncasecmp(dummy,"ISAJET",6)) param->generator=1; 
+							if(!strncasecmp(dummy,"ISA",3)) param->generator=1; 
 							if(!strncasecmp(dummy,"SOFTSUSY",8)) param->generator=2; 
 							break;
 					case 4: param->model=-1; fclose(lecture); return 0;
@@ -1289,6 +1292,20 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 		}
 	}
 	fclose(lecture);
+	if(param->model<0) return 0;	
+ 			
+	slha_adjust(param);
+	
+	return 1;	
+}
+
+/*--------------------------------------------------------------------*/
+
+void slha_adjust(struct parameters* param)
+{
+	float dum;
+	float mass[7],invmat[7][7];
+	int ie,je,iemax;
 
 	if(param->mass_Z0==0.) param->mass_Z0=param->mass_Z;
 
@@ -1302,34 +1319,248 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 	
 	if((param->tan_beta*param->MSOFT_Q)==0.) param->model=-3;
 	
-	dum=acos(param->stop_mix[1][1]);
+	if(param->MeL_Q==0.) param->MeL_Q=param->mass_el;
+	if(param->MmuL_Q==0.) param->MmuL_Q=param->mass_mul;
+	if(param->MtauL_Q==0.) param->MtauL_Q=param->mass_tau1;
+	if(param->MeR_Q==0.) param->MeR_Q=param->mass_er;
+	if(param->MmuR_Q==0.) param->MmuR_Q=param->mass_mur;
+	if(param->MtauR_Q==0.) param->MtauR_Q=param->mass_tau2;
+	if(param->MqL1_Q==0.) param->MqL1_Q=param->mass_dnl;
+	if(param->MqL2_Q==0.) param->MqL2_Q=param->mass_stl;
+	if(param->MqL3_Q==0.) param->MqL3_Q=param->mass_b1;
+	if(param->MuR_Q==0.) param->MuR_Q=param->mass_upr;
+	if(param->McR_Q==0.) param->McR_Q=param->mass_chr;
+	if(param->MtR_Q==0.) param->MtR_Q=param->mass_t2;
+	if(param->MdR_Q==0.) param->MdR_Q=param->mass_dnr;
+	if(param->MsR_Q==0.) param->MsR_Q=param->mass_str;
+	if(param->MbR_Q==0.) param->MbR_Q=param->mass_b2;
+		
+	if(param->A_tau==0.) param->A_tau=param->TE[3][3];
+	if(param->A_b==0.) param->A_b=param->TD[3][3];
+	if(param->A_t==0.) param->A_t=param->TU[3][3];
+	
+	if(param->stop_mix[1][1]==0.) 
+	{
+		mass[1]=param->mass_upl;
+		mass[2]=param->mass_chl;
+		mass[3]=param->mass_t1;
+		mass[4]=param->mass_upr;
+		mass[5]=param->mass_chr;
+		mass[6]=param->mass_t2;
+
+		for(ie=1;ie<=6;ie++) for(je=1;je<=6;je++) invmat[ie][je]=param->sU_mix[je][ie];
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[1][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[1][ie]);
+		}
+		param->mass_upl=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[2][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[2][ie]);
+		}
+		param->mass_chl=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[3][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[3][ie]);
+		}
+		param->mass_t2=mass[iemax];		
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[4][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[4][ie]);
+		}
+		param->mass_upr=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[5][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[5][ie]);
+		}
+		param->mass_chr=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[6][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[6][ie]);
+		}
+		param->mass_t1=mass[iemax];
+
+		param->stop_mix[1][1]=param->sU_mix[1][6];
+		param->stop_mix[1][2]=param->sU_mix[1][3];
+	}	
+			
+	dum=atan(param->stop_mix[1][2]/param->stop_mix[1][1]);
+	
+	if(param->generator==1) dum=atan(param->stop_mix[2][1]/param->stop_mix[1][1]);
+	
+	param->stop_mix[1][1]=cos(dum);
 	param->stop_mix[2][1]=-sin(dum);
 	param->stop_mix[1][2]=sin(dum);
-	param->stop_mix[2][2]=param->stop_mix[1][1];
+	param->stop_mix[2][2]=cos(dum);
 		
-	dum=acos(param->sbot_mix[1][1]);
+	if(param->sbot_mix[1][1]==0.)
+	{
+		mass[1]=param->mass_dnl;
+		mass[2]=param->mass_stl;
+		mass[3]=param->mass_b1;
+		mass[4]=param->mass_dnr;
+		mass[5]=param->mass_str;
+		mass[6]=param->mass_b2;
+
+		for(ie=1;ie<=6;ie++) for(je=1;je<=6;je++) invmat[ie][je]=param->sD_mix[je][ie];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[1][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[1][ie]);
+		}
+		param->mass_dnl=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[2][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[2][ie]);
+		}
+		param->mass_stl=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[3][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[3][ie]);
+		}
+		param->mass_b1=mass[iemax];		
+
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[4][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[4][ie]);
+		}
+		param->mass_dnr=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[5][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[5][ie]);
+		}
+		param->mass_str=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[6][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[6][ie]);
+		}
+		param->mass_b2=mass[iemax];
+
+		param->sbot_mix[1][1]=param->sD_mix[1][6];
+		param->sbot_mix[1][2]=param->sD_mix[1][3];
+	}
+		
+	dum=atan(param->sbot_mix[1][2]/param->sbot_mix[1][1]);
+
+	if(param->generator==1) dum=atan(param->sbot_mix[2][1]/param->sbot_mix[1][1]);
+
+	param->sbot_mix[1][1]=cos(dum);
 	param->sbot_mix[2][1]=-sin(dum);
 	param->sbot_mix[1][2]=sin(dum);
-	param->sbot_mix[2][2]=param->sbot_mix[1][1];		
+	param->sbot_mix[2][2]=cos(dum);
+		
+	if(param->stau_mix[1][1]==0.)
+	{
+		mass[1]=param->mass_el;
+		mass[2]=param->mass_mul;
+		mass[3]=param->mass_tau1;
+		mass[4]=param->mass_er;
+		mass[5]=param->mass_mur;
+		mass[6]=param->mass_tau2;
 
-	dum=acos(param->stau_mix[1][1]);
+		for(ie=1;ie<=6;ie++) for(je=1;je<=6;je++) invmat[ie][je]=param->sE_mix[je][ie];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[1][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[1][ie]);
+		}
+		param->mass_el=mass[iemax];
+
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[2][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[2][ie]);
+		}
+		param->mass_mul=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[3][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[3][ie]);
+		}
+		param->mass_tau2=mass[iemax];		
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[4][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[4][ie]);
+		}
+		param->mass_er=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[5][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[5][ie]);
+		}
+		param->mass_mur=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(invmat[6][ie])>dum) 
+		{
+			iemax=ie;
+			dum=fabs(invmat[6][ie]);
+		}
+		param->mass_tau1=mass[iemax];
+
+		param->stau_mix[1][1]=param->sE_mix[1][6];
+		param->stau_mix[1][2]=param->sE_mix[1][3];
+	}
+		
+	dum=atan(param->stau_mix[1][2]/param->stau_mix[1][1]);
+
+	if(param->generator==1) dum=atan(param->stau_mix[2][1]/param->stau_mix[1][1]);
+
+	param->stau_mix[1][1]=cos(dum);
 	param->stau_mix[2][1]=-sin(dum);
 	param->stau_mix[1][2]=sin(dum);
-	param->stau_mix[2][2]=param->stau_mix[1][1];
+	param->stau_mix[2][2]=cos(dum);
 
-	dum=acos(param->stau_mix[1][1]);
-	param->stau_mix[2][1]=-sin(dum);
-	param->stau_mix[1][2]=sin(dum);
-	param->stau_mix[2][2]=param->stau_mix[1][1];
 	
  	param->mass_b_pole=mb_pole(param);
  	param->mass_b_1S=mb_1S(param);
 	
 	param->mtmt=mt_mt(param);
- 			
-	if(param->model<0) return 0;	
 	
-	return 1;	
+	return;
 }
 
 /*--------------------------------------------------------------------*/

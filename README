@@ -1,13 +1,13 @@
-SuperIso Version 2.3 (25 August 2008)
+SuperIso Version 2.4 (15 February 2009)
 -------------------------------------
-By Farvah Nazila Mahmoudi (nazila.mahmoudi@tsl.uu.se)
+By Farvah Nazila Mahmoudi (mahmoudi@in2p3.fr)
 
 
 INTRODUCTION
 ------------
 
 The most recent version of this program can be obtained from: 
-http://www3.tsl.uu.se/~nazila/superiso/
+http://superiso.in2p3.fr
 
 This C code (in C99 standard) provides the calculation of several flavor physics observables as well as the muon anomalous magnetic moment, for a set of supersymmetric parameters which can be either calculated within this program thanks to Isajet or Softsusy, or directly provided by user thanks to a SUSY Les Houches Accord (SLHA1 or SLHA2) file.
 
@@ -17,7 +17,7 @@ F. Mahmoudi, arXiv:0710.2067 [hep-ph], Comput. Phys. Commun. 178 (2008) 745
 
 AND
 
-F. Mahmoudi, arXiv:0808.3144 [hep-ph].
+F. Mahmoudi, arXiv:0808.3144 [hep-ph], to appear in Comput. Phys. Commun.
 
 
 The program has been tested on Linux and Mac machines with gcc and icc.
@@ -49,6 +49,7 @@ bdtaunu.c: calculation of the observables related to B-> D tau nu
 bsgamma.c: calculation of the inclusive branching ratio of B-> Xs gamma
 bsmumu.c: calculation of the branching ratio of Bs-> mu+ mu-
 btaunu.c: calculation of the branching ratio of B-> tau nu
+dslnu.c: calculation of the branching ratios of Ds-> tau nu and Ds-> mu nu
 excluded_masses.c: procedures which check the charge of the LSP, and the agreement with the lower mass limits
 general.c: some useful mathematical functions 
 gmuon.c: calculation of the muon anomalous magnetic moment
@@ -78,6 +79,9 @@ README
 
 History
 -------
+v2.4 - 02/15/2009 - 	Implementation of the branching ratios of Ds-> tau nu and Ds-> mu nu.
+			Bug fixed in the SLHA2 reader.
+
 v2.3 - 08/25/2008 - 	Implementation of the branching ratio of Bs-> mu+ mu-.
 			Update of the numerical inputs (based on PDG 2008).
 			Some minor corrections and improvements.
@@ -100,7 +104,7 @@ v1.0 - 09/17/2007 - First public release.
 LICENSE
 -------
 
-    SuperIso Copyright (C) 2008 F. Mahmoudi
+    SuperIso Copyright (C) 2009 F. Mahmoudi
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

@@ -2,7 +2,7 @@
 .KEEP_STATE:
 
 #
-VERSION = v2.3
+VERSION = v2.4
 
 # Choose your C compiler here (in general gcc on Linux systems):
 CC = gcc
@@ -51,7 +51,7 @@ distclean:
 	
 libisospin.a: 
 	@echo;
-	@echo SuperIso $(VERSION) - F.N. Mahmoudi 2008;
+	@echo SuperIso $(VERSION) - F.N. Mahmoudi 2009;
 	@echo;
 	@echo CC = $(CC) > src/FlagsForMake;\
 	echo CFLAGS = $(CFLAGS) >> src/FlagsForMake;\

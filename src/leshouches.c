@@ -5,7 +5,7 @@ void Init_param(struct parameters* param)
 {
 	int ie,je;
 	
-	param->model=-1; /* this parameter is used to test if the scan of the SLHA file succeeds. */
+	param->model=0;
 	param->generator=0;
 	param->Q=0.;
 	param->m0=0.;
@@ -36,8 +36,9 @@ void Init_param(struct parameters* param)
 		param->sbot_mix[ie][je]=0.;
 		param->stau_mix[ie][je]=0.;
 	}
-	for(ie=1;ie<=4;ie++) for(je=1;je<=4;je++) param->neut_mix[ie][je]=0.;
-	for(ie=1;ie<=4;ie++) param->mass_neut[ie]=0.;
+	for(ie=1;ie<=5;ie++) for(je=1;je<=5;je++) param->neut_mix[ie][je]=0.;
+	for(ie=1;ie<=5;ie++) param->mass_neut[ie]=0.;
+		
 	param->Min=0.;
 	param->M1_Min=0.;
 	param->M2_Min=0.;
@@ -72,7 +73,7 @@ void Init_param(struct parameters* param)
 	param->M2H1_Q=0.;
 	param->M2H2_Q=0.;
 	param->mass_h0=0.;
-	param->mass_cH0=0.;
+	param->mass_H0=0.;
 	param->mass_A0=0.;
 	param->mass_H=0.;
 	param->mass_dnl=0.;
@@ -158,6 +159,59 @@ void Init_param(struct parameters* param)
 	param->mass_Z0=0.;
 	param->mass_b_1S = 0.;
 
+	/* SLHA2 */
+	param->NMSSM=0;
+	param->Rparity=0;
+	param->CPviolation=0;
+	param->Flavor=0;
+	param->mass_nutau2=0.;
+	param->mass_e2=0.;
+	param->mass_nue2=0.;
+	param->mass_mu2=0.;
+	param->mass_numu2=0.;
+	param->mass_d2=0.;
+	param->mass_u2=0.;
+	param->mass_s2=0.;
+	param->mass_c2=0.;
+	param->CKM_lambda=0.;
+	param->CKM_A=0.;
+	param->CKM_rho=0.;
+	param->CKM_eta=0.;
+	param->PMNS_theta12=0.;
+	param->PMNS_theta23=0.;
+	param->PMNS_theta13=0.;
+	param->PMNS_delta13=0.;
+	param->PMNS_alpha1=0.;
+	param->PMNS_alpha2=0.;
+	param->lambdaNMSSM_Min=0.;
+	param->kappaNMSSM_Min=0.;
+	param->AlambdaNMSSM_Min=0.;
+	param->AkappaNMSSM_Min=0.;
+	param->lambdaSNMSSM_Min=0.;
+	param->xiFNMSSM_Min=0.;
+	param->xiSNMSSM_Min=0.;
+	param->mupNMSSM_Min=0.;
+	param->mSp2NMSSM_Min=0.;
+	param->mS2NMSSM_Min=0.;
+	param->mass_H03=0.;
+	param->mass_A02=0.;
+	param->NMSSMRUN_Q=0.;
+	param->lambdaNMSSM=0.;
+	param->kappaNMSSM=0.;
+	param->AlambdaNMSSM=0.;
+	param->AkappaNMSSM=0.;
+	param->lambdaSNMSSM=0.;
+	param->xiFNMSSM=0.;
+	param->xiSNMSSM=0.;
+	param->mupNMSSM=0.;
+	param->mSp2NMSSM=0.;
+	param->mS2NMSSM=0.;
+	
+	for(ie=1;ie<=3;ie++) for(je=1;je<=3;je++) param->H0_mix[ie][je]=0.;
+	
+	for(ie=1;ie<=3;ie++) for(je=1;je<=2;je++) param->A0_mix[ie][je]=0.;
+	
+
 	/* masses and coupling from PDG 2006 */
 	param->mass_u = 2.e-3;
 	param->mass_d = 5.e-3;
@@ -172,6 +226,7 @@ void Init_param(struct parameters* param)
 	
 	param->mass_Z=91.1876;
 	param->alpha_s_MZ=0.1172;
+	param->mass_W=80.403;
 	
 	return;
 }
@@ -198,6 +253,10 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 				{
 					case 1:	fscanf(lecture,"%d",&param->model); break;
+					case 3:	fscanf(lecture,"%d",&param->NMSSM); break;
+					case 4:	fscanf(lecture,"%d",&param->Rparity); break;
+					case 5:	fscanf(lecture,"%d",&param->CPviolation); break;
+					case 6:	fscanf(lecture,"%d",&param->Flavor); break;
 					case 12: fscanf(lecture,"%f",&param->Q); break;
 				}	
 			}
@@ -220,7 +279,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 							if(!strncasecmp(dummy,"ISAJET",6)) param->generator=1; 
 							if(!strncasecmp(dummy,"SOFTSUSY",8)) param->generator=2; 
 							break;
-					case 4: param->model==-1; fclose(lecture); return 0;
+					case 4: param->model=-1; fclose(lecture); return 0;
 				}
 			}	
 		}
@@ -238,6 +297,45 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 5: fscanf(lecture,"%f",&param->mass_b); break;
 					case 6: fscanf(lecture,"%f",&param->mass_top_pole); break;
 					case 7: fscanf(lecture,"%f",&param->mass_tau_pole); break;
+					case 8: fscanf(lecture,"%f",&param->mass_nutau2); break;
+					case 11: fscanf(lecture,"%f",&param->mass_e2); break;
+					case 12: fscanf(lecture,"%f",&param->mass_nue2); break;
+					case 13: fscanf(lecture,"%f",&param->mass_mu2); break;
+					case 14: fscanf(lecture,"%f",&param->mass_numu2); break;
+					case 21: fscanf(lecture,"%f",&param->mass_d2); break;
+					case 22: fscanf(lecture,"%f",&param->mass_u2); break;
+					case 23: fscanf(lecture,"%f",&param->mass_s2); break;
+					case 24: fscanf(lecture,"%f",&param->mass_c2); break;
+				}
+			}	
+		}
+		else if(!strcasecmp(dummy,"VCKMIN"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block"))) 
+			{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					case 1: fscanf(lecture,"%f",&param->CKM_lambda); break;
+					case 2: fscanf(lecture,"%f",&param->CKM_A); break;
+					case 3: fscanf(lecture,"%f",&param->CKM_rho); break;
+					case 4: fscanf(lecture,"%f",&param->CKM_eta); break;
+				}
+			}	
+		}
+		else if(!strcasecmp(dummy,"UPMNSIN"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy))&&(strcasecmp(dummy,"Block"))) 
+			{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					case 1: fscanf(lecture,"%f",&param->PMNS_theta12); break;
+					case 2: fscanf(lecture,"%f",&param->PMNS_theta23); break;
+					case 3: fscanf(lecture,"%f",&param->PMNS_theta13); break;
+					case 4: fscanf(lecture,"%f",&param->PMNS_delta13); break;
+					case 5: fscanf(lecture,"%f",&param->PMNS_alpha1); break;
+					case 6: fscanf(lecture,"%f",&param->PMNS_alpha2); break;
 				}
 			}	
 		}
@@ -348,6 +446,16 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 51: fscanf(lecture,"%f",&param->N51); break;
 					case 52: fscanf(lecture,"%f",&param->N52); break;
 					case 53: fscanf(lecture,"%f",&param->N53); break;
+					case 61: fscanf(lecture,"%f",&param->lambdaNMSSM_Min); break;
+					case 62: fscanf(lecture,"%f",&param->kappaNMSSM_Min); break;
+					case 63: fscanf(lecture,"%f",&param->AlambdaNMSSM_Min); break;
+					case 64: fscanf(lecture,"%f",&param->AkappaNMSSM_Min); break;
+					case 65: fscanf(lecture,"%f",&param->lambdaSNMSSM_Min); break;
+					case 66: fscanf(lecture,"%f",&param->xiFNMSSM_Min); break;
+					case 67: fscanf(lecture,"%f",&param->xiSNMSSM_Min); break;
+					case 68: fscanf(lecture,"%f",&param->mupNMSSM_Min); break;
+					case 69: fscanf(lecture,"%f",&param->mSp2NMSSM_Min); break;
+					case 70: fscanf(lecture,"%f",&param->mS2NMSSM_Min); break;
 				}
 			}	
 		}
@@ -374,10 +482,12 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 23: fscanf(lecture,"%f",&param->mass_Z0); break;
 					case 24: fscanf(lecture,"%f",&param->mass_W); break;
 					case 25: fscanf(lecture,"%f",&param->mass_h0); break;
-					case 35: fscanf(lecture,"%f",&param->mass_cH0); break;
+					case 35: fscanf(lecture,"%f",&param->mass_H0); break;
 					case 36: fscanf(lecture,"%f",&param->mass_A0); break;
 					case 37: fscanf(lecture,"%f",&param->mass_H); break;
 					case 39: fscanf(lecture,"%f",&param->mass_graviton); break;
+					case 45: fscanf(lecture,"%f",&param->mass_H03); break;
+					case 46: fscanf(lecture,"%f",&param->mass_A02); break;
 					case 1000001: fscanf(lecture,"%f",&param->mass_dnl); break;
 					case 1000002: fscanf(lecture,"%f",&param->mass_upl); break;
 					case 1000003: fscanf(lecture,"%f",&param->mass_stl); break;
@@ -398,6 +508,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					case 1000035: fscanf(lecture,"%f",&param->mass_neut[4]); break;
 					case 1000037: fscanf(lecture,"%f",&param->mass_cha2); break;
 					case 1000039: fscanf(lecture,"%f",&param->mass_gravitino); break;
+					case 1000045: fscanf(lecture,"%f",&param->mass_neut[5]); break;
 					case 2000001: fscanf(lecture,"%f",&param->mass_dnr); break;
 					case 2000002: fscanf(lecture,"%f",&param->mass_upr); break;
 					case 2000003: fscanf(lecture,"%f",&param->mass_str); break;
@@ -569,6 +680,81 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				}
 			}	
 		}
+		else if(!strcasecmp(dummy,"NMNMIX"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					case 1: 
+					{
+						fscanf(lecture,"%s",dummy);
+						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+						{
+							case 1: fscanf(lecture,"%f",&param->neut_mix[1][1]); break;
+							case 2: fscanf(lecture,"%f",&param->neut_mix[1][2]); break;
+							case 3: fscanf(lecture,"%f",&param->neut_mix[1][3]); break;
+							case 4: fscanf(lecture,"%f",&param->neut_mix[1][4]); break;
+							case 5: fscanf(lecture,"%f",&param->neut_mix[1][5]); break;
+						}
+						break;
+					}
+					case 2: 
+					{
+						fscanf(lecture,"%s",dummy);
+						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+						{
+							case 1: fscanf(lecture,"%f",&param->neut_mix[2][1]); break;
+							case 2: fscanf(lecture,"%f",&param->neut_mix[2][2]); break;
+							case 3: fscanf(lecture,"%f",&param->neut_mix[2][3]); break;
+							case 4: fscanf(lecture,"%f",&param->neut_mix[2][4]); break;
+							case 5: fscanf(lecture,"%f",&param->neut_mix[2][5]); break;
+						}
+						break;
+					}
+					case 3: 
+					{
+						fscanf(lecture,"%s",dummy);
+						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+						{
+							case 1: fscanf(lecture,"%f",&param->neut_mix[3][1]); break;
+							case 2: fscanf(lecture,"%f",&param->neut_mix[3][2]); break;
+							case 3: fscanf(lecture,"%f",&param->neut_mix[3][3]); break;
+							case 4: fscanf(lecture,"%f",&param->neut_mix[3][4]); break;
+							case 5: fscanf(lecture,"%f",&param->neut_mix[3][5]); break;
+						}
+						break;
+					}
+					case 4: 
+					{
+						fscanf(lecture,"%s",dummy);
+						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+						{
+							case 1: fscanf(lecture,"%f",&param->neut_mix[4][1]); break;
+							case 2: fscanf(lecture,"%f",&param->neut_mix[4][2]); break;
+							case 3: fscanf(lecture,"%f",&param->neut_mix[4][3]); break;
+							case 4: fscanf(lecture,"%f",&param->neut_mix[4][4]); break;
+							case 5: fscanf(lecture,"%f",&param->neut_mix[4][5]); break;
+						}
+						break;
+					}
+					case 5: 
+					{
+						fscanf(lecture,"%s",dummy);
+						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+						{
+							case 1: fscanf(lecture,"%f",&param->neut_mix[5][1]); break;
+							case 2: fscanf(lecture,"%f",&param->neut_mix[5][2]); break;
+							case 3: fscanf(lecture,"%f",&param->neut_mix[5][3]); break;
+							case 4: fscanf(lecture,"%f",&param->neut_mix[5][4]); break;
+							case 5: fscanf(lecture,"%f",&param->neut_mix[5][5]); break;
+						}
+						break;
+					}
+				}
+			}	
+		}
 		else if(!strcasecmp(dummy,"UMIX"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
@@ -718,6 +904,81 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				}
 			}
 		}
+		else if(!strcasecmp(dummy,"NMHMIX"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					case 1: 
+					{
+						fscanf(lecture,"%s",dummy);
+						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+						{
+							case 1: fscanf(lecture,"%f",&param->H0_mix[1][1]); break;
+							case 2: fscanf(lecture,"%f",&param->H0_mix[1][2]); break;
+							case 3: fscanf(lecture,"%f",&param->H0_mix[1][3]); break;
+						}
+						break;
+					}
+					case 2: 
+					{
+						fscanf(lecture,"%s",dummy);
+						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+						{
+							case 1: fscanf(lecture,"%f",&param->H0_mix[2][1]); break;
+							case 2: fscanf(lecture,"%f",&param->H0_mix[2][2]); break;
+							case 3: fscanf(lecture,"%f",&param->H0_mix[2][3]); break;
+						}
+						break;
+					}
+					case 3: 
+					{
+						fscanf(lecture,"%s",dummy);
+						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+						{
+							case 1: fscanf(lecture,"%f",&param->H0_mix[3][1]); break;
+							case 2: fscanf(lecture,"%f",&param->H0_mix[3][2]); break;
+							case 3: fscanf(lecture,"%f",&param->H0_mix[3][3]); break;
+						}
+						break;
+					}
+				}
+			}	
+		}
+		else if(!strcasecmp(dummy,"NMAMIX"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					case 1: 
+					{
+						fscanf(lecture,"%s",dummy);
+						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+						{
+							case 1: fscanf(lecture,"%f",&param->A0_mix[1][1]); break;
+							case 2: fscanf(lecture,"%f",&param->A0_mix[1][2]); break;
+							case 3: fscanf(lecture,"%f",&param->A0_mix[1][3]); break;
+						}
+						break;
+					}
+					case 2: 
+					{
+						fscanf(lecture,"%s",dummy);
+						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+						{
+							case 1: fscanf(lecture,"%f",&param->A0_mix[2][1]); break;
+							case 2: fscanf(lecture,"%f",&param->A0_mix[2][2]); break;
+							case 3: fscanf(lecture,"%f",&param->A0_mix[2][3]); break;
+						}
+						break;
+					}
+				}
+			}	
+		}
 		else if(!strcasecmp(dummy,"MSOFT"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
@@ -862,15 +1123,37 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 					}
 				}
 			}	
+		}		
+		else if(!strcasecmp(dummy,"NMSSMRUN"))
+		{
+			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block")))
+	 		{
+				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
+				if(!strcasecmp(dummy,"Q=")) fscanf(lecture,"%f",&param->NMSSMRUN_Q);
+				else switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
+				{
+					case 1: fscanf(lecture,"%f",&param->lambdaNMSSM); break;
+					case 2: fscanf(lecture,"%f",&param->kappaNMSSM); break;
+					case 3: fscanf(lecture,"%f",&param->AlambdaNMSSM); break;
+					case 4: fscanf(lecture,"%f",&param->AkappaNMSSM); break;
+					case 5: fscanf(lecture,"%f",&param->lambdaSNMSSM); break;
+					case 6: fscanf(lecture,"%f",&param->xiFNMSSM); break;
+					case 7: fscanf(lecture,"%f",&param->xiSNMSSM); break;
+					case 8: fscanf(lecture,"%f",&param->mupNMSSM); break;
+					case 9: fscanf(lecture,"%f",&param->mSp2NMSSM); break;
+					case 10: fscanf(lecture,"%f",&param->mS2NMSSM); break;
+				}
+			}
 		}
+
 	}
 	fclose(lecture);
 
-	if(param->MSOFT_Q==0.) param->MSOFT_Q=max(param->YU_Q,max(param->YD_Q,max(param->YE_Q,max(param->HMIX_Q,max(param->GAUGE_Q,max(param->AU_Q,max(param->AD_Q,param->AE_Q)))))));
+	if(param->MSOFT_Q==0.) param->MSOFT_Q=max(param->NMSSMRUN_Q,max(param->YU_Q,max(param->YD_Q,max(param->YE_Q,max(param->HMIX_Q,max(param->GAUGE_Q,max(param->AU_Q,max(param->AD_Q,param->AE_Q))))))));
 	
 	if(param->Q==0.) param->Q=sqrt(param->mass_t1*param->mass_t2);
 	
-	if(param->MSOFT_Q==0.) param->MSOFT_Q=param->YU_Q=param->YD_Q=param->YE_Q=param->HMIX_Q=param->GAUGE_Q=param->AU_Q=param->AD_Q=param->AE_Q=param->Q;
+	if(param->MSOFT_Q==0.) param->MSOFT_Q=param->NMSSMRUN_Q=param->YU_Q=param->YD_Q=param->YE_Q=param->HMIX_Q=param->GAUGE_Q=param->AU_Q=param->AD_Q=param->AE_Q=param->Q;
 		
 	if(param->tan_beta==0.) param->tan_beta=param->tanb_GUT;
 	
@@ -897,9 +1180,12 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 	param->stau_mix[2][2]=param->stau_mix[1][1];
 	
  	param->mass_b_1S=b_mass_1S(param);
- 	/* param->mass_b_1S=4.68; */
-			
-	if(param->model==-1) return 0;
+ 			
+	if(param->Rparity != 0) param->model=-1;
+	if(param->CPviolation != 0) param->model=-1;
+	if(param->Flavor != 0) param->model=-1;
+
+	if(param->model==-1) return 0;	
 	
 	return 1;	
 }

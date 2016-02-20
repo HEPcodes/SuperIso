@@ -2,7 +2,7 @@
 .KEEP_STATE:
 
 #
-VERSION = v2.0
+VERSION = v2.1
 
 # Choose your C compiler here (in general gcc on Linux systems):
 CC = gcc

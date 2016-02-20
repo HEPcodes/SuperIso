@@ -1,5 +1,5 @@
-Supersymmetric Isospin asymmetry (SuperIso) Version 2.0 (18 February 2008)
----------------------------------------------------------------------------
+Supersymmetric Isospin asymmetry (SuperIso) Version 2.1 (15 April 2008)
+------------------------------------------------------------------------
 By Farvah Nazila Mahmoudi (nazila.mahmoudi@tsl.uu.se)
 
 
@@ -11,7 +11,7 @@ http://www3.tsl.uu.se/~nazila/superiso/
 
 This C code (in C99 standard) provides the calculation of isospin asymmetry and inclusive branching ratio corresponding to b-> s gamma for a set of supersymmetric parameters, which can be either calculated within this program thanks to Isajet or Softsusy, or directly given thanks to a SUSY Les Houches Accord (SLHA) file.
 
-If you use this program to write a paper, please cite F. Mahmoudi, arXiv:0710.2067.
+If you use this program to write a paper, please cite F. Mahmoudi, arXiv:0710.2067 [hep-ph], Comput. Phys. Commun. 178 (2008) 745.
 
 The program has been tested on Linux and Mac machines with gcc and icc.
 
@@ -30,7 +30,7 @@ Installation and Compilation
 - nuhm.c: nuhm parameter space, linked to softsusy
 - slha.c: scans the SLHA file
 
-They can be compiled with: make name, where "name" stands for msugra, amsb, gmsb, main_example, or slha.
+They can be compiled with: make name, where "name" stands for msugra, amsb, gmsb, nuhm or slha.
 
 
 Included Files
@@ -67,6 +67,8 @@ README
 
 History
 -------
+v2.1 - 04/15/2008 - SLHA2 compliant.
+
 v2.0 - 02/18/2008 -	Full NNLO implementation for the branching ratio (b -> s gamma).
 			Improvement of the calculation of the Wilson coefficients.
 			Updated parameters for the computation of the isospin asymmetry.
@@ -74,7 +76,7 @@ v2.0 - 02/18/2008 -	Full NNLO implementation for the branching ratio (b -> s gam
 			
 v1.1 - 01/14/2008 - NUHM module has been added, as well as some minor corrections.
 
-v1.0 - 09/17/2007 - First public release
+v1.0 - 09/17/2007 - First public release.
 
 
 LICENSE

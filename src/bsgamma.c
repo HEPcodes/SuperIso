@@ -640,7 +640,9 @@ float BR_bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struc
 	
 	float P2_2_rem=(P2_2_rem1+P2_2_rem2)/2.;
 	float P2_2=P2_2_beta+P2_2_rem;
-
+	
+	if(fabs((alpha_s_mu/4./pi*alpha_s_mu/4./pi *(P2_1 + P2_2 + P2_3))/(P0 + alpha_s_mu/4./pi * (P1_1 + P1_2))) > 0.4) P2_1=P2_2=P2_3=0.;
+	
 /* ----------------------*/
 
 	float P_E0 = P0 + alpha_s_mu/4./pi * (P1_1 + P1_2) + alpha_s_mu/4./pi*alpha_s_mu/4./pi *(P2_1 + P2_2 + P2_3);
@@ -667,6 +669,8 @@ float BR_bsgamma(float C0[], float C1[], float C2[], float mu, float mu_W, struc
 	float lambda2=0.12;
 
 	float N_E0= -1./18.*(Kc0+r*Kt0)*(pow(eta_mu,6./23.)+pow(eta_mu,-12./23.))*lambda2/param->mass_c/param->mass_c;
+
+	if((P2_1==0.)&&(P2_2==0.)&&(P2_3==0.)) N_E0=0.;	
 		
 /* ----------------------*/
 

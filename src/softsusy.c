@@ -18,7 +18,7 @@ int softsusy_sugra(float m0, float m12, float tanb, float A0, float sgnmu, float
 	fprintf(tmp,"Block SMINPUTS		     # Standard Model inputs\n");
 	fprintf(tmp,"    1	1.279340000e+02	     # alpha^(-1) SM MSbar(MZ)\n");
 	fprintf(tmp,"    2      1.166370000e-05	     # G_Fermi\n");
-	fprintf(tmp,"    3      %.10e	     # alpha_s(MZ) SM MSbar\n",alphas_mz);
+	fprintf(tmp,"    3      %.10e	     # alphas(MZ) SM MSbar\n",alphas_mz);
 	fprintf(tmp,"    4      9.118760000e+01	     # MZ(pole)\n");
 	fprintf(tmp,"    5	%.10e	     # mb(mb) SM MSbar\n",mbot);
 	fprintf(tmp,"    6      %.10e	     # mtop(pole)\n",mtop);
@@ -65,7 +65,7 @@ int softsusy_gmsb(float Lambda, float Mmess, float tanb, int N5, float cGrav, fl
 	fprintf(tmp,"Block SMINPUTS		     # Standard Model inputs\n");
 	fprintf(tmp,"    1	1.279340000e+02	     # alpha^(-1) SM MSbar(MZ)\n");
 	fprintf(tmp,"    2      1.166370000e-05	     # G_Fermi\n");
-	fprintf(tmp,"    3      %.10e	     # alpha_s(MZ) SM MSbar\n",alphas_mz);
+	fprintf(tmp,"    3      %.10e	     # alphas(MZ) SM MSbar\n",alphas_mz);
 	fprintf(tmp,"    4      9.118760000e+01	     # MZ(pole)\n");
 	fprintf(tmp,"    5	%.10e	     # mb(mb) SM MSbar\n",mbot);
 	fprintf(tmp,"    6      %.10e	     # mtop(pole)\n",mtop);
@@ -106,7 +106,7 @@ int softsusy_amsb(float m0, float m32, float tanb, float sgnmu, float mtop, floa
 	fprintf(tmp,"Block SMINPUTS		     # Standard Model inputs\n");
 	fprintf(tmp,"    1	1.279340000e+02	     # alpha^(-1) SM MSbar(MZ)\n");
 	fprintf(tmp,"    2      1.166370000e-05	     # G_Fermi\n");
-	fprintf(tmp,"    3      %.10e	     # alpha_s(MZ) SM MSbar\n",alphas_mz);
+	fprintf(tmp,"    3      %.10e	     # alphas(MZ) SM MSbar\n",alphas_mz);
 	fprintf(tmp,"    4      9.118760000e+01	     # MZ(pole)\n");
 	fprintf(tmp,"    5	%.10e	     # mb(mb) SM MSbar\n",mbot);
 	fprintf(tmp,"    6      %.10e	     # mtop(pole)\n",mtop);
@@ -145,7 +145,7 @@ int softsusy_nuhm(float m0, float m12, float tanb, float A0, float mu, float mA,
 	fprintf(tmp,"Block SMINPUTS		     # Standard Model inputs\n");
 	fprintf(tmp,"    1	1.279340000e+02	     # alpha^(-1) SM MSbar(MZ)\n");
 	fprintf(tmp,"    2      1.166370000e-05	     # G_Fermi\n");
-	fprintf(tmp,"    3      %.10e	     # alpha_s(MZ) SM MSbar\n",alphas_mz);
+	fprintf(tmp,"    3      %.10e	     # alphas(MZ) SM MSbar\n",alphas_mz);
 	fprintf(tmp,"    4      9.118760000e+01	     # MZ(pole)\n");
 	fprintf(tmp,"    5	%.10e	     # mb(mb) SM MSbar\n",mbot);
 	fprintf(tmp,"    6      %.10e	     # mtop(pole)\n",mtop);

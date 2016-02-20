@@ -2,7 +2,7 @@
 .KEEP_STATE:
 
 #
-VERSION = v2.1
+VERSION = v2.2
 
 # Choose your C compiler here (in general gcc on Linux systems):
 CC = gcc
@@ -36,16 +36,16 @@ all: libisospin.a
 %:: %.c libisospin.a
 	$(CC) -c $(CFLAGS) $*.c;
 	$(CC) -o $@.x $(CFLAGS) $*.o -lm -lisospin;
-	@rm $*.o;
+	@rm -f $*.o;
 	@touch $*.x
 
 clean:
-	rm *.x;
+	rm -f *.x;
 	@echo > src/FlagsForMake;
 	make -C src/ clean
 	
 distclean: 
-	rm *.a *.o *.x;
+	rm -f *.a *.o *.x;
 	@echo > src/FlagsForMake;
 	make -C src/ distclean
 	
@@ -60,7 +60,7 @@ libisospin.a:
 	make -C src/
 
 save: 
-	rm superiso_$(VERSION).tgz;\
+	rm -f superiso_$(VERSION).tgz;\
 	mkdir superiso_$(VERSION);\
 	cp -p README superiso_$(VERSION)/;\
 	cp -p example.lha superiso_$(VERSION)/;\
@@ -69,13 +69,12 @@ save:
 	cp -p msugra.c superiso_$(VERSION)/;\
 	cp -p nuhm.c superiso_$(VERSION)/;\
 	cp -p slha.c superiso_$(VERSION)/;\
-	cp -p main_example.c superiso_$(VERSION)/;\
 	cp -p Makefile superiso_$(VERSION)/;\
 	mkdir superiso_$(VERSION)/src;\
 	cp -p src/*.h superiso_$(VERSION)/src/;\
 	cp -p src/*.c superiso_$(VERSION)/src/;\
-	rm superiso_$(VERSION)/src/softsusy.h;\
-	rm superiso_$(VERSION)/src/isajet.h;\
+	rm -f superiso_$(VERSION)/src/softsusy.h;\
+	rm -f superiso_$(VERSION)/src/isajet.h;\
 	cp -p src/Makefile superiso_$(VERSION)/src/;\
 	tar czvf superiso_$(VERSION).tgz superiso_$(VERSION);\
-	rm -r superiso_$(VERSION)
+	rm -rf superiso_$(VERSION)

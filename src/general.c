@@ -1,8 +1,8 @@
 #include "include.h"
 
-/*--------------------------------------------------------------------*/
 
 float Li2(float x)
+/* calculates the dilogarithm function of x */
 {
 	float pisq6=pow((4.*atan(1.)),2.)/6.;
 	float x_0 = -0.3;
@@ -31,7 +31,6 @@ float Li2(float x)
 
 float Li3(float x)
 {
-	float zeta3=1.2020569031595942855;
 	float pisq6=16.*pow(atan(1.),2.)/6.;
 	float x_0 = -1.;
 	float x_1 = -0.85;

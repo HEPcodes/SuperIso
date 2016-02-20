@@ -1,15 +1,15 @@
 #include "include.h"
 
 void Init_param(struct parameters* param)
-/* initializes the "param" structure by initializing the parameters with either 0 or a value from the PDG2006 */
+/* initializes the "param" structure by initializing the parameters with either 0 or a value from the PDG */
 {
 	int ie,je;
 	
-	param->model=0;
+	param->model=0; /* this parameter is used to test if the scan of the SLHA file succeeds. */
 	param->generator=0;
 	param->Q=0.;
 	param->m0=0.;
-	param->m1_2=0.;
+	param->m12=0.;
 	param->tan_beta=0.;
 	param->sign_mu=0.;
 	param->A0=0.;
@@ -18,13 +18,13 @@ void Init_param(struct parameters* param)
 	param->Mmess=0.;
 	param->N5=0.;
 	param->cgrav=0.;
-	param->m3_2=0.;
+	param->m32=0.;
 	param->mass_Z=0.;
 	param->mass_b=0.;
 	param->mass_top_pole=0.;
 	param->mass_tau_pole=0.;
 	param->inv_alpha_em=0.;
-	param->alpha_s_MZ=0.;
+	param->alphas_MZ=0.;
 	param->alpha=0.;
 	param->Gfermi=0.;
 	param->GAUGE_Q=0.;
@@ -151,13 +151,13 @@ void Init_param(struct parameters* param)
 	param->mass_numr=0.;
 	param->mass_nutr=0.;
 	param->mass_t=0.;
+	param->mass_tau=0.;
 	param->mass_gluon=0.;
 	param->mass_nue=0.;
 	param->mass_num=0.;
 	param->mass_nut=0.;
 	param->mass_photon=0.;
 	param->mass_Z0=0.;
-	param->mass_b_1S = 0.;
 
 	/* SLHA2 */
 	param->NMSSM=0;
@@ -211,8 +211,13 @@ void Init_param(struct parameters* param)
 	
 	for(ie=1;ie<=3;ie++) for(je=1;je<=2;je++) param->A0_mix[ie][je]=0.;
 	
-
-	/* masses and coupling from PDG 2006 */
+	/* non-SLHA*/
+	param->mass_b_1S=0.;
+	param->mass_b_pole=0.;
+	param->Lambda5=0.;
+	
+	
+	/* masses and coupling from PDG */
 	param->mass_u = 2.e-3;
 	param->mass_d = 5.e-3;
 	param->mass_s = 0.1;
@@ -222,10 +227,11 @@ void Init_param(struct parameters* param)
 	
 	param->mass_e = 0.511e-3;
 	param->mass_mu= 0.106;
-	param->mass_tau_pole=1776.9;
+	param->mass_tau_pole=1.7769;
+	param->mass_tau=param->mass_tau_pole;
 	
 	param->mass_Z=91.1876;
-	param->alpha_s_MZ=0.1172;
+	param->alphas_MZ=0.1172;
 	param->mass_W=80.403;
 	
 	return;
@@ -292,7 +298,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				{
 					case 1: fscanf(lecture,"%f",&param->inv_alpha_em); break;
 					case 2: fscanf(lecture,"%f",&param->Gfermi); break;
-					case 3: fscanf(lecture,"%f",&param->alpha_s_MZ); break;
+					case 3: fscanf(lecture,"%f",&param->alphas_MZ); break;
 					case 4: fscanf(lecture,"%f",&param->mass_Z); break;
 					case 5: fscanf(lecture,"%f",&param->mass_b); break;
 					case 6: fscanf(lecture,"%f",&param->mass_top_pole); break;
@@ -351,7 +357,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 							switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 							{
 								case 1: fscanf(lecture,"%f",&param->m0); break;
-								case 2: fscanf(lecture,"%f",&param->m1_2); break;
+								case 2: fscanf(lecture,"%f",&param->m12); break;
 								case 3: fscanf(lecture,"%f",&param->tan_beta); break;
 								case 4: fscanf(lecture,"%f",&param->sign_mu); break;
 								case 5: fscanf(lecture,"%f",&param->A0); break;
@@ -385,7 +391,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 						switch(atoi(dummy)*((atoi(dummy)-atof(dummy))==0.))
 						{
-							case 1: fscanf(lecture,"%f",&param->m3_2); break;
+							case 1: fscanf(lecture,"%f",&param->m32); break;
 							case 2: fscanf(lecture,"%f",&param->m0); break;
 							case 3: fscanf(lecture,"%f",&param->tan_beta); break;
 							case 4: fscanf(lecture,"%f",&param->sign_mu); break;
@@ -1179,8 +1185,9 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 	param->stau_mix[1][2]=sin(dum);
 	param->stau_mix[2][2]=param->stau_mix[1][1];
 	
- 	param->mass_b_1S=b_mass_1S(param);
- 			
+ 	param->mass_b_pole=mb_pole(param);
+ 	param->mass_b_1S=mb_1S(param);
+  			
 	if(param->Rparity != 0) param->model=-1;
 	if(param->CPviolation != 0) param->model=-1;
 	if(param->Flavor != 0) param->model=-1;

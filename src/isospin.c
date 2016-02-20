@@ -1,6 +1,5 @@
 #include "include.h"
 
-/*--------------------------------------------------------------------*/
 
 float F_orth(float a1_orth, float a2_orth)
 {
@@ -52,7 +51,7 @@ float X_orth2(float a1_orth, float a2_orth)
 
 float complex G(float s, float x)
 {	
-	int n1=50;
+	int n1=50; 
 	int ie;
 
 	float t=0.;
@@ -92,7 +91,7 @@ float complex G_orth(float s, float a1_orth, float a2_orth)
 
 float complex H_orth(float s, float a1_par, float a2_par)
 {
-	float zeta3A=0.0032;
+	float zeta3A=0.0032; 
 	float zeta3V=0.013;
 	float zeta3T=0.024;
 	float wA10=-2.1;
@@ -108,10 +107,9 @@ float complex H_orth(float s, float a1_par, float a2_par)
 	((3./4.*(1.+pow(2.*t-1.,2.))+a1_par*3./2.*pow(2.*t-1.,3.)+(3./7.*a2_par+5.*zeta3A)*(3.*pow(2.*t-1.,2.)-1.)
 	+(9./122.*a2_par+105./16.*zeta3V-15./64.*zeta3A*wA10)*(3.-30.*pow(2.*t-1.,2.)+35.*pow(2.*t-1.,4.))
 	+3.*deltatp+3.*deltatm*(2.*t-1.))
-		-1./4.*(6.*(1.-2.*t)*(1.+a1_par*(2.*t-1.)+(a2_par/4.+5./3.*zeta3A*(1.-3./16.*wA10)+35./4.*zeta3V)*(5.*pow(2.*t-1.,2.)-1.))
+	-1./4.*(6.*(1.-2.*t)*(1.+a1_par*(2.*t-1.)+(a2_par/4.+5./3.*zeta3A*(1.-3./16.*wA10)+35./4.*zeta3V)*(5.*pow(2.*t-1.,2.)-1.))
 	+6.*t*(1.-t)*(2.*a1_par*t+(a2_par/4.+5./3.*zeta3A*(1.-3./16.*wA10)+35./4.*zeta3V)*(20.*t*(2.*t-1.)))
 	+18.*deltatp*(1.-2.*t)-12.*deltatm)
-	
 	)*G(s,1.-t);
 	
 	for(ie=1;ie<=n1;ie++)
@@ -182,7 +180,7 @@ float complex H1_orth(float s, float a1_orth, float a2_orth)
 
 
 float delta0m(float C0[],float C0_spec[],float C1[],float C1_spec[],struct parameters* param,float mub,float muspec, float lambda_h)
-/* computes the isospin asymmetry of B -> K* gamma */
+/* computes the isospin asymmetry in B -> K* gamma decays */
 /* C0 and C1: respectively LO and NLO contributions of the Wilson coefficients at scale mu=O(mb) */
 /* C0_spec and C1_spec: respectively LO and NLO contributions of the Wilson coefficients at scale mu_spec=O(sqrt(lambda_h*mb)) */
 {
@@ -204,36 +202,33 @@ float delta0m(float C0[],float C0_spec[],float C1[],float C1_spec[],struct param
 	temp = C1_spec[2];
 	C1_spec[2]=C1_spec[1];
 	C1_spec[1]=temp;
+		
 	
-	
-	float pi=4.*atan(1.);
- 	float mass_b_pole=b_pole_mass(param);
-
-	float mass_b_mub=running_mass(param->mass_b,param->mass_b,mub,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);
-	float alpha_s_mub=alpha_s_running(mub,param->mass_top_pole,mass_b_pole,param->alpha_s_MZ,param->mass_Z);
-	float alpha_s_muspec=alpha_s_running(muspec,param->mass_top_pole,mass_b_pole,param->alpha_s_MZ,param->mass_Z);	
+	float mass_b_mub=running_mass(param->mass_b,param->mass_b,mub,param->mass_top_pole,param->mass_b,param);
+	float alphas_mub=alphas_running(mub,param->mass_top_pole,param->mass_b_pole,param);
+	float alphas_muspec=alphas_running(muspec,param->mass_top_pole,param->mass_b_pole,param);	
 	
 	float T1=0.31;
-	float lambda_B=0.46;
+	float lambda_B=0.46; 
 	
 	float f_K=0.220;
 	float f_K_orth=0.185;
 	float m_B=5.28;
 	float m_K=0.892;
 
-	float a1_orth=0.04;
+	float a1_orth=0.04; 
 	float a2_orth=0.15;
 	
-	float a1_par=0.19;
+	float a1_par=0.19; 
 	float a2_par=0.06;
 
-	float eta=alpha_s_mub /
-	alpha_s_running(sqrt(1.),param->mass_top_pole,param->mass_b_1S,param->alpha_s_MZ,param->mass_Z);
+	float eta=alphas_mub /
+	alphas_running(sqrt(1.),param->mass_top_pole,param->mass_b_1S,param);
 
 	int nf=5;
 	f_K_orth *= pow(eta,4./3./(11.-2./3.*nf));
 
-	lambda_B /= 1.+alpha_s_mub/3./pi*log(pow(mub,2.))*(1.-2.*1.4);
+	lambda_B /= 1.+alphas_mub/3./pi*log(pow(mub,2.))*(1.-2.*1.4);
 
 	a1_orth*=pow(eta,4./(11.-2./3.*nf));
 	a2_orth*=pow(eta,4./3.*(1.+4.*(1./2.+1./3.))/(11.-2./3.*nf));
@@ -243,8 +238,8 @@ float delta0m(float C0[],float C0_spec[],float C1[],float C1_spec[],struct param
 		 
 	for (ie=1;ie<=8;ie++) 
 	{
-		C[ie]=C0[ie] + alpha_s_mub/4./pi*C1[ie];
-		C_spec[ie]=C0_spec[ie] + alpha_s_muspec/4./pi*C1_spec[ie];
+		C[ie]=C0[ie] + alphas_mub/4./pi*C1[ie];
+		C_spec[ie]=C0_spec[ie] + alphas_muspec/4./pi*C1_spec[ie];
 	}
 	
 	float f_B=0.200;
@@ -256,8 +251,7 @@ float delta0m(float C0[],float C0_spec[],float C1[],float C1_spec[],struct param
 	
 	float lambda_u_lambda_c=0.011;
 
-	float zeta3=1.2020569031595942855;
-	float mass_c_mub=running_mass(param->mass_c,param->mass_c,mub,param->mass_top_pole,mass_b_pole,param->alpha_s_MZ,param->mass_Z);
+	float mass_c_mub=running_mass(param->mass_c,param->mass_c,mub,param->mass_top_pole,param->mass_b_pole,param);
  	float sc=pow(mass_c_mub/mass_b_mub,2.);
 	
 	complex float Horth= H_orth(sc,a1_par,a2_par);
@@ -272,19 +266,19 @@ float delta0m(float C0[],float C0_spec[],float C1[],float C1_spec[],struct param
 	
 	complex float G1a7= 8./3.*log(mub/param->mass_b_1S)+(-833./162. - 20.*I*pi/27. + 8.*pi*pi/9.*pow(sc,3./2.) + 2./9.*(48.+30.*I*pi-5.*pi*pi-2.*I*pi*pi*pi-36.*zeta3+(36.+6.*I*pi-9.*pi*pi)*log(sc) + (3.+6.*I*pi)*pow(log(sc),2.) + pow(log(sc),3.))*sc + 2./9.*(18.+2.*pi*pi-2.*I*pi*pi*pi+(12.-6.*pi*pi)*log(sc)+6.*I*pi*pow(log(sc),2.)+pow(log(sc),3.))*sc*sc + 1./27.*(-9.+112.*I*pi-14.*pi*pi+(182.-48.*I*pi)*log(sc)-126.*pow(log(sc),2.))*sc*sc*sc);
 
-	complex float a7c=C[7] + alpha_s_mub/4./pi*4./3.*(C[1]*G1a7+C[8]*G8a7) + alpha_s_muspec/4./pi*4./3.*(C_spec[8]*H8a7+C_spec[1]*H1a7);
+	complex float a7c=C[7] + alphas_mub/4./pi*4./3.*(C[1]*G1a7+C[8]*G8a7) + alphas_muspec/4./pi*4./3.*(C_spec[8]*H8a7+C_spec[1]*H1a7);
 
 	float rho=0.;
 	float phi=0.;
 	
 	complex float  Xorth=X_orth1(a1_orth,a2_orth)+X_orth2(a1_orth,a2_orth)*log(m_B/lambda_h)*(1.+rho*(cos(phi)+I*sin(phi)));
 
-	complex float K1=-(C[6]+C[5]/3.)*Forth + 4./9.*alpha_s_mub/4./pi*(pow(mass_b_mub/m_B,2.)*C[8]*Xorth-C[1]*((4./3.*log(param->mass_b_1S/mub)+2./3.)*Forth-Gorth)+r1); 	
+	complex float K1=-(C[6]+C[5]/3.)*Forth + 4./9.*alphas_mub/4./pi*(pow(mass_b_mub/m_B,2.)*C[8]*Xorth-C[1]*((4./3.*log(param->mass_b_1S/mub)+2./3.)*Forth-Gorth)+r1); 	
 
-	complex float K2u=lambda_u_lambda_c*(C[1]+C[2]/3.)+(C[4]+C[3]/3.)+4./9.*alpha_s_mub/4./pi*(C[1]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Horth)+r2);
+	complex float K2u=lambda_u_lambda_c*(C[1]+C[2]/3.)+(C[4]+C[3]/3.)+4./9.*alphas_mub/4./pi*(C[1]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Horth)+r2); 
+	
+	complex float K2d=(C[4]+C[3]/3.)+4./9.*alphas_mub/4./pi*(C[1]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Horth)+r2); 
 		
-	complex float K2d=(C[4]+C[3]/3.)+4./9.*alpha_s_mub/4./pi*(C[1]*(4./3.*log(param->mass_b_1S/mub)+2./3.-Horth)+r2); 
-			
 	complex float b_d=12.*pi*pi*f_B*(-1./3.)/mass_b_mub/T1/a7c*(f_K_orth/mass_b_mub*K1+f_K*m_K/6./lambda_B/m_B*K2d);
 	
 	complex float b_u=12.*pi*pi*f_B*(2./3.)/mass_b_mub/T1/a7c*(f_K_orth/mass_b_mub*K1+f_K*m_K/6./lambda_B/m_B*K2u);
@@ -307,9 +301,7 @@ float delta0_calculator(char name[])
 {
 	float C0b[9],C0spec[9],C1b[9],C1spec[9],C0w[9],C1w[9],C2w[9];
 	struct parameters param;
-	
-	float pi=4.*atan(1.);
-	
+		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
@@ -321,9 +313,10 @@ float delta0_calculator(char name[])
 	float lambda_h=0.5;
 	float mu_spec=sqrt(lambda_h*param.mass_b_1S);
 			
-	CW_calculator(C0w,C1w,C2w,mu_W,&param);
-	C_calculator_base2(C0w,C1w,mu_W,C0b,C1b,mu_b,&param);
-	C_calculator_base2(C0w,C1w,mu_W,C0spec,C1spec,mu_spec,&param);
-
+	CW_calculator(C0w,C1w,C2w,mu_W,&param); 
+	C_calculator_base2(C0w,C1w,mu_W,C0b,C1b,mu_b,&param);  
+	C_calculator_base2(C0w,C1w,mu_W,C0spec,C1spec,mu_spec,&param); 
+	
+	
 	return delta0m(C0b,C0spec,C1b,C1spec,&param,mu_b,mu_spec,lambda_h);
 }

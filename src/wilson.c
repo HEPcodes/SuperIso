@@ -1,6 +1,5 @@
 #include "include.h"
 
-/*--------------------------------------------------------------------*/
 
 float A0t(float x)
 {
@@ -251,7 +250,52 @@ float C8c2MW(float x)
 	-0.004672*pow(w,5.)-0.003248*pow(w,6.)-0.002389*pow(w,7.)-0.001831*pow(w,8.);
 }
 
+
 /*----------------------------------------------------------------------*/
+
+/* EPSILON_b */ 
+
+float epsilon_b(struct parameters* param)
+{
+ 	float sw=sin(atan(param->gp/param->g2));
+	float alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
+
+	return 2./3.*alphas_MSOFT/pi*((param->A_b/param->tan_beta-param->mu_Q)/param->mass_gluino*
+H2(param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino,param->mass_b2*param->mass_b2/param->mass_gluino/param->mass_gluino)	
+	-0.5*(B(param->mass_gluino,param->mass_b1, param->MSOFT_Q)+B(param->mass_gluino,param->mass_b2, param->MSOFT_Q))/param->tan_beta )
+	 +param->yut*param->yut/16./pi/pi*(param->mu_Q/param->tan_beta-param->A_t)*(param->charg_Umix[1][2]*param->charg_Vmix[1][2]/param->mass_cha1 *H2(param->mass_t1*param->mass_t1/param->mass_cha1/param->mass_cha1,param->mass_t2*param->mass_t2/param->mass_cha1/param->mass_cha1) +param->charg_Umix[2][2]*param->charg_Vmix[2][2]/param->mass_cha2*H2(param->mass_t1*param->mass_t1/param->mass_cha2/param->mass_cha2,param->mass_t2*param->mass_t2/param->mass_cha2/param->mass_cha2))	+1./param->inv_alpha_em/sw/sw/4./pi*(param->mu_Q*param->M2_Q)*((param->stop_mix[1][1]*param->stop_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_t1/param->mass_t1,param->mu_Q*param->mu_Q/param->mass_t1/param->mass_t1)/param->mass_t1/param->mass_t1 +param->stop_mix[1][2]*param->stop_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_t2/param->mass_t2,param->mu_Q*param->mu_Q/param->mass_t2/param->mass_t2)/param->mass_t2/param->mass_t2) +param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_b1/param->mass_b1,param->mu_Q*param->mu_Q/param->mass_b1/param->mass_b1)/param->mass_b1/param->mass_b1/2. +param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_b2/param->mass_b2,param->mu_Q*param->mu_Q/param->mass_b2/param->mass_b2)/param->mass_b2/param->mass_b2/2.);
+}
+
+/* EPSILON_bp */ 
+
+float epsilon_bp(struct parameters* param)
+{
+ 	float sw=sin(atan(param->gp/param->g2));
+	float alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
+	int ie;
+
+	float epsilonbp=2./3.*alphas_MSOFT/pi*(param->A_b/param->tan_beta-param->mu_Q)/param->mass_gluino*( param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t1*param->mass_t1/param->mass_gluino/param->mass_gluino,param->mass_b2*param->mass_b2/param->mass_gluino/param->mass_gluino) +param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t1*param->mass_t1/param->mass_gluino/param->mass_gluino,param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t2*param->mass_t2/param->mass_gluino/param->mass_gluino,param->mass_b2*param->mass_b2/param->mass_gluino/param->mass_gluino) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t2*param->mass_t2/param->mass_gluino/param->mass_gluino,param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino));	
+	for(ie=1;ie<=4;ie++)	epsilonbp+=param->yut*param->yut/16./pi/pi*param->neut_mix[ie][4]*param->neut_mix[ie][3]*(param->A_t-param->mu_Q/param->tan_beta)/param->mass_neut[ie]*( param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t2*param->mass_t2/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b1*param->mass_b1/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t2*param->mass_t2/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b2*param->mass_b2/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t1*param->mass_t1/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b1*param->mass_b1/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t1*param->mass_t1/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b2*param->mass_b2/param->mass_neut[ie]/param->mass_neut[ie]));
+	epsilonbp+=1./param->inv_alpha_em/sw/sw/4./pi*(param->mu_Q*param->M2_Q)*( (param->stop_mix[1][1]*param->stop_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_t1/param->mass_t1,param->mu_Q*param->mu_Q/param->mass_t1/param->mass_t1)/param->mass_t1/param->mass_t1 +param->stop_mix[1][2]*param->stop_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_t2/param->mass_t2,param->mu_Q*param->mu_Q/param->mass_t2/param->mass_t2)/param->mass_t2/param->mass_t2)/2. +(param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_b1/param->mass_b1,param->mu_Q*param->mu_Q/param->mass_b1/param->mass_b1)/param->mass_b1/param->mass_b1 +param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_b2/param->mass_b2,param->mu_Q*param->mu_Q/param->mass_b2/param->mass_b2)/param->mass_b2/param->mass_b2));
+
+	return epsilonbp;
+}
+
+/* EPSILON_tp */ 
+
+float epsilon_tp(struct parameters* param)
+{
+	float sw=sin(atan(param->gp/param->g2));
+	float alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
+	int ie;
+	
+	float epsilontp=-2./3.*alphas_MSOFT/pi*(param->mu_Q+param->A_t/param->tan_beta)/param->mass_gluino*( param->stop_mix[1][1]*param->stop_mix[1][1]*H2(param->mass_t2*param->mass_t2/param->mass_gluino/param->mass_gluino,param->mass_stl*param->mass_stl/param->mass_gluino/param->mass_gluino) +param->stop_mix[1][2]*param->stop_mix[1][2]*H2(param->mass_t1*param->mass_t1/param->mass_gluino/param->mass_gluino,param->mass_stl*param->mass_stl/param->mass_gluino/param->mass_gluino));			
+	for(ie=1;ie<=4;ie++)	epsilontp+=param->yub*param->yub/16./pi/pi*param->neut_mix[ie][4]*param->neut_mix[ie][3]*(param->mu_Q/param->tan_beta)/param->mass_neut[ie]*( param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t1*param->mass_t1/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b2*param->mass_b2/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t1*param->mass_t1/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b1*param->mass_b1/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t2*param->mass_t2/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b2*param->mass_b2/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t2*param->mass_t2/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b1*param->mass_b1/param->mass_neut[ie]/param->mass_neut[ie]));
+
+	return epsilontp;
+}
+
+
 /*----------------------------------------------------------------------*/
 
 void CW_calculator(float C0w[], float C1w[], float C2w[], float mu_W, struct parameters* param)
@@ -260,46 +304,23 @@ void CW_calculator(float C0w[], float C1w[], float C2w[], float mu_W, struct par
 	int ie;
 	for(ie=1;ie<=8;ie++) C0w[ie]=C1w[ie]=C2w[ie]=0.;
 
-	
-	float pi=4.*atan(1.);
+	float alphas_mb=alphas_running(param->mass_b,param->mass_top_pole,param->mass_b,param);	
 
-	for(ie=1;ie<=8;ie++) C0w[ie]=C1w[ie]=C2w[ie]=0.;
-
-	float alpha_s_mb=alpha_s_running(param->mass_b,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);	
-
- 	float mass_b_pole=b_pole_mass(param);
+	float alphas_muW=alphas_running(mu_W,param->mass_top_pole,param->mass_b_pole,param);
 	
-	float alpha_s_muW=alpha_s_running(mu_W,param->mass_top_pole,mass_b_pole,param->alpha_s_MZ,param->mass_Z);
+	float mtmt=mt_mt(param);
 	
-	float alpha_s_mtop=alpha_s_running(param->mass_top_pole,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z); 
-	
-	float mtmt=param->mass_top_pole*(1.-4./3.*alpha_s_mtop/pi);
-	
-	float mass_top_muW=running_mass(mtmt,mtmt,mu_W,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);
+	float mass_top_muW=running_mass(mtmt,mtmt,mu_W,param->mass_top_pole,param->mass_b,param);
 
 /*----------------------------------------------------------------------*/
 
- 	float sw=sin(atan(param->gp/param->g2));
-	float alpha_s_MSOFT=alpha_s_running(param->MSOFT_Q,param->mass_top_pole,mass_b_pole,param->alpha_s_MZ,param->mass_Z);
+	float alphas_MSOFT=alphas_running(param->MSOFT_Q,param->mass_top_pole,param->mass_b_pole,param);
 	
-	float epsilonb=2./3.*alpha_s_MSOFT/pi*((param->A_b/param->tan_beta-param->mu_Q)/param->mass_gluino*
-H2(param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino,param->mass_b2*param->mass_b2/param->mass_gluino/param->mass_gluino)
-	
-	-0.5*(B(param->mass_gluino,param->mass_b1, param->MSOFT_Q)+B(param->mass_gluino,param->mass_b2, param->MSOFT_Q))/param->tan_beta )
-	 +param->yut*param->yut/16./pi/pi*(param->mu_Q/param->tan_beta-param->A_t)*(param->charg_Umix[1][2]*param->charg_Vmix[1][2]/param->mass_cha1 *H2(param->mass_t1*param->mass_t1/param->mass_cha1/param->mass_cha1,param->mass_t2*param->mass_t2/param->mass_cha1/param->mass_cha1) +param->charg_Umix[2][2]*param->charg_Vmix[2][2]/param->mass_cha2*H2(param->mass_t1*param->mass_t1/param->mass_cha2/param->mass_cha2,param->mass_t2*param->mass_t2/param->mass_cha2/param->mass_cha2))
-+1./param->inv_alpha_em/sw/sw/4./pi*(param->mu_Q*param->M2_Q)*((param->stop_mix[1][1]*param->stop_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_t1/param->mass_t1,param->mu_Q*param->mu_Q/param->mass_t1/param->mass_t1)/param->mass_t1/param->mass_t1 +param->stop_mix[1][2]*param->stop_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_t2/param->mass_t2,param->mu_Q*param->mu_Q/param->mass_t2/param->mass_t2)/param->mass_t2/param->mass_t2) +param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_b1/param->mass_b1,param->mu_Q*param->mu_Q/param->mass_b1/param->mass_b1)/param->mass_b1/param->mass_b1/2. +param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_b2/param->mass_b2,param->mu_Q*param->mu_Q/param->mass_b2/param->mass_b2)/param->mass_b2/param->mass_b2/2.);	
+	float epsilonb=epsilon_b(param);	
+	float epsilonbp=epsilon_bp(param);
+	float epsilontp=epsilon_tp(param);
 
-
-	float epsilonbp=2./3.*alpha_s_MSOFT/pi*(param->A_b/param->tan_beta-param->mu_Q)/param->mass_gluino*( param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t1*param->mass_t1/param->mass_gluino/param->mass_gluino,param->mass_b2*param->mass_b2/param->mass_gluino/param->mass_gluino) +param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t1*param->mass_t1/param->mass_gluino/param->mass_gluino,param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t2*param->mass_t2/param->mass_gluino/param->mass_gluino,param->mass_b2*param->mass_b2/param->mass_gluino/param->mass_gluino) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t2*param->mass_t2/param->mass_gluino/param->mass_gluino,param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino));	
-	for(ie=1;ie<=4;ie++)	epsilonbp+=param->yut*param->yut/16./pi/pi*param->neut_mix[ie][4]*param->neut_mix[ie][3]*(param->A_t-param->mu_Q/param->tan_beta)/param->mass_neut[ie]*( param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t2*param->mass_t2/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b1*param->mass_b1/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t2*param->mass_t2/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b2*param->mass_b2/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t1*param->mass_t1/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b1*param->mass_b1/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t1*param->mass_t1/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b2*param->mass_b2/param->mass_neut[ie]/param->mass_neut[ie]));
-	epsilonbp+=1./param->inv_alpha_em/sw/sw/4./pi*(param->mu_Q*param->M2_Q)*( (param->stop_mix[1][1]*param->stop_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_t1/param->mass_t1,param->mu_Q*param->mu_Q/param->mass_t1/param->mass_t1)/param->mass_t1/param->mass_t1 +param->stop_mix[1][2]*param->stop_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_t2/param->mass_t2,param->mu_Q*param->mu_Q/param->mass_t2/param->mass_t2)/param->mass_t2/param->mass_t2)/2. +(param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->M2_Q*param->M2_Q/param->mass_b1/param->mass_b1,param->mu_Q*param->mu_Q/param->mass_b1/param->mass_b1)/param->mass_b1/param->mass_b1 +param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->M2_Q*param->M2_Q/param->mass_b2/param->mass_b2,param->mu_Q*param->mu_Q/param->mass_b2/param->mass_b2)/param->mass_b2/param->mass_b2));
-
-
-	float epsilontp=-2./3.*alpha_s_MSOFT/pi*(param->mu_Q+param->A_t/param->tan_beta)/param->mass_gluino*( param->stop_mix[1][1]*param->stop_mix[1][1]*H2(param->mass_t2*param->mass_t2/param->mass_gluino/param->mass_gluino,param->mass_stl*param->mass_stl/param->mass_gluino/param->mass_gluino) +param->stop_mix[1][2]*param->stop_mix[1][2]*H2(param->mass_t1*param->mass_t1/param->mass_gluino/param->mass_gluino,param->mass_stl*param->mass_stl/param->mass_gluino/param->mass_gluino));			
-	for(ie=1;ie<=4;ie++)	epsilontp+=param->yub*param->yub/16./pi/pi*param->neut_mix[ie][4]*param->neut_mix[ie][3]*(param->mu_Q/param->tan_beta)/param->mass_neut[ie]*( param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t1*param->mass_t1/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b2*param->mass_b2/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][1]*param->stop_mix[1][1]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t1*param->mass_t1/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b1*param->mass_b1/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][1]*param->sbot_mix[1][1]*H2(param->mass_t2*param->mass_t2/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b2*param->mass_b2/param->mass_neut[ie]/param->mass_neut[ie]) +param->stop_mix[1][2]*param->stop_mix[1][2]*param->sbot_mix[1][2]*param->sbot_mix[1][2]*H2(param->mass_t2*param->mass_t2/param->mass_neut[ie]/param->mass_neut[ie],param->mass_b1*param->mass_b1/param->mass_neut[ie]/param->mass_neut[ie]));
-
-
-	float epsilon0=-2./3.*alpha_s_muW/pi*param->mu_Q/param->mass_gluino*H2(pow(param->MqL3_Q/param->mass_gluino,2.),pow(param->MbR_Q/param->mass_gluino,2.))
+	float epsilon0=-2./3.*alphas_muW/pi*param->mu_Q/param->mass_gluino*H2(pow(param->MqL3_Q/param->mass_gluino,2.),pow(param->MbR_Q/param->mass_gluino,2.))
 	+1./16./pi/pi*(param->gp*param->gp/6.*param->M1_Q/param->mu_Q*(H2(pow(param->MqL3_Q/param->mu_Q,2.),pow(param->M1_Q/param->mu_Q,2.))		+2.*H2(pow(param->MbR_Q/param->mu_Q,2.),pow(param->M1_Q/param->mu_Q,2.)))+param->gp*param->gp/9.*param->mu_Q/param->M1_Q*H2(pow(param->MqL3_Q/param->M1_Q,2.),pow(param->MbR_Q/param->M1_Q,2.))
 	+param->g2*param->g2*param->M2_Q/param->mu_Q*H2(pow(param->MqL3_Q/param->mu_Q,2.),pow(param->M2_Q/param->mu_Q,2.)));
 										
@@ -307,7 +328,7 @@ H2(param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino,param->ma
 	-param->g2*param->g2/param->yut/param->yut*param->M2_Q/param->mu_Q*H2(pow(param->MqL3_Q/param->mu_Q,2.),pow(param->M2_Q/param->mu_Q,2.))
 	);
 
-	float mass_b_muW=running_mass(param->mass_b, param->mass_b,mu_W,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);
+	float mass_b_muW=running_mass(param->mass_b, param->mass_b,mu_W,param->mass_top_pole,param->mass_b,param);
 	
 	float yubhat=1./cos(atan(param->tan_beta))*sqrt(2.*sqrt(2.)*param->Gfermi)*mass_b_muW/(1.+epsilonb*param->tan_beta);
 	
@@ -342,8 +363,9 @@ H2(param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino,param->ma
 	float C4SM_2 = E1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW))+950./243.+10./81.*pi*pi+124./27.*L+10./27.*L*L;
 	float C5SM_2 = -G1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW))/10.+2./15.*E0t(xt)+68./243.+2./81.*pi*pi+14./81.*L+2./27.*L*L;
 	float C6SM_2 = -3./16.*G1t(xt,log(mu_W*mu_W/mass_top_muW/mass_top_muW))+E0t(xt)/4.+85./162.+5./108.*pi*pi+35./108.*L+5./36.*L*L;
+
 	
-	float xtW=pow(running_mass(mtmt,mtmt,param->mass_W,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z)/param->mass_W,2.);
+	float xtW=pow(running_mass(mtmt,mtmt,param->mass_W,param->mass_top_pole,param->mass_b,param)/param->mass_W,2.);
 	float xtt=pow(mtmt/param->mass_W,2.);
 	
 	float C7SM_2 = (C7t2mt(xtt)+log(mu_W*mu_W/mass_top_muW/mass_top_muW)*((-592.*pow(xt,5.)-22.*pow(xt,4.)+12814.*pow(xt,3.)-6376.*xt*xt+512.*xt)/27./pow(xt-1.,5.)*Li2(1.-1./xt)
@@ -359,7 +381,6 @@ H2(param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino,param->ma
 	+log(mu_W*mu_W/mass_top_muW/mass_top_muW)*((-139.*pow(xt,4.)-2938.*pow(xt,3.)-2683.*xt*xt)/12./pow(xt-1.,6.)*log(xt)
 	+(1295.*pow(xt,5.)-7009.*pow(xt,4.)+29495.*pow(xt,3.)+64513.*xt*xt+17458.*xt-2072.)/216./pow(xt-1.,5.))) )
 	-(C8c2MW(xtW)+16607./5832.*log(mu_W*mu_W/param->mass_W/param->mass_W)+397./486.*pow(log(mu_W*mu_W/param->mass_W/param->mass_W),2.));
-	
 	
 
 /*----------------------------------------------------------------------*/
@@ -377,8 +398,9 @@ H2(param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino,param->ma
 
 	float C4H_1=EH(yt,param->tan_beta);
 	
- 	float C7H_1= G7H(yt,param->tan_beta)+Delta7H(yt,param->tan_beta)*log(pow(mu_W/param->mass_H,2.))-4./9.*EH(yt,param->tan_beta);
-	float C8H_1= G8H(yt,param->tan_beta)+Delta8H(yt,param->tan_beta)*log(pow(mu_W/param->mass_H,2.))-1./6.*EH(yt,param->tan_beta);
+ 	float C7H_1= G7H(yt,param->tan_beta)+Delta7H(yt,param->tan_beta)*log(pow(mu_W/param->mass_H,2.))-4./9.*C4H_1;
+	float C8H_1= G8H(yt,param->tan_beta)+Delta8H(yt,param->tan_beta)*log(pow(mu_W/param->mass_H,2.))-1./6.*C4H_1;
+
 
 /*----------------------------------------------------------------------*/
 /* CHARGINOS */	
@@ -391,7 +413,6 @@ H2(param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino,param->ma
 	
 	
 	float C4charg_1 =  pow(param->mass_W/param->mass_t2,2.)*(r21*r21*Ech(param->mass_t2/param->mass_cha1)+r22*r22*Ech(param->mass_t2/param->mass_cha2));
-
 	
 	float rt11= param->charg_Vmix[1][1];
 	float rt12= param->charg_Vmix[2][1];
@@ -431,22 +452,19 @@ H2(param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino,param->ma
 				+rt11*rpt11*param->mass_W/param->mass_cha1*F8_3(pow(param->mass_upl/param->mass_cha1,2.))
 				+rt12*rpt12*param->mass_W/param->mass_cha2*F8_3(pow(param->mass_upl/param->mass_cha2,2.)));	
 
-
-	float C7_chargeps_0= -epsilonb/(1.+epsilonb*param->tan_beta)*param->tan_beta*(-r11*rp11*param->mass_W/param->mass_cha1*F7_3(pow(param->mass_t1/param->mass_cha1,2.))
+	float C7_chargeps_0= 	-epsilonb/(1.+epsilonb*param->tan_beta)*param->tan_beta*(-r11*rp11*param->mass_W/param->mass_cha1*F7_3(pow(param->mass_t1/param->mass_cha1,2.))
 	-r12*rp12*param->mass_W/param->mass_cha2*F7_3(pow(param->mass_t1/param->mass_cha2,2.))
 	-r21*rp21*param->mass_W/param->mass_cha1*F7_3(pow(param->mass_t2/param->mass_cha1,2.))
 	-r22*rp22*param->mass_W/param->mass_cha2*F7_3(pow(param->mass_t2/param->mass_cha2,2.))
 	+(rt11*rpt11*param->mass_W/param->mass_cha1*F7_3(pow(param->mass_upl/param->mass_cha1,2.))
 	+rt12*rpt12*param->mass_W/param->mass_cha2*F7_3(pow(param->mass_upl/param->mass_cha2,2.))));
 	
-	
-	float C8_chargeps_0= -epsilonb/(1.+epsilonb*param->tan_beta)*param->tan_beta*(-r11*rp11*param->mass_W/param->mass_cha1*F8_3(pow(param->mass_t1/param->mass_cha1,2.))
+	float C8_chargeps_0= 	-epsilonb/(1.+epsilonb*param->tan_beta)*param->tan_beta*(-r11*rp11*param->mass_W/param->mass_cha1*F8_3(pow(param->mass_t1/param->mass_cha1,2.))
 	-r12*rp12*param->mass_W/param->mass_cha2*F8_3(pow(param->mass_t1/param->mass_cha2,2.))
 	-r21*rp21*param->mass_W/param->mass_cha1*F8_3(pow(param->mass_t2/param->mass_cha1,2.))
 	-r22*rp22*param->mass_W/param->mass_cha2*F8_3(pow(param->mass_t2/param->mass_cha2,2.))
 	+(rt11*rpt11*param->mass_W/param->mass_cha1*F8_3(pow(param->mass_upl/param->mass_cha1,2.))
 	+rt12*rpt12*param->mass_W/param->mass_cha2*F8_3(pow(param->mass_upl/param->mass_cha2,2.))));
-	
 	
 	float C7charg_1=0.;
 	float C8charg_1=0.;
@@ -483,34 +501,29 @@ H2(param->mass_b1*param->mass_b1/param->mass_gluino/param->mass_gluino,param->ma
 	C2w[6]= C6SM_2;
 	C2w[7]= C7SM_2;
 	C2w[8]= C8SM_2;
-	
+
 	return;
 }
 
 
-/*-----------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------*/
 
 void C_calculator_base1(float C0w[], float C1w[], float C2w[], float mu_W, float C0b[], float C1b[], float C2b[], float mu, struct parameters* param)
 /* calculates the LO (C0), NLO (C1) and NNLO (C2) contributions to the Wilson coefficients at scale mu, using the parameters of the structure param */
 {
 	int ie;
-
-	float pi=4.*atan(1.);
 	
 	for(ie=1;ie<=8;ie++) C0b[ie]=C1b[ie]=C2b[ie]=0.;
 
-	float alpha_s_mb=alpha_s_running(param->mass_b,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);	
+	float alphas_mb=alphas_running(param->mass_b,param->mass_top_pole,param->mass_b,param);	
 
- 	float mass_b_pole=b_pole_mass(param);
+	float alphas_muW=alphas_running(mu_W,param->mass_top_pole,param->mass_b_pole,param); 
 	
-	float alpha_s_muW=alpha_s_running(mu_W,param->mass_top_pole,mass_b_pole,param->alpha_s_MZ,param->mass_Z);
+	float alphas_mu=alphas_running(mu,param->mass_top_pole,param->mass_b_pole,param);	
 	
-	float alpha_s_mu=alpha_s_running(mu,param->mass_top_pole,mass_b_pole,param->alpha_s_MZ,param->mass_Z);	
-	
-	float eta_mu=alpha_s_muW/alpha_s_mu;
+	float eta_mu=alphas_muW/alphas_mu;
 		
-/* LO */
+
  	C0b[1]= C0w[2]* (pow(eta_mu,6./23.) - pow(eta_mu,-12./23.));
 	
  	C0b[2]= C0w[2]* (0.6667*pow(eta_mu,6./23.) + 0.3333*pow(eta_mu,-12./23.));
@@ -526,7 +539,6 @@ void C_calculator_base1(float C0w[], float C1w[], float C2w[], float mu_W, float
 
 	C0b[6]= C0w[2]* (-0.0119*pow(eta_mu,6./23.) - 0.0278*pow(eta_mu,-12./23.)
 	+0.0108*pow(eta_mu,0.4086)+0.0163*pow(eta_mu,-0.4230)+0.0103*pow(eta_mu,-0.8994)+0.0023*pow(eta_mu,0.1456));
-
  
 	C0b[7]= C0w[2]*(2.2996*pow(eta_mu,14./23.) - 1.0880*pow(eta_mu,16./23.)
 	-0.4286*pow(eta_mu,6./23.) - 0.0714*pow(eta_mu,-12./23.)
@@ -540,7 +552,6 @@ void C_calculator_base1(float C0w[], float C1w[], float C2w[], float mu_W, float
 	-0.0571*pow(eta_mu,-0.8994)+0.0209*pow(eta_mu,0.1456))
 	+C0w[8]*pow(eta_mu,14./23.);
 			
-/* NLO */
 	
 	C1b[1]=eta_mu*(
 	C1w[1]*(0.3333*pow(eta_mu,6./23.) +0.6667*pow(eta_mu,-12./23.))
@@ -643,7 +654,6 @@ void C_calculator_base1(float C0w[], float C1w[], float C2w[], float mu_W, float
 	-0.1424*pow(eta_mu,-0.8994-1.)+0.6492*pow(eta_mu,0.1456-1.))
 	+C0w[8]*(6.7441*pow(eta_mu,14./23.) - 6.7441*pow(eta_mu,14./23.-1.)));
 	
-/* NNLO */
 			
 	C2b[7]=eta_mu*eta_mu*(
 		
@@ -709,29 +719,26 @@ void C_calculator_base1(float C0w[], float C1w[], float C2w[], float mu_W, float
 }
 
 /*-----------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------*/
+
 void C_calculator_base2(float C0w[], float C1w[], float mu_W, float C0b[], float C1b[], float mu, struct parameters* param)
 /* calculates the LO (C0) and NLO (C1) contributions to the Wilson coefficients at scale mu, using the parameters of the structure param */
 {
-	float pi=4.*atan(1.);
 	int ie;
 	for(ie=1;ie<=8;ie++) C0b[ie]=C1b[ie]=0.;
 
-	float alpha_s_mb=alpha_s_running(param->mass_b,param->mass_top_pole,param->mass_b,param->alpha_s_MZ,param->mass_Z);	
+	float alphas_mb=alphas_running(param->mass_b,param->mass_top_pole,param->mass_b,param);	
 
- 	float mass_b_pole=b_pole_mass(param);
+	float alphas_muW=alphas_running(mu_W,param->mass_top_pole,param->mass_b_pole,param); 
 	
-	float alpha_s_muW=alpha_s_running(mu_W,param->mass_top_pole,mass_b_pole,param->alpha_s_MZ,param->mass_Z); 
-	
-	float alpha_s_mu=alpha_s_running(mu,param->mass_top_pole,mass_b_pole,param->alpha_s_MZ,param->mass_Z);	
+	float alphas_mu=alphas_running(mu,param->mass_top_pole,param->mass_b_pole,param);	
 	float L=log(mu_W*mu_W/param->mass_W/param->mass_W);
 
-	float eta_mu=alpha_s_muW/alpha_s_mu;
+	float eta_mu=alphas_muW/alphas_mu;
 	
 	C1w[7]-=-4./9.*C1w[4];  
-	C1w[8]-=-C1w[4]/6.;  
+	C1w[8]-=-C1w[4]/6.; 
 			
-/* LO */
+
  	C0b[1]= (1./2.*pow(eta_mu,6./23.) -1./2.*pow(eta_mu,-12./23.))*C0w[2];
 	C0b[2]= (1./2.*pow(eta_mu,6./23.) +1./2.*pow(eta_mu,-12./23.))*C0w[2];
 	C0b[3]= (-1./14.*pow(eta_mu,6./23.) +1./6.*pow(eta_mu,-12./23.) +0.0509*pow(eta_mu,0.4086) -0.1403*pow(eta_mu,-0.4230) -0.01126*pow(eta_mu,-0.8994) +0.0054*pow(eta_mu,0.1456))*C0w[2];
@@ -743,7 +750,7 @@ void C_calculator_base2(float C0w[], float C1w[], float mu_W, float C0b[], float
 
 	C0b[8]= pow(eta_mu,14./23.)*C0w[7] + C0w[2] * (0.8623*pow(eta_mu,14./23.) -0.9135*pow(eta_mu,0.4086) +0.0873*pow(eta_mu,-0.4230) -0.0571*pow(eta_mu,-0.8994) +0.0209*pow(eta_mu,0.1456));
 		
-/* NLO */
+
 	C1b[1]= (C0w[2] *0.8136+1.0197*eta_mu*C1w[1]/15.)*pow(eta_mu,6./23.)+(C0w[2] *0.7142+2.9524*eta_mu*C1w[1]/15.)*pow(eta_mu,-12./23.);
 	
 	C1b[2]= (C0w[2] *0.8136+1.0197*eta_mu*C1w[1]/15.)*pow(eta_mu,6./23.)-(C0w[2] *0.7142+2.9524*eta_mu*C1w[1]/15.)*pow(eta_mu,-12./23.);
@@ -783,7 +790,6 @@ void C_calculator_base2(float C0w[], float C1w[], float mu_W, float C0b[], float
 		+ (-0.1008*eta_mu*C1w[4]+0.7476*C0w[2]+0.3971*eta_mu*C1w[1]/15.)*pow(eta_mu,-0.4230)
 		+ (0.1216*eta_mu*C1w[4]-0.5385*C0w[2]+0.1600*eta_mu*C1w[1]/15.)*pow(eta_mu,-0.8994)
 		+ (0.0183*eta_mu*C1w[4]+0.0914*C0w[2]+0.0225*eta_mu*C1w[1]/15.)*pow(eta_mu,0.1456);
-	
 
 	return;	
 }

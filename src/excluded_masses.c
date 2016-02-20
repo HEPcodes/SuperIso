@@ -1,7 +1,7 @@
 #include "include.h"
 
 int excluded_masses(struct parameters* param)
-/* tests whether the SUSY point is excluded by the collider contraints */
+/* tests whether the SUSY point is excluded by the direct contraints */
 /* contraints taken from PDG 2006 */
 /* if excluded, return 1, otherwise 0 */
 {

@@ -19,16 +19,21 @@
 
 /*--------------------------------------------------------------------*/
 
+#define pi    3.1415926535897932385
+#define zeta3 1.2020569031595942855
+
+/*--------------------------------------------------------------------*/
+
 typedef struct parameters
 /* structure containing all the scanned parameters from the SLHA file */
 {
 	int model; /* mSUGRA = 1, GMSB = 2, AMSB = 3 */
 	int generator; /* ISAJET = 1, SOFTSUSY = 2 */
 	float Q; /* Qmax ; default = M_EWSB = sqrt(m_stop1*mstop2) */
-	float m0,m1_2,tan_beta,sign_mu,A0,mass_W; /* mSUGRA parameters */
-	float Lambda,Mmess,N5,cgrav,m3_2; /* AMSB, GMSB parameters */
-	float mass_Z,mass_b,mass_b_1S,mass_top_pole,mass_tau_pole; /* SM parameters */
-	float inv_alpha_em,alpha_s_MZ,alpha,Gfermi,GAUGE_Q; /* SM parameters */
+	float m0,m12,tan_beta,sign_mu,A0,mass_W; /* mSUGRA parameters */
+	float Lambda,Mmess,N5,cgrav,m32; /* AMSB, GMSB parameters */
+	float mass_Z,mass_b,mass_top_pole,mass_tau_pole; /* SM parameters */
+	float inv_alpha_em,alphas_MZ,alpha,Gfermi,GAUGE_Q; /* SM parameters */
 	float charg_Umix[3][3],charg_Vmix[3][3],stop_mix[3][3],sbot_mix[3][3],stau_mix[3][3],neut_mix[6][6],mass_neut[6]; /* mass mixing matrices */
 	float Min,M1_Min,M2_Min,M3_Min,At_Min,Ab_Min,Atau_Min,M2H1_Min,M2H2_Min,mu_Min,M2A_Min,tb_Min,mA_Min; /* optional input parameters at scale Min */
 	float MeL_Min,MmuL_Min,MtauL_Min,MeR_Min,MmuR_Min,MtauR_Min; /* optional input parameters at scale Min */
@@ -49,6 +54,10 @@ typedef struct parameters
 	int NMSSM,Rparity,CPviolation,Flavor;
 	float mass_nutau2,mass_e2,mass_nue2,mass_mu2,mass_numu2,mass_d2,mass_u2,mass_s2,mass_c2,CKM_lambda,CKM_A,CKM_rho,CKM_eta,PMNS_theta12,PMNS_theta23,PMNS_theta13,PMNS_delta13,PMNS_alpha1,PMNS_alpha2,lambdaNMSSM_Min,kappaNMSSM_Min,AlambdaNMSSM_Min,AkappaNMSSM_Min,lambdaSNMSSM_Min,xiFNMSSM_Min,xiSNMSSM_Min,mupNMSSM_Min,mSp2NMSSM_Min,mS2NMSSM_Min,mass_H03,mass_A02,NMSSMRUN_Q,lambdaNMSSM,kappaNMSSM,AlambdaNMSSM,AkappaNMSSM,lambdaSNMSSM,xiFNMSSM,xiSNMSSM,mupNMSSM,mSp2NMSSM,mS2NMSSM;
 	float H0_mix[4][4],A0_mix[4][3];
+	
+	/* non-SLHA*/
+	float mass_b_1S,mass_b_pole;
+	float Lambda5;
 }
 parameters;
 
@@ -69,13 +78,14 @@ int Les_Houches_Reader(char name[], struct parameters* param);
 void Init_param(struct parameters* param);
 
 /* alphas.c */
-float alpha_s_running(float Q, float mtop, float mbot, float alphas_MZ, float MZ);
+float alphas_running(float Q, float mtop, float mbot, struct parameters* param);
 
 /* masses.c */
-float running_mass(float quark_mass, float Qinit, float Qfin,  float mtop, float mbot, float alphas_MZ, float MZ);
-float b_pole_mass(struct parameters* param);
-float c_pole_mass(struct parameters* param);
-float b_mass_1S(struct parameters* param);
+float running_mass(float quark_mass, float Qinit, float Qfin,  float mtop, float mbot, struct parameters* param);
+float mb_pole(struct parameters* param);
+float mc_pole(struct parameters* param);
+float mb_1S(struct parameters* param);
+float mt_mt(struct parameters* param);
 
 /* general.c */
 float max(float x, float y);
@@ -112,6 +122,9 @@ float C7t2mt(float x);
 float C7c2MW(float x);
 float C8t2mt(float x);
 float C8c2MW(float x);
+float epsilon_b(struct parameters* param);
+float epsilon_bp(struct parameters* param);
+float epsilon_tp(struct parameters* param);
 void CW_calculator(float C0w[], float C1w[], float C2w[], float mu_W, struct parameters* param); 
 void C_calculator_base1(float C0w[], float C1w[], float C2w[], float mu_W, float C0b[], float C1b[], float C2b[], float mu, struct parameters* param); 
 void C_calculator_base2(float C0w[], float C1w[], float mu_W, float C0b[], float C1b[], float mu, struct parameters* param); 
@@ -166,4 +179,26 @@ float F1C(float x);
 float F2C(float x);
 float muon_gm2_calculator(char name[]);
 float muon_gm2(struct parameters* param);
+
+/* btaunu.c */
+float btaunu(struct parameters* param);
+float btaunu_calculator(char name[]);
+
+/* bdtaunu.c */
+float GBDlnu(float w);
+float tBDlnu(float w);
+float rhoV(float w, float ml);
+float rhoS(float w, float ml);
+float dGammaBDlnu_dw(float w, float ml, struct parameters* param);
+float GammaBDlnu(float ml, struct parameters* param);
+float Bbdtaunu_Bbdenu(struct parameters* param);
+float Bbdtaunu_Bbdenu_calculator(char name[]);
+float Bbdtaunu(struct parameters* param);
+float Bbdtaunu_calculator(char name[]);
+
+/* kmunu.c */
+float Bkmunu_Bpimunu(struct parameters* param);
+float Bkmunu_Bpimunu_calculator(char name[]);
+float Rl23(struct parameters* param);
+float Rl23_calculator(char name[]);
 

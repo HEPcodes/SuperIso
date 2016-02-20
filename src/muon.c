@@ -1,8 +1,6 @@
 #include "include.h"
 
 
-/*--------------------------------------------------------------------*/
-
 float F1N(float x)
 {
 	if(x==1.) return 1.;
@@ -33,13 +31,11 @@ float F2C(float x)
 	return -3./2./pow(1.-x,3.)*(3.-4.*x+x*x+2.*log(x));
 }
 
-/*---------------------------*/
-/* Calculation of muon (g-2) */
-/*---------------------------*/
+
+/*--------------------------------------------------------------------*/
 
 float muon_gm2(struct parameters* param)
 {
-
 #ifdef SMONLY
 	return 0.;
 #endif
@@ -55,11 +51,12 @@ float muon_gm2(struct parameters* param)
 	mass_charg[1]=param->mass_cha1;
 	mass_charg[2]=param->mass_cha2;
 
+
 	float M2smu11=pow(param->mass_mul,2.);
 	float M2smu22=pow(param->mass_mur,2.);
 	float M2smu12=(param->A_mu-param->mu_Q*param->tan_beta)*param->mass_mu;
 
-mass_smu[1]=sqrt((M2smu11+M2smu22-sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu12))/2.);
+	mass_smu[1]=sqrt((M2smu11+M2smu22-sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu12))/2.);
 	mass_smu[2]=sqrt((M2smu11+M2smu22+sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu12))/2.);
 
 	X[1][1]=cos(atan2(-2.*M2smu12,-M2smu11+M2smu22)/2.);
@@ -84,10 +81,7 @@ mass_smu[1]=sqrt((M2smu11+M2smu22-sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu1
 		c_R[ke]=ymu*param->charg_Umix[ke][2];
 		xk[ke]=pow(mass_charg[ke]/param->mass_numl,2.);
 	}
-	
-
-	float pi=4.*atan(1.);
-
+		
 	float a_neut=0.;
 	for(ie=1;ie<=4;ie++) for(me=1;me<=2;me++)
 	{
@@ -108,13 +102,15 @@ mass_smu[1]=sqrt((M2smu11+M2smu22-sqrt(pow(M2smu11-M2smu22,2.)+4.*M2smu12*M2smu1
 	}
 	a_charg*=param->mass_mu/16./pi/pi;
 
-	return a_neut+a_charg;
+	float a_SUSYQED=(a_neut+a_charg)*(1.-4./param->inv_alpha_em/pi*log(param->MSOFT_Q/param->mass_mu));
+	
+	return a_SUSYQED;
 }
 
 /*--------------------------------------------------------------------*/
 
 float muon_gm2_calculator(char name[])
-/* "container" function scanning the SLHA file "name" and calculating muon (g-2) */
+/* "container" function scanning the SLHA file "name" and calculating (g-2) */
 {
 	struct parameters param;
 		

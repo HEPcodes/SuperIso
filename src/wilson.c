@@ -30,50 +30,7 @@ double D3(double x)
 	return x*log(x)/(1.-x);
 }
 
-/*---------------------------------------------------------------------*/
-
-double P1(double x)
-{
-	if(fabs(x)<1.e-5) return 0.;
-	if(fabs(x-1.)<1.e-5) return 1.;
-	
-	return x*log(x)/(x-1.);
-}
-
-/*---------------------------------------------------------------------*/
-
-double F1(double x, double y)
-{
-	return (P1(x)-P1(y))/(x-y);
-}
-
-/*---------------------------------------------------------------------*/
-
-double F2(double x, double y)
-{
-	if(fabs(1.-x)<1.e-5) return F2(0.9999,y);
-	if(fabs(1.-y)<1.e-5) return F2(x,0.9999);
-
-	if(fabs(1.-x/y)<1.e-5) return F2(y*0.9998,y);
-	
-	return (x*P1(x)-y*P1(y))/(x-y);
-}
-
-/*---------------------------------------------------------------------*/
-
-double F3(double x, double y, double z)
-{
-	return P1(x)/(x-y)/(x-z)+P1(y)/(y-x)/(y-z)+P1(z)/(z-y)/(z-x);
-}
-
-/*---------------------------------------------------------------------*/
-
-double F4(double x, double y, double z)
-{
-	return x*P1(x)/(x-y)/(x-z)+y*P1(y)/(y-x)/(y-z)+z*P1(z)/(z-y)/(z-x);
-}
-
-/*---------------------------------------------------------------------*/
+/*--------------------------------------------------------------------*/
 
 double h10(double x)
 {
@@ -2745,39 +2702,39 @@ NQ21f*=4./3.*param->mass_mu*param->tan_beta*param->tan_beta/param->mass_W/param-
 	+2./3.*param->mass_W*pow(tan(asin(sw)),2.)*param->H0_mix[ae][2]*TU[ie][3]*TU[ke][3];
 			
 		double complex CQ1H=0.;
-		for(ae=1;ae<=3;ae++) CQ1H+=(param->mass_H*param->mass_H/param->mass_W/param->mass_W*param->H0_mix[ae][1]*param->H0_mix[ae][1]*F1(param->mass_H*param->mass_H/mass_top_muW/mass_top_muW,param->mass_W*param->mass_W/mass_top_muW/mass_top_muW)	+mass_top_muW*mass_top_muW*mH0[ae]*mH0[ae]/param->mass_W/param->mass_W/param->mass_H/param->mass_H*F1(mass_top_muW*mass_top_muW/param->mass_H/param->mass_H,mass_top_muW*mass_top_muW/param->mass_W/param->mass_W))
+		for(ae=1;ae<=3;ae++) CQ1H+=(param->mass_H*param->mass_H/param->mass_W/param->mass_W*param->H0_mix[ae][1]*param->H0_mix[ae][1]*f30(param->mass_H*param->mass_H/mass_top_muW/mass_top_muW,param->mass_W*param->mass_W/mass_top_muW/mass_top_muW)	+mass_top_muW*mass_top_muW*mH0[ae]*mH0[ae]/param->mass_W/param->mass_W/param->mass_H/param->mass_H*f30(mass_top_muW*mass_top_muW/param->mass_H/param->mass_H,mass_top_muW*mass_top_muW/param->mass_W/param->mass_W))
 		/mH0[ae]/mH0[ae];
 		
 		CQ1H*=-param->mass_mu/4.*param->tan_beta*param->tan_beta;
 		
 		double complex CQ2H=0.;
-		for(ae=1;ae<=2;ae++) CQ2H+=((param->mass_H*param->mass_H/param->mass_W/param->mass_W*param->A0_mix[ae][1]*param->A0_mix[ae][1]+kron(ae,2)*param->A0_mix[ae][1])*F1(param->mass_H*param->mass_H/mass_top_muW/mass_top_muW,param->mass_W*param->mass_W/mass_top_muW/mass_top_muW)	+mass_top_muW*mass_top_muW*mA0[ae]*mA0[ae]/param->mass_W/param->mass_W/param->mass_H/param->mass_H*F1(mass_top_muW*mass_top_muW/param->mass_H/param->mass_H,mass_top_muW*mass_top_muW/param->mass_W/param->mass_W))/mA0[ae]/mA0[ae];
+		for(ae=1;ae<=2;ae++) CQ2H+=((param->mass_H*param->mass_H/param->mass_W/param->mass_W*param->A0_mix[ae][1]*param->A0_mix[ae][1]+kron(ae,2)*param->A0_mix[ae][1])*f30(param->mass_H*param->mass_H/mass_top_muW/mass_top_muW,param->mass_W*param->mass_W/mass_top_muW/mass_top_muW)	+mass_top_muW*mass_top_muW*mA0[ae]*mA0[ae]/param->mass_W/param->mass_W/param->mass_H/param->mass_H*f30(mass_top_muW*mass_top_muW/param->mass_H/param->mass_H,mass_top_muW*mass_top_muW/param->mass_W/param->mass_W))/mA0[ae]/mA0[ae];
 		
 		CQ2H*=param->mass_mu/4.*param->tan_beta*param->tan_beta;
 		
-		double complex CAH=-I*param->lambdaNMSSM*param->AlambdaNMSSM/param->g2/param->mass_W*param->tan_beta*F1(param->mass_H*param->mass_H/mass_top_muW/mass_top_muW,param->mass_W*param->mass_W/mass_top_muW/mass_top_muW);
+		double complex CAH=-I*param->lambdaNMSSM*param->AlambdaNMSSM/param->g2/param->mass_W*param->tan_beta*f30(param->mass_H*param->mass_H/mass_top_muW/mass_top_muW,param->mass_W*param->mass_W/mass_top_muW/mass_top_muW);
 		
 		double complex CQ1c=0.;
 		
-		for(ae=1;ae<=3;ae++) for(ie=1;ie<=3;ie++) for(ke=1;ke<=3;ke++) for(je=1;je<=2;je++) for(le=1;le<=2;le++) CQ1c+=G1[ie][ke][je][le]/mH0[ae]/mH0[ae]*( sqrt(2.)*param->H0_mix[ae][1]*param->H0_mix[ae][1]*Mch[je]/param->mass_W/cos(atan(param->tan_beta))*kron(ie,ke)*kron(le,je)*P1(pow(mstop[ie-1]/Mch[je],2.))
-			-2.*sqrt(2.)*param->H0_mix[ae][1]/param->g2*kron(ie,ke)*(Qalj[ae][le][je]*F2(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))+Mch[je]/Mch[le]*Qalj[ae][je][le]*F1(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.)))		+2.*sqrt(2.)*param->H0_mix[ae][1]*T2[ae][ie][ke]*Mch[je]/mstop[ke-1]/mstop[ke-1]*kron(le,je)*F1(pow(mstop[ie-1]/mstop[ke-1],2.),pow(Mch[je]/mstop[ke-1],2.))
-			+mH0[ae]*mH0[ae]/Mch[je]/Mch[je]*kron(ie,ke)*(param->charg_Umix[2][je]*param->charg_Vmix[1][le]*F4(pow(mstop[ie-1]/Mch[je],2.),pow(Mch[le]/Mch[je],2.),pow(param->mass_nutl/Mch[le],2.))
+		for(ae=1;ae<=3;ae++) for(ie=1;ie<=3;ie++) for(ke=1;ke<=3;ke++) for(je=1;je<=2;je++) for(le=1;le<=2;le++) CQ1c+=G1[ie][ke][je][le]/mH0[ae]/mH0[ae]*( sqrt(2.)*param->H0_mix[ae][1]*param->H0_mix[ae][1]*Mch[je]/param->mass_W/cos(atan(param->tan_beta))*kron(ie,ke)*kron(le,je)*f80(pow(mstop[ie-1]/Mch[je],2.))
+			-2.*sqrt(2.)*param->H0_mix[ae][1]/param->g2*kron(ie,ke)*(Qalj[ae][le][je]*f40(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))+Mch[je]/Mch[le]*Qalj[ae][je][le]*f30(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.)))		+2.*sqrt(2.)*param->H0_mix[ae][1]*T2[ae][ie][ke]*Mch[je]/mstop[ke-1]/mstop[ke-1]*kron(le,je)*f30(pow(mstop[ie-1]/mstop[ke-1],2.),pow(Mch[je]/mstop[ke-1],2.))
+			+mH0[ae]*mH0[ae]/Mch[je]/Mch[je]*kron(ie,ke)*(param->charg_Umix[2][je]*param->charg_Vmix[1][le]*f50(pow(mstop[ie-1]/Mch[je],2.),pow(Mch[le]/Mch[je],2.),pow(param->mass_nutl/Mch[le],2.))
 		
-		-Mch[le]/Mch[je]*param->charg_Umix[2][le]*param->charg_Vmix[1][je]* F3(pow(mstop[ie-1]/Mch[je],2.),pow(Mch[le]/Mch[je],2.),pow(param->mass_nutl/Mch[le],2.))));
+		-Mch[le]/Mch[je]*param->charg_Umix[2][le]*param->charg_Vmix[1][je]* f60(pow(mstop[ie-1]/Mch[je],2.),pow(Mch[le]/Mch[je],2.),pow(param->mass_nutl/Mch[le],2.))));
 			
 		CQ1c*=param->mass_mu/4.*param->tan_beta*param->tan_beta;
 		
 		double complex CQ2c=0.;
 		
-		for(ae=1;ae<=2;ae++) for(ie=1;ie<=3;ie++) for(ke=1;ke<=3;ke++) for(je=1;je<=2;je++) for(le=1;le<=2;le++) CQ2c+=G1[ie][ke][je][le]/mA0[ae]/mA0[ae]*(sqrt(2.)*param->A0_mix[ae][1]*param->A0_mix[ae][1]*Mch[je]/param->mass_W/cos(atan(param->tan_beta))*kron(ie,ke)*kron(le,je)*P1(pow(mstop[ie-1]/Mch[je],2.))
-			-2.*sqrt(2.)*param->A0_mix[ae][1]/param->g2*kron(ie,ke)*(-Ralj[ae][le][je]*F2(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))+Mch[je]/Mch[le]*Ralj[ae][je][le]*F1(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.)))			-sqrt(2.)*param->A0_mix[ae][1]*T1[ae][ie][ke]*mass_top_muW*Mch[je]/mstop[ke-1]/mstop[ke-1]*kron(le,je)*F1(pow(mstop[ie-1]/mstop[ke-1],2.),pow(Mch[je]/mstop[ke-1],2.))
-				+mA0[ae]*mA0[ae]/Mch[je]/Mch[je]*kron(ie,ke)*(param->charg_Umix[2][je]*param->charg_Vmix[1][le]*F4(pow(mstop[ie-1]/Mch[je],2.),pow(Mch[le]/Mch[je],2.),pow(param->mass_nutl/Mch[le],2.))
-			-Mch[le]/Mch[je]*param->charg_Umix[2][le]*param->charg_Vmix[1][je]*F3(pow(mstop[ie-1]/Mch[je],2.),pow(Mch[le]/Mch[je],2.),pow(param->mass_nutl/Mch[le],2.))));
+		for(ae=1;ae<=2;ae++) for(ie=1;ie<=3;ie++) for(ke=1;ke<=3;ke++) for(je=1;je<=2;je++) for(le=1;le<=2;le++) CQ2c+=G1[ie][ke][je][le]/mA0[ae]/mA0[ae]*(sqrt(2.)*param->A0_mix[ae][1]*param->A0_mix[ae][1]*Mch[je]/param->mass_W/cos(atan(param->tan_beta))*kron(ie,ke)*kron(le,je)*f80(pow(mstop[ie-1]/Mch[je],2.))
+			-2.*sqrt(2.)*param->A0_mix[ae][1]/param->g2*kron(ie,ke)*(-Ralj[ae][le][je]*f40(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))+Mch[je]/Mch[le]*Ralj[ae][je][le]*f30(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.)))			-sqrt(2.)*param->A0_mix[ae][1]*T1[ae][ie][ke]*mass_top_muW*Mch[je]/mstop[ke-1]/mstop[ke-1]*kron(le,je)*f30(pow(mstop[ie-1]/mstop[ke-1],2.),pow(Mch[je]/mstop[ke-1],2.))
+				+mA0[ae]*mA0[ae]/Mch[je]/Mch[je]*kron(ie,ke)*(param->charg_Umix[2][je]*param->charg_Vmix[1][le]*f50(pow(mstop[ie-1]/Mch[je],2.),pow(Mch[le]/Mch[je],2.),pow(param->mass_nutl/Mch[le],2.))
+			-Mch[le]/Mch[je]*param->charg_Umix[2][le]*param->charg_Vmix[1][je]*f60(pow(mstop[ie-1]/Mch[je],2.),pow(Mch[le]/Mch[je],2.),pow(param->mass_nutl/Mch[le],2.))));
 			
 		CQ2c*=-param->mass_mu/4.*param->tan_beta*param->tan_beta;		
 				
 		double complex CAc=0.;
-		for(ie=1;ie<=3;ie++) for(je=1;je<=2;je++) for(le=1;le<=2;le++) CAc+=I*param->tan_beta/sqrt(2.)*G1[ie][ie][je][le]*(v_deltam_x*kron(le,je)*fabs(Mch[je]/param->mass_W)*P1(pow(mstop[ie-1]/Mch[je],2.))-(Ralj[1][je][le]*fabs(Mch[je]/Mch[le])*F1(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))-Ralj[1][le][je]*F2(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))));
+		for(ie=1;ie<=3;ie++) for(je=1;je<=2;je++) for(le=1;le<=2;le++) CAc+=I*param->tan_beta/sqrt(2.)*G1[ie][ie][je][le]*(v_deltam_x*kron(le,je)*fabs(Mch[je]/param->mass_W)*f80(pow(mstop[ie-1]/Mch[je],2.))-(Ralj[1][je][le]*fabs(Mch[je]/Mch[le])*f30(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))-Ralj[1][le][je]*f40(pow(mstop[ie-1]/Mch[le],2.),pow(Mch[je]/Mch[le],2.))));
 				
 		CQ0b[1]=(CQ1H+CQ1c)*mass_b_muW/sw/sw/epsfac;
 		CQ0b[2]=(CQ2H+CQ2c)*mass_b_muW/sw/sw/epsfac;

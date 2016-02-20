@@ -1,4 +1,4 @@
-SuperIso Version 3.0 (23 December 2010)
+SuperIso Version 3.0 (23 February 2011)
 ---------------------------------------
 By Farvah Nazila Mahmoudi (mahmoudi@in2p3.fr)
 
@@ -32,7 +32,7 @@ Installation and Compilation
 
 12 programs are available:
 - sm.c: Standard Model
-- msugra.c: msugra parameter space, linked to isajet, softsusy, spheno or suspect
+- cmssm.c: cmssm parameter space, linked to isajet, softsusy, spheno or suspect
 - amsb.c: amsb parameter space, linked to isajet (>=7.80), softsusy, spheno or suspect
 - hcamsb.c: hypercharged amsb parameter space, linked to isajet (>=7.80)
 - gmsb.c: gmsb parameter space, linked to isajet (>=7.80), softsusy, spheno or suspect
@@ -44,7 +44,7 @@ Installation and Compilation
 - ngmsb.c: NMSSM GMSB parameter space, linked to NMSSMTools
 - nnuhm.c: NMSSM NUHM parameter space, linked to NMSSMTools
 
-They can be compiled with: make name (or make name.c), where "name" stands for sm, msugra, amsb, gmsb, nuhm, ...
+They can be compiled with: make name (or make name.c), where "name" stands for sm, cmssm, amsb, gmsb, nuhm, ...
 
 They can be run with: ./name.x
 Note that an example of SLHA file is also provided: example.lha
@@ -79,7 +79,7 @@ wilson.c: calculation of the Wilson coefficients
 
 - Main programs
 sm.c: calculation of the observables in the SM
-msugra.c: calculation of the observables for a mSUGRA point
+cmssm.c: calculation of the observables for a CMSSM point
 amsb.c: calculation of the observables for an AMSB point
 hcamsb.c: calculation of the observables for an HC-AMSB point
 mmamsb.c: calculation of the observables for an MM-AMSB point
@@ -102,7 +102,7 @@ README
 
 History
 -------
-v3.0 - 12/23/2010 - 	NMSSM calculations included.
+v3.0 - 02/23/2011 - 	NMSSM calculations included.
 			Interface with NMSSMTools. 
 
 v2.8 - 11/02/2010 - 	FLHA compliant.
@@ -150,7 +150,7 @@ v1.0 - 09/17/2007 - First public release.
 
 LICENSE
 -------
-    SuperIso Copyright (C) 2010 F. Mahmoudi
+    SuperIso Copyright (C) 2011 F. Mahmoudi
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

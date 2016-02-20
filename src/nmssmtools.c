@@ -165,7 +165,7 @@ int nmssmtools_nnuhm(double m0, double m12, double tanb, double A0, double MHDGU
 
 /*--------------------------------------------------------------------*/
 
-int nmssmtools_ngmsb(double Lambda, double Mmess, double tanb, int N5, double lambda, double AK, double Del_h, double sgnmu, double mtop, double mbot, double alphas_mz, char name[])
+int nmssmtools_ngmsb(double Lambda, double Mmess, double tanb, int N5, double lambda, double AL, double Del_h, double sgnmu, double mtop, double mbot, double alphas_mz, char name[])
 /* generates a SLHA file for a NGMSB parameter space point using NMSSMtools */
 {
 	FILE *tmp,*tmp2;
@@ -214,7 +214,7 @@ int nmssmtools_ngmsb(double Lambda, double Mmess, double tanb, int N5, double la
 	fprintf(tmp,"    5      %d	     # N5\n",N5);
 	fprintf(tmp,"BLOCK EXTPAR		     \n");
 	fprintf(tmp,"    61	%.10e		# L\n",lambda);
-	fprintf(tmp,"    64	%.10e		# AK\n",AK);
+	fprintf(tmp,"    63	%.10e		# AL\n",AL);
 	fprintf(tmp,"    66      0.D0		# XiF at M_mess in GeV**2\n");
 	fprintf(tmp,"    67	0.D0 		# XiS at M_mess in GeV**3 (If MS is not an input)\n");
 	fprintf(tmp,"    68	0.D0		# Mu' at M_mess in GeV\n");
@@ -223,7 +223,7 @@ int nmssmtools_ngmsb(double Lambda, double Mmess, double tanb, int N5, double la
 
 	fclose(tmp);
 
-	sprintf(tmp_char,"%s/nmspec > nmssmtools.out",NMSSMTools);
+	sprintf(tmp_char,"%s/nmgmsb > nmssmtools.out",NMSSMTools);
 	system(tmp_char);
 	
 	system("rm -f inp nmssmtools.out");

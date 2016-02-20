@@ -66,7 +66,7 @@ distclean:
 	
 libisospin.a: 
 	@echo;
-	@echo SuperIso $(VERSION) - F.N. Mahmoudi 2010;
+	@echo SuperIso $(VERSION) - F.N. Mahmoudi 2011;
 	@echo;
 	@echo CC = $(CC) > src/FlagsForMake;\
 	echo CFLAGS = $(CFLAGS) >> src/FlagsForMake;\
@@ -92,7 +92,7 @@ save:
 	cp -p hcamsb.c superiso_$(VERSION)/;\
 	cp -p mmamsb.c superiso_$(VERSION)/;\
 	cp -p gmsb.c superiso_$(VERSION)/;\
-	cp -p msugra.c superiso_$(VERSION)/;\
+	cp -p cmssm.c superiso_$(VERSION)/;\
 	cp -p nuhm.c superiso_$(VERSION)/;\
 	cp -p slha.c superiso_$(VERSION)/;\
 	cp -p sm.c superiso_$(VERSION)/;\

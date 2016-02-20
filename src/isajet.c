@@ -3,8 +3,8 @@
 
 /*--------------------------------------------------------------------*/
 
-int isajet_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, char name[])
-/* generates a SLHA file for a mSUGRA parameter space point using ISAJET */
+int isajet_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, char name[])
+/* generates a SLHA file for a CMSSM parameter space point using ISAJET */
 {
 	FILE *tmp,*tmp2;
 	char tmp_char[300],namedir[300];

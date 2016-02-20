@@ -292,15 +292,15 @@ void Init_param(struct parameters* param)
 	param->life_Ds=5.e-13;
 	
 	/* CKM matrix */
-	param->Vud=0.97419;
-	param->Vus=0.2257;
+	param->Vud=0.97428;
+	param->Vus=0.2253;
 	param->Vub=0.00392;
-	param->Vcd=-0.2256;
-	param->Vcs=0.97334;
-	param->Vcb=0.0415;
-	param->Vtd=0.00874;
-	param->Vts=-0.0407;
-	param->Vtb=0.999133;
+	param->Vcd=-0.2252;
+	param->Vcs=0.97345;
+	param->Vcb=0.0410;
+	param->Vtd=0.00862;
+	param->Vts=-0.0403;
+	param->Vtb=0.999152;
 	param->CKM[1][1]=param->Vud;
 	param->CKM[1][2]=param->Vus;
 	param->CKM[1][3]=param->Vub;
@@ -325,7 +325,7 @@ void Init_param(struct parameters* param)
 	param->mass_tau=param->mass_tau_pole;
 	
 	param->mass_Z=91.1876;
-	param->alphas_MZ=0.1176;
+	param->alphas_MZ=0.1184;
 	param->mass_W=80.399;
 
 	param->gp=3.58051564e-1;

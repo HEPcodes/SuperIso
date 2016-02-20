@@ -30,20 +30,21 @@ int main()
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	printf("BR_bsgamma=%.3e\n",bsgamma(C0b,C1b,C2b,mu_b,mu_W,&param));
 
-      	printf("BR_Btaunu=%.3e\n",Btaunu(&param));
-      	printf("Rtaunu=%.3e\n",RBtaunu(&param));
-      	printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu(&param));
-     	printf("Rl23=%.3e\n",Rl23(&param));
-      	printf("BR_BDtaunu=%.3e\n",BDtaunu(&param));
-      	printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu(&param));
-     	printf("BR_Dmunu=%.3e\n",Dmunu(&param));
-     	printf("BR_Dstaunu=%.3e\n",Dstaunu(&param));
-     	printf("BR_Dsmunu=%.3e\n",Dsmunu(&param));
-
 	mu_b=param.mass_b;
 	C_calculator_base2(C0w,C1w,mu_W,C0b,C1b,mu_b,&param);
 	CQ0b[1]=CQ0b[2]=CQ1b[1]=CQ1b[2]=0.;
 	Cpb[10]=CQpb[1]=CQpb[2]=0.;
 	printf("BR_Bsmumu=%.3e\n",Bsmumu(C0b,C1b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b));
+
+      	printf("BR_Btaunu=%.3e\n",Btaunu(&param));
+      	printf("Rtaunu=%.3e\n",RBtaunu(&param));
+      	printf("BR_BDtaunu=%.3e\n",BDtaunu(&param));
+      	printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu(&param));
+     	printf("BR_Dstaunu=%.3e\n",Dstaunu(&param));
+     	printf("BR_Dsmunu=%.3e\n",Dsmunu(&param));
+     	printf("BR_Dmunu=%.3e\n",Dmunu(&param));
+      	printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu(&param));
+     	printf("Rl23=%.3e\n",Rl23(&param));
+
 	return 1;
 }

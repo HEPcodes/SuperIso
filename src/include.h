@@ -29,10 +29,10 @@ typedef struct parameters
 /* structure containing all the scanned parameters from the SLHA file */
 {
 	int SM;
-	int model; /* mSUGRA = 1, GMSB = 2, AMSB = 3 */
-	int generator; /* ISAJET = 1, SOFTSUSY = 2 */
+	int model; /* CMSSM=1, GMSB=2, AMSB=3 */
+	int generator; /* ISAJET=1, SOFTSUSY=3, SPHENO=4, SUSPECT=5, NMSSMTOOLS=6 */
 	double Q; /* Qmax ; default = M_EWSB = sqrt(m_stop1*mstop2) */
-	double m0,m12,tan_beta,sign_mu,A0; /* mSUGRA parameters */
+	double m0,m12,tan_beta,sign_mu,A0; /* CMSSM parameters */
 	double Lambda,Mmess,N5,cgrav,m32; /* AMSB, GMSB parameters */
 	double mass_Z,mass_W,mass_b,mass_top_pole,mass_tau_pole; /* SM parameters */
 	double inv_alpha_em,alphas_MZ,Gfermi,GAUGE_Q; /* SM parameters */
@@ -59,7 +59,6 @@ typedef struct parameters
 	double PMNS_theta12,PMNS_theta23,PMNS_theta13,PMNS_delta13,PMNS_alpha1,PMNS_alpha2;
 	double lambdaNMSSM_Min,kappaNMSSM_Min,AlambdaNMSSM_Min,AkappaNMSSM_Min,lambdaSNMSSM_Min,xiFNMSSM_Min,xiSNMSSM_Min,mupNMSSM_Min,mSp2NMSSM_Min,mS2NMSSM_Min,mass_H03,mass_A02,NMSSMRUN_Q,lambdaNMSSM,kappaNMSSM,AlambdaNMSSM,AkappaNMSSM,lambdaSNMSSM,xiFNMSSM,xiSNMSSM,mupNMSSM,mSp2NMSSM,mS2NMSSM; /* NMSSM parameters */
 	double PMNSU_Q,CKM_Q,IMCKM_Q,MSE2_Q,MSU2_Q,MSD2_Q,MSL2_Q,MSQ2_Q,TU_Q,TD_Q,TE_Q;
-	
 	double CKM[4][4],IMCKM[4][4]; /* CKM matrix */
 	double H0_mix[4][4],A0_mix[4][4]; /* Higgs mixing matrices */
 	double sU_mix[7][7],sD_mix[7][7],sE_mix[7][7], sNU_mix[4][4]; /* mixing matrices */
@@ -79,6 +78,7 @@ typedef struct parameters
 	/* Decay widths */
 	double width_h0,width_H0,width_A0,width_H,width_Z,width_W,width_top,width_H03,width_A02;
 	int widthcalc; /* 0=none, 1=hdecay, 2=feynhiggs */
+
 	/* CKM matrix */
 	double complex Vud,Vus,Vub,Vcd,Vcs,Vcb,Vtd,Vts,Vtb;
 	
@@ -111,7 +111,7 @@ parameters;
 /* Prototypes */
 
 /* isajet.c */
-int isajet_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, char name[]);
+int isajet_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, char name[]);
 int isajet_gmsb(double Lambda, double Mmess, double tanb, int N5, double cGrav, double sgnmu, double mtop, char name[]);
 int isajet_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, char name[]);
 int isajet_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, char name[]);
@@ -119,7 +119,7 @@ int isajet_mmamsb(double alpha, double m32, double tanb, double sgnmu, double mt
 int isajet_hcamsb(double alpha, double m32, double tanb, double sgnmu, double mtop, char name[]);
 
 /* softsusy.c */
-int softsusy_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int softsusy_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int softsusy_gmsb(double Lambda, double Mmess, double tanb, int N5, double cGrav, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int softsusy_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int softsusy_nuhm(double m0, double m12, double tanb, double A0, double mu, double mA, double mtop, double mbot, double alphas_mz, char name[]);
@@ -167,11 +167,6 @@ int test_file(char *name);
 double Bplus(double x, double y);
 double D2(double x, double y);
 double D3(double x);
-double P1(double x);
-double F1(double x, double y);
-double F2(double x, double y);
-double F3(double x, double y, double z);
-double F4(double x, double y, double z);
 double h10(double x);
 double h20(double x);
 double h30(double x);
@@ -375,12 +370,12 @@ double Dmunu_calculator(char name[]);
 int thdmc_types(double l1, double l2, double l3, double l4, double l5, double l6, double l7, double m12_2, double tanb, int type, char name[]);
 
 /* spheno.c */
-int spheno_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int spheno_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int spheno_gmsb(double Lambda, double Mmess, double tanb, int N5, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int spheno_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 
 /* suspect.c */
-int suspect_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int suspect_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int suspect_gmsb(double Lambda, double Mmess, double tanb, int N5, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int suspect_amsb(double m0, double m32, double tanb, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 
@@ -398,7 +393,7 @@ void flha_generator(char name[], char name_output[]);
 /* nmssmtools.c */
 int nmssmtools_cnmssm(double m0, double m12, double tanb, double A0, double lambda, double AK, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int nmssmtools_nnuhm(double m0, double m12, double tanb, double A0, double MHDGUT, double MHUGUT, double lambda, double AK, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
-int nmssmtools_ngmsb(double Lambda, double Mmess, double tanb, int N5, double lambda, double AK, double Del_h, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int nmssmtools_ngmsb(double Lambda, double Mmess, double tanb, int N5, double lambda, double AL, double Del_h, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
 int NMSSM_collider_excluded(char name[]);
 int NMSSM_theory_excluded(char name[]);
 int NMSSM_upsilon_excluded(char name[]);

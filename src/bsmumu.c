@@ -24,17 +24,6 @@ double Bsmumu(double C0b[], double C1b[], double complex CQ0b[], double complex 
 	printf("C10=%.5e\t CQ1=%.5e\t CQ2=%.5e\n",C10,creal(CQ1),creal(CQ2));
 #endif	
 	
-	/*printf("\n");
-	printf("C100=%.3e\n",C0b[10]);
- 	printf("CQ10=%.3e\n",CQ0b[1]);
-	printf("CQ20=%.3e\n",CQ0b[2]);
-	printf("C101=%.3e\n",C1b[10]);
- 	printf("CQ11=%.3e\n",CQ1b[1]);
-	printf("CQ21=%.3e\n",CQ1b[2]);
-	printf("Cp10=%.3e\n",Cpb[10]);
-	printf("CpQ1=%.3e\n",CQpb[1]);
-	printf("CpQ2=%.3e\n",CQpb[2]);*/
-	
 	double BRmumu=param->Gfermi*param->Gfermi*alpha_em*alpha_em*pow(param->m_Bs,3.)*param->f_Bs*param->f_Bs*param->life_Bs/hbar/64./pi/pi/pi*VtbVts*VtbVts*sqrt(1.-4.*param->mass_mu*param->mass_mu/param->m_Bs/param->m_Bs)
 	*((1.-4.*param->mass_mu*param->mass_mu/param->m_Bs/param->m_Bs)*pow(cabs(CQ1-CQp1),2.) + pow(cabs((CQ2-CQp2)+2.*(C10-C10p)*param->mass_mu/param->m_Bs),2.));
 	

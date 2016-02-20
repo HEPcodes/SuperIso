@@ -1,8 +1,8 @@
 #include "include.h"
 #include "softsusy.h"
 
-int softsusy_sugra(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[])
-/* generates a SLHA file for a mSUGRA parameter space point using SOFTSUSY */
+int softsusy_cmssm(double m0, double m12, double tanb, double A0, double sgnmu, double mtop, double mbot, double alphas_mz, char name[])
+/* generates a SLHA file for a CMSSM parameter space point using SOFTSUSY */
 {
 	FILE *tmp;
 	char tmp_char[200];
@@ -14,7 +14,7 @@ int softsusy_sugra(double m0, double m12, double tanb, double A0, double sgnmu, 
 
 	tmp=fopen(tmp_char,"w");
 	fprintf(tmp,"Block MODSEL		     # Select model\n");
-	fprintf(tmp,"    1    1		     # sugra\n");
+	fprintf(tmp,"    1    1		     # cmssm\n");
 	fprintf(tmp,"Block SMINPUTS		     # Standard Model inputs\n");
 	fprintf(tmp,"    1	1.279340000e+02	     # alpha^(-1) SM MSbar(MZ)\n");
 	fprintf(tmp,"    2      1.166370000e-05	     # G_Fermi\n");
@@ -141,7 +141,7 @@ int softsusy_nuhm(double m0, double m12, double tanb, double A0, double mu, doub
 
 	tmp=fopen(tmp_char,"w");
 	fprintf(tmp,"Block MODSEL		     # Select model\n");
-	fprintf(tmp,"    1    1		     # sugra\n");
+	fprintf(tmp,"    1    1		     # cmssm\n");
 	fprintf(tmp,"Block SMINPUTS		     # Standard Model inputs\n");
 	fprintf(tmp,"    1	1.279340000e+02	     # alpha^(-1) SM MSbar(MZ)\n");
 	fprintf(tmp,"    2      1.166370000e-05	     # G_Fermi\n");

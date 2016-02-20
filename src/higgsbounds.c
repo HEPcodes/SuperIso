@@ -17,7 +17,7 @@ int higgsbounds_calculator(char name[])
 
 	if(!Les_Houches_Reader(name,&param)) return -1;
 	
-	if((param.THDM_model==0)&&(param.width_h0*param.width_H0*param.width_A0*param.width_H==0.)) Hdecay(name,&param);
+	if((param.THDM_model==0)&&(param.mass_A02*param.mass_H03==0.)) Hdecay(name,&param);
 	
  	param.mass_hSM[1]=param.mass_h0;
 	param.mass_hSM[2]=param.mass_H0;

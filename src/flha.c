@@ -77,7 +77,6 @@ void flha_generator(char name[], char name_output[])
 	fprintf(output,"   521     %.8e   # B+\n",param.life_B);
 	fprintf(output,"   531     %.8e   # B_s\n",param.life_Bs);
 
-
 	fprintf(output,"Block FCONST  # Decay constant in GeV\n");
 	fprintf(output,"#PDG_code number decay_constant particle\n");
 	fprintf(output,"   431     1   %.8e   # D_s+\n",param.f_Ds);
@@ -124,11 +123,6 @@ void flha_generator(char name[], char name_output[])
 	fprintf(output,"  321   11   %.8e   0     2   -13    14        # BR(K->mu nu)/BR(pi->mu nu)\n",Kmunu_pimunu(&param));
 	fprintf(output,"  321   12   %.8e   0     2   -13    14        # R_l23\n",Rl23(&param));
 
-// 	fprintf(output,"Block OTHEROBS  # Other observables\n");
-// 	fprintf(output,"     1     %.8e   # a_muon\n",muon_gm2(&param));
-
-	Init_param(&param);
-	slha_adjust(&param);
 	param.SM=1;
 	
 	mu_W=2.*param.mass_W;

@@ -49,7 +49,7 @@ int main(int argc,char** argv)
      		if(argc>6) sscanf(argv[6],"%lf",&cGrav); else cGrav=1.;   
      		if(argc>7) sscanf(argv[7],"%lf",&mtop); else mtop=173.3;   
      		if(argc>8) sscanf(argv[8],"%lf",&mbot); else mbot=4.19;
-     		if(argc>9) sscanf(argv[9],"%lf",&alphas_mz); else alphas_mz=0.1176;
+     		if(argc>9) sscanf(argv[9],"%lf",&alphas_mz); else alphas_mz=0.1184;
   	}
 
 	
@@ -59,40 +59,40 @@ int main(int argc,char** argv)
 	{
 		printf("\"%s\" absent. Please check the ISAJET path or comment \"#define USE_ISAJET\" in gmsb.c\n",ISAJET);
 		filesOK=0;
-	};
+	}
 #endif
 #ifdef USE_SOFTSUSY
 	if(!test_file(SOFTSUSY)) 
 	{
 		printf("\"%s\" absent. Please check the SOFTSUSY path or comment \"#define USE_SOFTSUSY\" in gmsb.c\n",SOFTSUSY);
 		filesOK=0;
-	};
+	}
 #endif
 #ifdef USE_SUSPECT
 	if(!test_file(SUSPECT)) 
 	{
 		printf("\"%s\" absent. Please check the SUSPECT path or comment \"#define USE_SUSPECT\" in gmsb.c\n",SUSPECT);
 		filesOK=0;
-	};
+	}
 #endif
 #ifdef USE_SPHENO
 	if(!test_file(SPHENO)) 
 	{
 		printf("\"%s\" absent. Please check the SPHENO path or comment \"#define USE_SPHENO\" in gmsb.c\n",SPHENO);
 		filesOK=0;
-	};
+	}
 #endif
 #ifdef USE_HIGGSBOUNDS
 	if(!test_file(HIGGSBOUNDS)) 
 	{
 		printf("\"%s\" absent. Please check the HIGGSBOUNDS path or comment \"#define USE_HIGGSBOUNDS\" in gmsb.c\n",HIGGSBOUNDS);
 		filesOK=0;
-	};
+	}
 	if(!test_file(HDECAY)) 
 	{
 		printf("\"%s\" absent. Please check the HDECAY path or comment \"#define USE_HIGGSBOUNDS\" in gmsb.c\n",HDECAY);
 		filesOK=0;
-	};
+	}
 #endif
 	if(!filesOK) return 1;
 
@@ -113,17 +113,17 @@ int main(int argc,char** argv)
 		if(delta0 !=0.)
 		{
 			printf("delta0=%.3e\n",delta0);
-       			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
-      			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
-      			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
-      			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
-     			printf("Rl23=%.3e\n",Rl23_calculator(name));
-      			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
-      			printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
+			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
 			printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
-     			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
-     			printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
-     			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
+			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
+			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
+			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
+			printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
+			printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
+			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
+			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
+			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
+			printf("Rl23=%.3e\n",Rl23_calculator(name));
 			printf("a_muon=%.3e\n",muon_gm2_calculator(name));
 	#ifdef USE_HIGGSBOUNDS
 		printf("excluded_HiggsBounds=%d\n",higgsbounds_calculator(name));
@@ -148,17 +148,17 @@ int main(int argc,char** argv)
 		if(delta0 !=0.)
 		{
 			printf("delta0=%.3e\n",delta0);
-       			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
-      			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
-      			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
-      			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
-     			printf("Rl23=%.3e\n",Rl23_calculator(name));
-      			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
-      			printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
+			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
 			printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
-     			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
-     			printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
-     			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
+			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
+			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
+			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
+			printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
+			printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
+			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
+			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
+			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
+			printf("Rl23=%.3e\n",Rl23_calculator(name));
 			printf("a_muon=%.3e\n",muon_gm2_calculator(name));
 	#ifdef USE_HIGGSBOUNDS
 		printf("excluded_HiggsBounds=%d\n",higgsbounds_calculator(name));
@@ -183,17 +183,17 @@ int main(int argc,char** argv)
 		if(delta0 !=0.)
 		{
 			printf("delta0=%.3e\n",delta0);
-       			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
-      			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
-      			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
-      			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
-     			printf("Rl23=%.3e\n",Rl23_calculator(name));
-      			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
-      			printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
+			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
 			printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
-     			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
-     			printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
-     			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
+			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
+			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
+			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
+			printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
+			printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
+			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
+			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
+			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
+			printf("Rl23=%.3e\n",Rl23_calculator(name));
 			printf("a_muon=%.3e\n",muon_gm2_calculator(name));
 	#ifdef USE_HIGGSBOUNDS
 		printf("excluded_HiggsBounds=%d\n",higgsbounds_calculator(name));
@@ -218,17 +218,17 @@ int main(int argc,char** argv)
 		if(delta0 !=0.)
 		{
 			printf("delta0=%.3e\n",delta0);
-       			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
-      			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
-      			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
-      			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
-     			printf("Rl23=%.3e\n",Rl23_calculator(name));
-      			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
-      			printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
+			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
 			printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
-     			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
-     			printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
-     			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
+			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
+			printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
+			printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
+			printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
+			printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
+			printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
+			printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
+			printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
+			printf("Rl23=%.3e\n",Rl23_calculator(name));
 			printf("a_muon=%.3e\n",muon_gm2_calculator(name));
 #ifdef USE_HIGGSBOUNDS
 			printf("excluded_HiggsBounds=%d\n",higgsbounds_calculator(name));

@@ -42,7 +42,7 @@ int main(int argc,char** argv)
      		if(argc>7) sscanf(argv[7],"%lf",&AK); else AK=A0;
      		if(argc>8) sscanf(argv[8],"%lf",&mtop); else mtop=173.3;   
      		if(argc>9) sscanf(argv[9],"%lf",&mbot); else mbot=4.19;
-     		if(argc>10) sscanf(argv[10],"%lf",&alphas_mz); else alphas_mz=0.1176;
+     		if(argc>10) sscanf(argv[10],"%lf",&alphas_mz); else alphas_mz=0.1184;
   	}	
 	
 	int filesOK=1;
@@ -51,19 +51,19 @@ int main(int argc,char** argv)
 	{
 		printf("\"%s\" absent. Please check the NMSSMTOOLS path or comment \"#define USE_NMSSMTOOLS\" in cnmssm.c\n",NMSSMTools);
 		filesOK=0;
-	};
+	}
 #endif
 #ifdef USE_HIGGSBOUNDS
 	if(!test_file(HIGGSBOUNDS)) 
 	{
 		printf("\"%s\" absent. Please check the HIGGSBOUNDS path or comment \"#define USE_HIGGSBOUNDS\" in cnmssm.c\n",HIGGSBOUNDS);
 		filesOK=0;
-	};
+	}
 	if(!test_file(HDECAY)) 
 	{
 		printf("\"%s\" absent. Please check the HDECAY path or comment \"#define USE_HIGGSBOUNDS\" in cnmssm.c\n",HDECAY);
 		filesOK=0;
-	};
+	}
 #endif
 	if(!filesOK) return 1;
 
@@ -80,25 +80,23 @@ int main(int argc,char** argv)
 	{
 		printf("delta0=%.3e\n",delta0);
        		printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
+		printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
       		printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));
       		printf("Rtaunu=%.3e\n",RBtaunu_calculator(name));
-      		printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
-     		printf("Rl23=%.3e\n",Rl23_calculator(name));
       		printf("BR_BDtaunu=%.3e\n",BDtaunu_calculator(name));
       		printf("BR_BDtaunu/BR_BDenu=%.3e\n",BDtaunu_BDenu_calculator(name));
-		printf("BR_Bsmumu=%.3e\n",Bsmumu_calculator(name));
-     		printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
      		printf("BR_Dstaunu=%.3e\n",Dstaunu_calculator(name));
      		printf("BR_Dsmunu=%.3e\n",Dsmunu_calculator(name));
+     		printf("BR_Dmunu=%.3e\n",Dmunu_calculator(name));
+      		printf("BR_Kmunu/BR_pimunu=%.3e\n",Kmunu_pimunu_calculator(name));
+     		printf("Rl23=%.3e\n",Rl23_calculator(name));
 		printf("a_muon=%.3e\n",muon_gm2_calculator(name));
        		printf("charged_LSP=%d\n",charged_LSP_calculator(name));
 
 #ifdef USE_HIGGSBOUNDS
 		printf("excluded_HiggsBounds=%d\n",higgsbounds_calculator(name));
-#else
- 		printf("excluded_Higgs_mass=%d\n",NMSSM_collider_excluded(name));
 #endif
- 		printf("excluded_SUSY_mass=%d\n",excluded_SUSY_mass_calculator(name));
+ 		printf("excluded_collider_NMSSMTools=%d\n",NMSSM_collider_excluded(name));
 		printf("theory_excluded=%d\n",NMSSM_theory_excluded(name));
 		flha_generator(name,"../output.flha");
 		printf("output.flha generated\n\n");	

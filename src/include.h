@@ -23,7 +23,7 @@
 #define zeta3 1.2020569031595942855
 #define hbar  6.58211889e-25 /* in GeV.s */
 
-#define Nobs_BKsll 16
+#define Nobs_BKsll 21
 
 /*--------------------------------------------------------------------*/
 
@@ -36,19 +36,19 @@ typedef struct parameters
 	double Q; /* Qmax ; default = M_EWSB = sqrt(m_stop1*mstop2) */
 	double m0,m12,tan_beta,sign_mu,A0; /* CMSSM parameters */
 	double Lambda,Mmess,N5,cgrav,m32; /* AMSB, GMSB parameters */
-	double mass_Z,mass_W,mass_b,mass_top_pole,mass_tau_pole; /* SM parameters */
+	double mass_Z,mass_W,mass_b,mass_top_pole,mass_tau; /* SM parameters */
 	double inv_alpha_em,alphas_MZ,Gfermi,GAUGE_Q; /* SM parameters */
 	double charg_Umix[3][3],charg_Vmix[3][3],stop_mix[3][3],sbot_mix[3][3],stau_mix[3][3],neut_mix[6][6],mass_neut[6],alpha; /* mass mixing matrices */
 	double Min,M1_Min,M2_Min,M3_Min,At_Min,Ab_Min,Atau_Min,M2H1_Min,M2H2_Min,mu_Min,M2A_Min,tb_Min,mA_Min; /* optional input parameters at scale Min */
 	double MeL_Min,MmuL_Min,MtauL_Min,MeR_Min,MmuR_Min,MtauR_Min; /* optional input parameters at scale Min */
 	double MqL1_Min,MqL2_Min,MqL3_Min,MuR_Min,McR_Min,MtR_Min,MdR_Min,MsR_Min,MbR_Min; /* optional input parameters at scale Min */
 	double N51,N52,N53,M2H1_Q,M2H2_Q; /* optional input parameters (N51...3: GMSB) */
-	double mass_d,mass_u,mass_s,mass_c,mass_t,mass_e,mass_nue,mass_mu,mass_num,mass_tau,mass_nut; /* SM masses */
+	double mass_d,mass_u,mass_s,mass_c_pole,mass_b_pole,mass_e,mass_nue,mass_mu,mass_num,mass_nut; /* SM masses */
 	double mass_gluon,mass_photon,mass_Z0; /* SM masses */
 	double mass_h0,mass_H0,mass_A0,mass_H,mass_dnl,mass_upl,mass_stl,mass_chl,mass_b1,mass_t1; /* Higgs & superparticle masses */
 	double mass_el,mass_nuel,mass_mul,mass_numl,mass_tau1,mass_nutl,mass_gluino,mass_cha1,mass_cha2; /* superparticle masses */
 	double mass_dnr,mass_upr,mass_str,mass_chr,mass_b2,mass_t2,mass_er,mass_mur,mass_tau2; /* superparticle masses */
-	double mass_nuer,mass_numr,mass_nutr,mass_graviton,mass_gravitino; /* superparticle masses */
+	double mass_nuer,mass_numr,mass_nutr,mass_graviton,mass_gravitino; /* masses */
 	double gp,g2,gp_Q,g2_Q,g3_Q,YU_Q,yut[4],YD_Q,yub[4],YE_Q,yutau[4]; /* couplings */
 	double HMIX_Q,mu_Q,tanb_GUT,Higgs_VEV,mA2_Q,MSOFT_Q,M1_Q,M2_Q,M3_Q; /* parameters at scale Q */
 	double MeL_Q,MmuL_Q,MtauL_Q,MeR_Q,MmuR_Q,MtauR_Q,MqL1_Q,MqL2_Q,MqL3_Q,MuR_Q,McR_Q,MtR_Q,MdR_Q,MsR_Q,MbR_Q; /* masses at scale Q */
@@ -69,10 +69,10 @@ typedef struct parameters
 	double TU[4][4],TD[4][4],TE[4][4]; /* trilinear couplings */
 	
 	/* non-SLHA*/
-	double mass_b_1S,mass_b_pole,mtmt;
+	double mass_b_1S,mass_c,mass_top;
 	double Lambda5; /* Lambda QCD */
 	
-	/* Flavour constants */
+	/* Flavour parameters */
 	double f_B,f_Bs,f_Ds,f_D,fK_fpi;
 	double f_K_par,f_K_perp;
 	double m_B,m_Bs,m_Bd,m_pi,m_Ds,m_K,m_Kstar,m_D0,m_D;
@@ -80,6 +80,7 @@ typedef struct parameters
 	double a1par,a2par,a1perp,a2perp;
 	double zeta3A,zeta3V,wA10,deltatp,deltatm;
 	double lambda_Bp,rho1,lambda2;
+	double BR_BXclnu_exp;
 	
 	/* CKM matrix */
 	double complex Vud,Vus,Vub,Vcd,Vcs,Vcb,Vtd,Vts,Vtb;
@@ -95,6 +96,17 @@ typedef struct parameters
 	double width_Z,width_W;
 }
 parameters;
+
+/*--------------------------------------------------------------------*/
+
+typedef struct flhaparam
+/* structure containing all the scanned parameters from the FLHA file */
+{
+	double dC7[3],dC8[3],dC9[3],dC10[3];
+	double dC7p[3],dC8p[3],dC9p[3],dC10p[3];
+	double Q;
+}
+flhaparam;
 
 /*--------------------------------------------------------------------*/
 /* Prototypes */
@@ -127,7 +139,9 @@ double alphas_running(double Q, double mtop, double mbot, struct parameters* par
 /* quark_masses.c */
 double running_mass(double quark_mass, double Qinit, double Qfin,  double mtop, double mbot, struct parameters* param);
 double mb_pole(struct parameters* param);
+double mb_pole_1loop(struct parameters* param);
 double mc_pole(struct parameters* param);
+double mc_pole_1loop(struct parameters* param);
 double mb_1S(struct parameters* param);
 double mt_mt(struct parameters* param);
 
@@ -171,6 +185,7 @@ double K0exp(double x,double z);
 double K1exp(double x,double z);
 double K2exp(double x,double z);
 double kron(int x, int y);
+double rand_gauss(void);
 int test_integer(char name[]);
 int test_file(char *name);
 
@@ -260,6 +275,14 @@ double C7t2mt(double x);
 double C7c2MW(double x);
 double C8t2mt(double x);
 double C8c2MW(double x);
+double C7H2lulumt(double r);
+double C7H2ldlumt(double r);
+double C8H2lulumt(double r);
+double C8H2ldlumt(double r);
+double C10Wt2mt(double x);
+double C10Wc2MW(double x);
+double C10Zt2mt(double x);
+double C10Z2tri(double x);
 double epsilon_0(struct parameters* param);
 double epsilon_2(struct parameters* param);
 double epsilon_b(struct parameters* param);
@@ -294,7 +317,8 @@ double phi77_2beta(double delta,double mu, struct parameters* param);
 double phi77_2rem(double delta, struct parameters* param);
 double Re_a(double z);
 double Re_b(double z);
-double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, struct parameters* param);
+double C_BXlnu(struct parameters* param);
+double bsgamma(double C0[], double C1[], double C2[], double Cp[], double mu, double mu_W, struct parameters* param);
 double bsgamma_calculator(char name[]);
 
 /* isospin.c */
@@ -307,7 +331,7 @@ double complex H_perp(double s, double a1_par, double a2_par, double zeta3A, dou
 double H8_perp(double a1_perp, double a2_perp);
 double complex h(double u,double s);
 double complex H2_perp(double s, double a1_perp, double a2_perp);
-double delta0(double C0[],double C0_spec[],double C1[],double C1_spec[],struct parameters* param,double mub,double muspec, double lambda_h);
+double delta0(double C0[], double C0_spec[], double C1[], double C1_spec[], double Cp[], struct parameters* param, double mu_b, double mu_f);
 double delta0_calculator(char name[]);
 
 /* excluded_masses.c */
@@ -355,9 +379,9 @@ double BDtaunu(struct parameters* param);
 double BDtaunu_calculator(char name[]);
 
 /* bsmumu.c */
-double Bsmumu(double C0b[], double C1b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[],struct parameters* param, double mu_b);
-double Bsmumu_untag(double C0b[], double C1b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[],struct parameters* param, double mu_b);
-double Bdmumu(double C0b[], double C1b[], double complex CQ0b[], double complex CQ1b[],struct parameters* param, double mu_b);
+double Bsmumu(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[],struct parameters* param, double mu_b);
+double Bsmumu_untag(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[],struct parameters* param, double mu_b);
+double Bdmumu(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[],struct parameters* param, double mu_b);
 double Bsmumu_calculator(char name[]);
 double Bsmumu_untag_calculator(char name[]);
 double Bdmumu_calculator(char name[]);
@@ -397,8 +421,9 @@ int suspect_mssm(double m1, double m2, double m3, double tanb, double mA, double
 double higgsbounds(char name[], struct parameters* param);
 double higgsbounds_calculator(char name[]);
 
-/* flha.c */
+/* fleshouches.c */
 void flha_generator(char name[], char name_output[]);
+int FLHA_Reader(char name[], struct flhaparam* paramflha);
 
 /* nmssmtools.c */
 int nmssmtools_cnmssm(double m0, double m12, double tanb, double A0, double lambda, double AK, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
@@ -459,25 +484,25 @@ double w22em(double s, double L, double mub);
 double complex w27em(double s, double L, double mub);
 double complex w29em(double s, double L, double mub);
 double complex w210em(double s, double L, double a, double mub);
-double dBR_BXsmumu_dshat(double shat,  double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
+double dBR_BXsmumu_dshat(double shat,  double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
 double dBR_BXsmumu_dshat_calculator(double shat, char name[]);
-double BRBXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
-double BRBXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
+double BRBXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
+double BRBXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
 double BRBXsmumu_lowq2_calculator(char name[]);
 double BRBXsmumu_highq2_calculator(char name[]);
-double A_BXsmumu(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
-double A_BXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
-double A_BXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
+double A_BXsmumu(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
+double A_BXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
+double A_BXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
 double A_BXsmumu_lowq2_calculator(char name[]);
 double A_BXsmumu_highq2_calculator(char name[]);
-double A_BXsmumu_zero(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
+double A_BXsmumu_zero(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
 double A_BXsmumu_zero_calculator(char name[]);
-double dBR_BXstautau_dshat(double shat,  double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
+double dBR_BXstautau_dshat(double shat,  double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
 double dBR_BXstautau_dshat_calculator(double shat, char name[]);
-double BRBXstautau_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
+double BRBXstautau_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
 double BRBXstautau_highq2_calculator(char name[]);
-double A_BXstautau(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
-double A_BXstautau_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b);
+double A_BXstautau(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
+double A_BXstautau_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
 double A_BXstautau_highq2_calculator(char name[]);
 
 /* bsll_extra.c */
@@ -485,6 +510,8 @@ double complex F17_bsll(double s, double z, double L);
 double complex F27_bsll(double s, double z, double L);
 double complex F19_bsll(double s, double z, double L);
 double complex F29_bsll(double s, double z, double L);
+double complex F19_bkll(double s, double z, double L);
+double complex F29_bkll(double s, double z, double L);
 double F_17re(double muh, double z, double sh, int maxpow);
 double F_17im(double muh, double z, double sh, int maxpow);
 double F_19re(double muh, double z, double sh, int maxpow);
@@ -506,6 +533,9 @@ double complex L1_bkll(double complex x);
 double complex I1_bkll(double u, double mq, double q2, struct parameters* param);
 double complex tperp_bkll(double u, double mq, double q2, double E_Kstar, struct parameters* param);
 double complex tpar_bkll(double u, double mq, double q2, double E_Kstar, struct parameters* param);
+double complex F27u(double shat, double l);
+double complex F19u(double shat, double l);
+double complex F29u(double shat, double l);
 double dGamma_BKstarmumu_dq2(double q2, double obs[][3], double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
 double dGamma_BKstarmumu_dq2_calculator(double q2, double obs[][3], char name[]);
 double BRBKstarmumu(double smin, double smax, double obs[], double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b);
@@ -545,6 +575,16 @@ double P3_BKstarmumu_lowq2_calculator(char name[]);
 double P3_BKstarmumu_highq2_calculator(char name[]);
 double P6_BKstarmumu_lowq2_calculator(char name[]);
 double P6_BKstarmumu_highq2_calculator(char name[]);
+double P8_BKstarmumu_lowq2_calculator(char name[]);
+double P8_BKstarmumu_highq2_calculator(char name[]);
+double P4prime_BKstarmumu_lowq2_calculator(char name[]);
+double P4prime_BKstarmumu_highq2_calculator(char name[]);
+double P5prime_BKstarmumu_lowq2_calculator(char name[]);
+double P5prime_BKstarmumu_highq2_calculator(char name[]);
+double P6prime_BKstarmumu_lowq2_calculator(char name[]);
+double P6prime_BKstarmumu_highq2_calculator(char name[]);
+double P8prime_BKstarmumu_lowq2_calculator(char name[]);
+double P8prime_BKstarmumu_highq2_calculator(char name[]);
 double BRobs_BKstarmumu_lowq2_calculator(char name[],double obs[]);
 double BRobs_BKstarmumu_highq2_calculator(char name[],double obs[]);
 double A_BKstarmumu_zero_calculator(char name[]);

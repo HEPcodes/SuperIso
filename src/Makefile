@@ -32,7 +32,7 @@ libisospin.a: libisospin.a(softsusy.o) libisospin.a(leshouches.o)\
 	  libisospin.a(btaunu.o) libisospin.a(bdtaunu.o) libisospin.a(kmunu.o)\
 	  libisospin.a(bsmumu.o) libisospin.a(dslnu.o) libisospin.a(dmunu.o)\
 	  libisospin.a(spheno.o) libisospin.a(suspect.o) libisospin.a(2hdmc.o)\
-	  libisospin.a(nmssmtools.o) libisospin.a(higgsbounds.o) libisospin.a(flha.o)\
+	  libisospin.a(nmssmtools.o) libisospin.a(higgsbounds.o) libisospin.a(fleshouches.o)\
 	  libisospin.a(bsll.o) libisospin.a(bsll_extra.o) libisospin.a(bkll.o)\
 	  $(RANL)
 
@@ -53,15 +53,15 @@ libisospin.a(kmunu.o): kmunu.c include.h
 libisospin.a(bsmumu.o): bsmumu.c include.h
 libisospin.a(dslnu.o): dslnu.c include.h
 libisospin.a(dmunu.o): dmunu.c include.h
-libisospin.a(spheno.o): spheno.c include.h spheno.h
 libisospin.a(suspect.o): suspect.c include.h suspect.h
 libisospin.a(nmssmtools.o): nmssmtools.c include.h nmssmtools.h
 libisospin.a(2hdmc.o): 2hdmc.c include.h 2hdmc.h
 libisospin.a(higgsbounds.o): higgsbounds.c higgsbounds.h include.h
-libisospin.a(flha.o): flha.c include.h
+libisospin.a(fleshouches.o): fleshouches.c include.h
 libisospin.a(bsll.o): bsll.c include.h
 libisospin.a(bsll_extra.o): bsll_extra.c include.h
 libisospin.a(bkll.o): bkll.c include.h
+libisospin.a(spheno.o): spheno.c include.h spheno.h
 
 softsusy.h:
 	@echo \#define SOFTSUSY \"$(SOFTSUSY)\" > softsusy.h;

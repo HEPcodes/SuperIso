@@ -1,7 +1,7 @@
 #include "include.h"
 
 void Init_param(struct parameters* param)
-/* initializes the "param" structure by initializing the parameters with either 0 or a value from the PDG2010 */
+/* initializes the "param" structure by initializing the parameters with either 0 or a value from the PDG */
 {
 	int ie,je;
 	
@@ -23,7 +23,7 @@ void Init_param(struct parameters* param)
 	param->mass_Z=0.;
 	param->mass_b=0.;
 	param->mass_top_pole=0.;
-	param->mass_tau_pole=0.;
+	param->mass_tau=0.;
 	param->inv_alpha_em=0.;
 	param->alphas_MZ=0.;
 	param->alpha=0.;
@@ -151,14 +151,14 @@ void Init_param(struct parameters* param)
 	param->mass_nuer=0.;
 	param->mass_numr=0.;
 	param->mass_nutr=0.;
-	param->mass_t=0.;
-	param->mass_tau=0.;
 	param->mass_gluon=0.;
 	param->mass_nue=0.;
 	param->mass_num=0.;
 	param->mass_nut=0.;
 	param->mass_photon=0.;
 	param->mass_Z0=0.;
+	param->mass_c_pole=0.;
+	param->mass_b_pole=0.;
 
 	/* SLHA2 */
 	param->NMSSM=0;
@@ -250,8 +250,7 @@ void Init_param(struct parameters* param)
 	
 	/* non-SLHA*/
 	param->mass_b_1S=0.;
-	param->mass_b_pole=0.;
-	param->mtmt=0.;
+	param->mass_top=0.;
 	param->Lambda5=0.;
 
 	/* 2HDM */
@@ -264,26 +263,26 @@ void Init_param(struct parameters* param)
 	}
 	
 	/* Flavour physics */
-	param->f_B=0.194;
-	param->f_Bs=0.234;
-	param->f_Ds=0.248;
-	param->f_D=0.207;
+	param->f_B=0.1905;
+	param->f_Bs=0.2277;
+	param->f_Ds=0.2486;
+	param->f_D=0.2135;
 	param->fK_fpi=1.193;
 	param->f_K_par=0.220;
 	param->f_K_perp=0.185;
-	param->m_B=5.27917;
-	param->m_Bs=5.3663;
-	param->m_Bd=5.27950;
-	param->m_pi=0.1396;
-	param->m_K=0.4937;
-	param->m_Kstar=0.89594;
-	param->m_D0=1.86483;
-	param->m_D=1.86960;
-	param->m_Ds=1.96847;
+	param->m_B=5.27926;
+	param->m_Bs=5.36677;
+	param->m_Bd=5.27958;
+	param->m_pi=0.13957;
+	param->m_K=0.493677;
+	param->m_Kstar=0.89581;
+	param->m_D0=1.86484;
+	param->m_D=1.86961;
+	param->m_Ds=1.9683;
 	param->life_pi=2.6033e-8;
 	param->life_K=1.2380e-8;  
-	param->life_B=1.641e-12;
-	param->life_Bs=1.472e-12;
+	param->life_B=1.638e-12;
+	param->life_Bs=1.512e-12;
 	param->life_Bd=1.519e-12;
 	param->life_D=1.040e-12;
 	param->life_Ds=5.e-13;
@@ -299,50 +298,36 @@ void Init_param(struct parameters* param)
 	param->lambda_Bp=0.46;
 	param->rho1=0.06;
 	param->lambda2=0.12;
+	param->BR_BXclnu_exp=0.1065;
 	
-	/* CKM matrix */
-	param->Vud=0.97428;
-	param->Vus=0.2253;
-	param->Vub=0.00347;
-	param->Vcd=-0.2252;
-	param->Vcs=0.97345;
-	param->Vcb=0.0410;
-	param->Vtd=0.00862;
-	param->Vts=-0.0403;
-	param->Vtb=0.999152;
-	param->CKM[1][1]=param->Vud;
-	param->CKM[1][2]=param->Vus;
-	param->CKM[1][3]=param->Vub;
-	param->CKM[2][1]=param->Vcd;
-	param->CKM[2][2]=param->Vcs;
-	param->CKM[2][3]=param->Vcb;
-	param->CKM[3][1]=param->Vtd;
-	param->CKM[3][2]=param->Vts;
-	param->CKM[3][3]=param->Vtb;
+	/* CKM matrix with Wolfenstein parametrisation */
+	param->CKM_lambda=0.22537;
+	param->CKM_A=0.814;
+	param->CKM_rhobar=0.117;
+	param->CKM_etabar=0.353;
 	
-	/* masses and coupling from PDG 2011 */
-	param->mass_u = 2.49e-3;
-	param->mass_d = 5.05e-3;
-	param->mass_s = 0.101;
-	param->mass_c = 1.29;
-	param->mass_b = 4.19;
-	param->mass_top_pole = 172.9;
+	/* masses and couplings from PDG 2014 */
+	param->mass_u = 2.3e-3;
+	param->mass_d = 4.8e-3;
+	param->mass_s = 0.095;
+	param->mass_c = 1.275;
+	param->mass_b = 4.18;
+	param->mass_top_pole = 173.34;
 	
 	param->mass_e = 0.511e-3;
 	param->mass_mu= 0.105658;
-	param->mass_tau_pole=1.7768;
-	param->mass_tau=param->mass_tau_pole;
+	param->mass_tau=1.77682;
 	
 	param->mass_Z=91.1876;
 	param->alphas_MZ=0.1184;
-	param->mass_W=80.399;
+	param->mass_W=80.385;
 
 	param->gp=param->gp_Q=3.57458e-1;
 	param->g2=param->g2_Q=6.51908e-1;	
 	param->inv_alpha_em=1.27916e2;
 	param->Gfermi=1.16637000e-5;
 
-	param->width_Z=2.495;
+	param->width_Z=2.4952;
 	param->width_W=2.085;
 
 	return;
@@ -376,6 +361,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				
 				if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 0: fscanf(lecture,"%d",&param->THDM_model); break;
 					case 1:	fscanf(lecture,"%d",&param->model); break;
 					case 3:	fscanf(lecture,"%d",&param->NMSSM); break;
@@ -408,6 +394,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 				if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: 	fscanf(lecture,"%s",dummy); 
 							if(!strncasecmp(dummy,"ISA",3)) param->generator=1; 
 							if(!strncasecmp(dummy,"SOFTSUSY",8)) param->generator=3; 
@@ -463,13 +450,14 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 				if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: fscanf(lecture,"%lf",&param->inv_alpha_em); break;
 					case 2: fscanf(lecture,"%lf",&param->Gfermi); break;
 					case 3: fscanf(lecture,"%lf",&param->alphas_MZ); break;
 					case 4: fscanf(lecture,"%lf",&param->mass_Z); break;
 					case 5: fscanf(lecture,"%lf",&param->mass_b); break;
 					case 6: fscanf(lecture,"%lf",&param->mass_top_pole); break;
-					case 7: fscanf(lecture,"%lf",&param->mass_tau_pole); break;
+					case 7: fscanf(lecture,"%lf",&param->mass_tau); break;
 					case 8: fscanf(lecture,"%lf",&param->mass_nutau2); break;
 					case 11: fscanf(lecture,"%lf",&param->mass_e2); break;
 					case 12: fscanf(lecture,"%lf",&param->mass_nue2); break;
@@ -490,6 +478,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 				if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: fscanf(lecture,"%lf",&param->CKM_lambda); break;
 					case 2: fscanf(lecture,"%lf",&param->CKM_A); break;
 					case 3: fscanf(lecture,"%lf",&param->CKM_rhobar); break;
@@ -505,6 +494,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 				if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: fscanf(lecture,"%lf",&param->PMNS_theta12); break;
 					case 2: fscanf(lecture,"%lf",&param->PMNS_theta23); break;
 					case 3: fscanf(lecture,"%lf",&param->PMNS_theta13); break;
@@ -526,6 +516,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 							if(test_integer(dummy)) switch(atoi(dummy))
 							{
+								default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 								case 1: fscanf(lecture,"%lf",&param->m0); break;
 								case 2: fscanf(lecture,"%lf",&param->m12); break;
 								case 3: fscanf(lecture,"%lf",&param->tan_beta); break;
@@ -543,6 +534,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 						if(test_integer(dummy)) switch(atoi(dummy))
 						{
+							default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 							case 1: fscanf(lecture,"%lf",&param->Lambda); break;
 							case 2: fscanf(lecture,"%lf",&param->Mmess); break;
 							case 3: fscanf(lecture,"%lf",&param->tan_beta); break;
@@ -561,6 +553,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 						if(test_integer(dummy)) switch(atoi(dummy))
 						{
+							default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 							case 1: fscanf(lecture,"%lf",&param->m32); break;
 							case 2: fscanf(lecture,"%lf",&param->m0); break;
 							case 3: fscanf(lecture,"%lf",&param->tan_beta); break;
@@ -577,6 +570,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 						if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 						if(test_integer(dummy)) switch(atoi(dummy))
 						{
+							default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 							case 3: fscanf(lecture,"%lf",&param->tan_beta); break;
 						}
 					}
@@ -592,6 +586,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 				if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 0: fscanf(lecture,"%lf",&param->Min); break;
 					case 1: fscanf(lecture,"%lf",&param->M1_Min); break;
 					case 2: fscanf(lecture,"%lf",&param->M2_Min); break;
@@ -644,11 +639,13 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				if(!strncasecmp("#",dummy,1)) while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));
 				if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: fscanf(lecture,"%lf",&param->mass_d); if(isnan(param->mass_d)) {param->model=-3; return 0;} break;
-					case 2: fscanf(lecture,"%lf",&param->mass_u); if(isnan(param->mass_s)) {param->model=-3; return 0;} break;
+					case 2: fscanf(lecture,"%lf",&param->mass_u); if(isnan(param->mass_u)) {param->model=-3; return 0;} break;
 					case 3: fscanf(lecture,"%lf",&param->mass_s); if(isnan(param->mass_s)) {param->model=-3; return 0;} break;
-					case 4: fscanf(lecture,"%lf",&param->mass_c); if(isnan(param->mass_c)) {param->model=-3; return 0;} break;
-					case 6: fscanf(lecture,"%lf",&param->mass_t); if(isnan(param->mass_t)) {param->model=-3; return 0;} break;
+					case 4: fscanf(lecture,"%lf",&param->mass_c_pole); if(isnan(param->mass_c_pole)) {param->model=-3; return 0;} break;
+					case 5: fscanf(lecture,"%lf",&param->mass_b_pole); if(isnan(param->mass_b_pole)) {param->model=-3; return 0;} break;
+					case 6: fscanf(lecture,"%lf",&param->mass_top_pole); if(isnan(param->mass_top_pole)) {param->model=-3; return 0;} break;
 					case 11: fscanf(lecture,"%lf",&param->mass_e); if(isnan(param->mass_e)) {param->model=-3; return 0;} break;
 					case 12: fscanf(lecture,"%lf",&param->mass_nue); if(isnan(param->mass_nue)) {param->model=-3; return 0;} break;
 					case 13: fscanf(lecture,"%lf",&param->mass_mu); if(isnan(param->mass_mu)) {param->model=-3; return 0;} break;
@@ -857,6 +854,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: fscanf(lecture,"%lf",&param->gp_Q); break;
 					case 2: fscanf(lecture,"%lf",&param->g2_Q); break;
 					case 3: fscanf(lecture,"%lf",&param->g3_Q); break;	
@@ -953,6 +951,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: fscanf(lecture,"%lf",&param->mu_Q); break;
 					case 2: fscanf(lecture,"%lf",&param->tanb_GUT); break;
 					case 3: fscanf(lecture,"%lf",&param->Higgs_VEV); break;	
@@ -1013,6 +1012,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: fscanf(lecture,"%lf",&param->M1_Q); break;
 					case 2: fscanf(lecture,"%lf",&param->M2_Q); break;
 					case 3: fscanf(lecture,"%lf",&param->M3_Q); break;	
@@ -1051,6 +1051,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: 
 					{
 						fscanf(lecture,"%s",dummy);
@@ -1096,6 +1097,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: 
 					{
 						fscanf(lecture,"%s",dummy);
@@ -1141,6 +1143,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: 
 					{
 						fscanf(lecture,"%s",dummy);
@@ -1186,6 +1189,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 				}
 				else if(test_integer(dummy)) switch(atoi(dummy))
 				{
+					default: while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1)));break;
 					case 1: fscanf(lecture,"%lf",&param->lambdaNMSSM); break;
 					case 2: fscanf(lecture,"%lf",&param->kappaNMSSM); break;
 					case 3: fscanf(lecture,"%lf",&param->AlambdaNMSSM); break;
@@ -1257,7 +1261,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 			}	
 			if(!strcasecmp(dummy,"Decay")) while((!fseek(lecture,-1,SEEK_CUR))&&(EOF != fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) fseek(lecture,-1,SEEK_CUR);
 		}
-		else if(!strcasecmp(dummy,"SELMIX"))
+		else if(!strcasecmp(dummy,"SNUMIX"))
 		{
 			while((EOF != fscanf(lecture,"%s",dummy) && strcasecmp(dummy,"Block") && strcasecmp(dummy,"Decay")))
 	 		{
@@ -1655,9 +1659,11 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 void slha_adjust(struct parameters* param)
 {
 	double dum;
-	double mass[7],invmat[7][7];
+	double mass[7];
 	int ie,je;
 	int iemax=0;
+	int iemax1=0;
+	int iemax2=0;
 
 	if(param->mass_Z0==0.) param->mass_Z0=param->mass_Z;
 
@@ -1667,7 +1673,55 @@ void slha_adjust(struct parameters* param)
 	
 	if(param->MSOFT_Q==0.) param->TU_Q=param->TD_Q=param->TE_Q=param->PMNSU_Q=param->CKM_Q=param->MSE2_Q=param->MSU2_Q=param->MSD2_Q=param->MSL2_Q=param->MSQ2_Q=param->MSOFT_Q=param->NMSSMRUN_Q=param->YU_Q=param->YD_Q=param->YE_Q=param->HMIX_Q=param->GAUGE_Q=param->AU_Q=param->AD_Q=param->AE_Q=param->Q;
 			
+	if(param->tan_beta==0.) param->tan_beta=param->tb_Min;
 	if(param->tan_beta==0.) param->tan_beta=param->tanb_GUT;
+
+	if(param->mu_Q==0.) param->mu_Q=param->mu_Min;
+
+	if(param->mass_gluino==0.) param->mass_gluino=fabs(param->M3_Q);
+	if(param->mass_gluino==0.) param->mass_gluino=fabs(param->M3_Min);
+
+	if(param->mass_el==0.) param->mass_el=fabs(param->MeL_Q);
+	if(param->mass_el==0.) param->mass_el=fabs(param->MeL_Min);
+	
+	if(param->mass_er==0.) param->mass_er=fabs(param->MeR_Q);
+	if(param->mass_er==0.) param->mass_er=fabs(param->MeR_Min);
+	
+	if(param->mass_mul==0.) param->mass_mul=fabs(param->MmuL_Q);
+	if(param->mass_mul==0.) param->mass_mul=fabs(param->MmuL_Min);
+	
+	if(param->mass_mur==0.) param->mass_mur=fabs(param->MmuR_Q);
+	if(param->mass_mur==0.) param->mass_mur=fabs(param->MmuR_Min);
+	
+	if(param->mass_dnl==0.) param->mass_dnl=fabs(param->MqL1_Q);
+	if(param->mass_dnl==0.) param->mass_dnl=fabs(param->MqL1_Min);
+	
+	if(param->mass_upl==0.) param->mass_upl=fabs(param->MqL1_Q);
+	if(param->mass_upl==0.) param->mass_upl=fabs(param->MqL1_Min);
+	
+	if(param->mass_stl==0.) param->mass_stl=fabs(param->MqL2_Q);
+	if(param->mass_stl==0.) param->mass_stl=fabs(param->MqL2_Min);
+	
+	if(param->mass_chl==0.) param->mass_chl=fabs(param->MqL2_Q);
+	if(param->mass_chl==0.) param->mass_chl=fabs(param->MqL2_Min);
+	
+	if(param->mass_dnr==0.) param->mass_dnr=fabs(param->MdR_Q);
+	if(param->mass_dnr==0.) param->mass_dnr=fabs(param->MdR_Min);
+	
+	if(param->mass_upr==0.) param->mass_upr=fabs(param->MuR_Q);
+	if(param->mass_upr==0.) param->mass_upr=fabs(param->MuR_Min);
+	
+	if(param->mass_str==0.) param->mass_str=fabs(param->MsR_Q);
+	if(param->mass_str==0.) param->mass_str=fabs(param->MsR_Min);
+	
+	if(param->mass_chr==0.) param->mass_chr=fabs(param->McR_Q);
+	if(param->mass_chr==0.) param->mass_chr=fabs(param->McR_Min);
+
+	if(param->mass_nuel==0.) param->mass_nuel=fabs(param->MeL_Q);
+	if(param->mass_nuel==0.) param->mass_nuel=fabs(param->MeL_Min);
+	
+	if(param->mass_numl==0.) param->mass_numl=fabs(param->MmuL_Q);
+	if(param->mass_numl==0.) param->mass_numl=fabs(param->MmuL_Min);
 	
 	if((param->tan_beta*param->MSOFT_Q)==0.) param->model=-3;
 	
@@ -1690,6 +1744,7 @@ void slha_adjust(struct parameters* param)
 	if(param->A_tau==0.) param->A_tau=param->TE[3][3];
 	if(param->A_b==0.) param->A_b=param->TD[3][3];
 	if(param->A_t==0.) param->A_t=param->TU[3][3];
+
 	
  	if(param->stop_mix[1][1]==0.) 
 	{
@@ -1700,57 +1755,65 @@ void slha_adjust(struct parameters* param)
 		mass[5]=param->mass_chr;
 		mass[6]=param->mass_t2;
 
-		for(ie=1;ie<=6;ie++) for(je=1;je<=6;je++) invmat[ie][je]=param->sU_mix[je][ie];
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[1][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sU_mix[ie][1])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[1][ie]);
+			dum=fabs(param->sU_mix[ie][1]);
 		}
 		param->mass_upl=mass[iemax];
 		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[2][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sU_mix[ie][2])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[2][ie]);
+			dum=fabs(param->sU_mix[ie][2]);
 		}
 		param->mass_chl=mass[iemax];
 		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[3][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sU_mix[ie][4])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[3][ie]);
-		}
-		param->mass_t2=mass[iemax];		
-		
-		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[4][ie])>dum) 
-		{
-			iemax=ie;
-			dum=fabs(invmat[4][ie]);
+			dum=fabs(param->sU_mix[ie][4]);
 		}
 		param->mass_upr=mass[iemax];
 		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[5][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sU_mix[ie][5])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[5][ie]);
+			dum=fabs(param->sU_mix[ie][5]);
 		}
 		param->mass_chr=mass[iemax];
 		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[6][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sU_mix[ie][3])>dum)
 		{
-			iemax=ie;
-			dum=fabs(invmat[6][ie]);
+			iemax1=ie;
+			dum=fabs(param->sU_mix[ie][3]);
 		}
-		param->mass_t1=mass[iemax];
-
-		param->stop_mix[1][1]=param->sU_mix[1][3];
-		param->stop_mix[1][2]=param->sU_mix[1][6];
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(param->sU_mix[ie][6])>dum)
+		{
+			iemax2=ie;
+			dum=fabs(param->sU_mix[ie][6]);
+		}
+		
+		if(iemax1<iemax2)
+		{
+			param->mass_t1=mass[iemax1];
+			param->mass_t2=mass[iemax2];		
+			param->stop_mix[1][1]=param->sU_mix[iemax1][3];
+			param->stop_mix[1][2]=param->sU_mix[iemax1][6];
+		}
+		else
+		{
+			param->mass_t1=mass[iemax2];
+			param->mass_t2=mass[iemax1];		
+			param->stop_mix[1][1]=param->sU_mix[iemax2][3];
+			param->stop_mix[1][2]=param->sU_mix[iemax2][6];
+		}
 	}	
 			
 	dum=atan(param->stop_mix[1][2]/param->stop_mix[1][1]);
@@ -1761,6 +1824,7 @@ void slha_adjust(struct parameters* param)
 	param->stop_mix[2][1]=-sin(dum);
 	param->stop_mix[1][2]=sin(dum);
 	param->stop_mix[2][2]=cos(dum);
+
 		
 	if(param->sbot_mix[1][1]==0.)
 	{
@@ -1771,69 +1835,77 @@ void slha_adjust(struct parameters* param)
 		mass[5]=param->mass_str;
 		mass[6]=param->mass_b2;
 
-		for(ie=1;ie<=6;ie++) for(je=1;je<=6;je++) invmat[ie][je]=param->sD_mix[je][ie];
-		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[1][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sD_mix[ie][1])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[1][ie]);
+			dum=fabs(param->sD_mix[ie][1]);
 		}
 		param->mass_dnl=mass[iemax];
 		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[2][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sD_mix[ie][2])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[2][ie]);
+			dum=fabs(param->sD_mix[ie][2]);
 		}
 		param->mass_stl=mass[iemax];
 		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[3][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sD_mix[ie][4])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[3][ie]);
-		}
-		param->mass_b1=mass[iemax];		
-
-		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[4][ie])>dum) 
-		{
-			iemax=ie;
-			dum=fabs(invmat[4][ie]);
+			dum=fabs(param->sD_mix[ie][4]);
 		}
 		param->mass_dnr=mass[iemax];
 		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[5][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sD_mix[ie][5])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[5][ie]);
+			dum=fabs(param->sD_mix[ie][5]);
 		}
 		param->mass_str=mass[iemax];
 		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[6][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sD_mix[ie][3])>dum)
 		{
-			iemax=ie;
-			dum=fabs(invmat[6][ie]);
+			iemax1=ie;
+			dum=fabs(param->sD_mix[ie][3]);
 		}
-		param->mass_b2=mass[iemax];
-
-		param->sbot_mix[1][1]=param->sD_mix[1][3];
-		param->sbot_mix[1][2]=param->sD_mix[1][6];
-	}
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(param->sD_mix[ie][6])>dum)
+		{
+			iemax2=ie;
+			dum=fabs(param->sD_mix[ie][6]);
+		}
 		
+		if(iemax1<iemax2)
+		{
+			param->mass_b1=mass[iemax1];
+			param->mass_b2=mass[iemax2];		
+			param->sbot_mix[1][1]=param->sD_mix[iemax1][3];
+			param->sbot_mix[1][2]=param->sD_mix[iemax1][6];
+		}
+		else
+		{
+			param->mass_b1=mass[iemax2];
+			param->mass_b2=mass[iemax1];		
+			param->sbot_mix[1][1]=param->sD_mix[iemax2][3];
+			param->sbot_mix[1][2]=param->sD_mix[iemax2][6];
+		}	
+	}	
+			
 	dum=atan(param->sbot_mix[1][2]/param->sbot_mix[1][1]);
-
+	
 	if(param->generator==1) dum=atan(param->sbot_mix[2][1]/param->sbot_mix[1][1]);
-
+	
 	param->sbot_mix[1][1]=cos(dum);
 	param->sbot_mix[2][1]=-sin(dum);
 	param->sbot_mix[1][2]=sin(dum);
 	param->sbot_mix[2][2]=cos(dum);
-		
+	
+			
 	if(param->stau_mix[1][1]==0.)
 	{
 		mass[1]=param->mass_el;
@@ -1843,75 +1915,115 @@ void slha_adjust(struct parameters* param)
 		mass[5]=param->mass_mur;
 		mass[6]=param->mass_tau2;
 
-		for(ie=1;ie<=6;ie++) for(je=1;je<=6;je++) invmat[ie][je]=param->sE_mix[je][ie];
-		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[1][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sE_mix[ie][1])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[1][ie]);
+			dum=fabs(param->sE_mix[ie][1]);
 		}
 		param->mass_el=mass[iemax];
-
+		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[2][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sE_mix[ie][2])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[2][ie]);
+			dum=fabs(param->sE_mix[ie][2]);
 		}
 		param->mass_mul=mass[iemax];
 		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[3][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sE_mix[ie][4])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[3][ie]);
-		}
-		param->mass_tau2=mass[iemax];		
-		
-		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[4][ie])>dum) 
-		{
-			iemax=ie;
-			dum=fabs(invmat[4][ie]);
+			dum=fabs(param->sE_mix[ie][4]);
 		}
 		param->mass_er=mass[iemax];
 		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[5][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sE_mix[ie][5])>dum)
 		{
 			iemax=ie;
-			dum=fabs(invmat[5][ie]);
+			dum=fabs(param->sE_mix[ie][5]);
 		}
 		param->mass_mur=mass[iemax];
 		
 		dum=0.;
-		for(ie=1;ie<=6;ie++) if(fabs(invmat[6][ie])>dum) 
+		for(ie=1;ie<=6;ie++) if(fabs(param->sE_mix[ie][3])>dum)
 		{
-			iemax=ie;
-			dum=fabs(invmat[6][ie]);
+			iemax1=ie;
+			dum=fabs(param->sE_mix[ie][3]);
 		}
-		param->mass_tau1=mass[iemax];
-
-		param->stau_mix[1][1]=param->sE_mix[1][3];
-		param->stau_mix[1][2]=param->sE_mix[1][6];
+		dum=0.;
+		for(ie=1;ie<=6;ie++) if(fabs(param->sE_mix[ie][6])>dum)
+		{
+			iemax2=ie;
+			dum=fabs(param->sE_mix[ie][6]);
+		}
+				
+		if(iemax1<iemax2)
+		{
+			param->mass_tau1=mass[iemax1];
+			param->mass_tau2=mass[iemax2];		
+			param->stau_mix[1][1]=param->sE_mix[iemax1][3];
+			param->stau_mix[1][2]=param->sE_mix[iemax1][6];
+		}
+		else
+		{
+			param->mass_tau1=mass[iemax2];
+			param->mass_tau2=mass[iemax1];		
+			param->stau_mix[1][1]=param->sE_mix[iemax2][3];
+			param->stau_mix[1][2]=param->sE_mix[iemax2][6];
+		}
 	}
-		
+			
 	dum=atan(param->stau_mix[1][2]/param->stau_mix[1][1]);
-
+	
 	if(param->generator==1) dum=atan(param->stau_mix[2][1]/param->stau_mix[1][1]);
-
+	
 	param->stau_mix[1][1]=cos(dum);
 	param->stau_mix[2][1]=-sin(dum);
 	param->stau_mix[1][2]=sin(dum);
 	param->stau_mix[2][2]=cos(dum);
+	
+	
+	if((param->sNU_mix[1][1]!=0.)||(param->sNU_mix[1][2]!=0.)||(param->sNU_mix[1][3]!=0.))
+	{
+		mass[1]=param->mass_nuel;
+		mass[2]=param->mass_numl;
+		mass[3]=param->mass_nutl;
 
+		dum=0.;
+		for(ie=1;ie<=3;ie++) if(fabs(param->sNU_mix[ie][1])>dum)
+		{
+			iemax=ie;
+			dum=fabs(param->sNU_mix[ie][1]);
+		}
+		param->mass_nuel=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=3;ie++) if(fabs(param->sNU_mix[ie][2])>dum)
+		{
+			iemax=ie;
+			dum=fabs(param->sNU_mix[ie][2]);
+		}
+		param->mass_numl=mass[iemax];
+		
+		dum=0.;
+		for(ie=1;ie<=3;ie++) if(fabs(param->sNU_mix[ie][3])>dum)
+		{
+			iemax=ie;
+			dum=fabs(param->sNU_mix[ie][3]);
+		}
+		param->mass_nutl=mass[iemax];		
+	}	
+
+	
 	if(param->neut_mix[1][1]>0.) for(ie=1;ie<=5;ie++) for(je=1;je<=5;je++) param->neut_mix[ie][je]=-param->neut_mix[ie][je];
 	
 	param->mass_b_pole=mb_pole(param);
  	param->mass_b_1S=mb_1S(param);
 	
-	param->mtmt=mt_mt(param);
+	param->mass_top=mt_mt(param);
 	
 	if(param->CKM_lambda*param->CKM_A*param->CKM_rhobar!=0.)
 	{

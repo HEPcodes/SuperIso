@@ -1834,6 +1834,26 @@ double kron(int x, int y)
 	if(x==y) return 1.; else return 0.;
 }
 
+
+/*--------------------------------------------------------------------*/
+
+double rand_gauss(void)
+/* Gaussian generation of random numbers centered on 0 with a variance 1 */
+{
+	double rsq=0.;
+	double v1,v2;
+	v1=v2=0.;
+
+	while((rsq==0.)||(rsq>=1.))
+	{
+		v1=2.*rand()/(RAND_MAX+1.)-1.;
+		v2=2.*rand()/(RAND_MAX+1.)-1.;
+		rsq=v1*v1+v2*v2;
+	}
+	double fac=sqrt(-2.*log(rsq)/rsq);
+	return v1*fac;
+}
+
 /*--------------------------------------------------------------------*/
 
 int test_integer(char name[])

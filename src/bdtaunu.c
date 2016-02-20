@@ -84,7 +84,7 @@ double GammaBDlnu(double ml, struct parameters* param)
 double BDtaunu(struct parameters* param)
 /* computes the branching ratio of B-> D0 tau nu */
 {
-	return param->life_B/hbar*GammaBDlnu(param->mass_tau_pole,param);
+	return param->life_B/hbar*GammaBDlnu(param->mass_tau,param);
 }
 
 /*--------------------------------------------------------------------*/
@@ -93,7 +93,7 @@ double BDtaunu_BDenu(struct parameters* param)
 /* computes the ratio BR(B-> D0 tau nu)/BR(B-> D0 e nu) */
 {
 
-	return GammaBDlnu(param->mass_tau_pole,param)/GammaBDlnu(param->mass_e,param);
+	return GammaBDlnu(param->mass_tau,param)/GammaBDlnu(param->mass_e,param);
 	
 }
 

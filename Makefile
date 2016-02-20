@@ -1,7 +1,8 @@
 .KEEP_STATE:
 
 #
-VERSION = v3.3
+VERSION = v3.4
+YEAR = 2014
 
 # Choose your compilers here (in general gcc/gfortran on Linux systems):
 CC = gcc
@@ -27,7 +28,7 @@ NMSSMTOOLS = ~/nmssmtools/main
 # Add the link to 2HDMC directory, if available.
 THDMC = ~/2HDMC
 # Add the links to HiggsBounds, if available.
-HBwithFH = ~/higgsbounds/HiggsBounds-f90/example_programs/HBwithFH
+HBwithFH = ~/higgsbounds/example_programs/HBwithFH
 
 
 CINCLUDE= -I./src -L./src
@@ -66,7 +67,7 @@ distclean:
 	
 libisospin.a: 
 	@echo;
-	@echo SuperIso $(VERSION) - F.N. Mahmoudi 2012;
+	@echo SuperIso $(VERSION) - F.N. Mahmoudi $(YEAR);
 	@echo;
 	@echo CC = $(CC) > src/FlagsForMake;\
 	echo CFLAGS = $(CFLAGS) >> src/FlagsForMake;\
@@ -98,9 +99,11 @@ save:
 	cp -p cnmssm.c superiso_$(VERSION)/;\
 	cp -p ngmsb.c superiso_$(VERSION)/;\
 	cp -p nnuhm.c superiso_$(VERSION)/;\
+	cp -p flha.c superiso_$(VERSION)/;\
 	cp -p Makefile superiso_$(VERSION)/;\
 	mkdir superiso_$(VERSION)/src;\
 	cp -p src/include.h superiso_$(VERSION)/src/;\
+	cp -p src/spheno_struct.h superiso_$(VERSION)/src/;\
 	cp -p src/*.c superiso_$(VERSION)/src/;\
 	cp -p src/Makefile superiso_$(VERSION)/src/;\
 	tar czvf superiso_$(VERSION).tgz superiso_$(VERSION);\

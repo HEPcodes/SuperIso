@@ -2,12 +2,12 @@
 
 /*---------------------------------------------------------------------*/
 
-double Bsmumu(double C0b[], double C1b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
+double Bsmumu(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 /* computes the inclusive branching ratio of Bs -> mu+ mu- */
 {
 	
 	double alphas_mub=alphas_running(mu_b,param->mass_top_pole,param->mass_b_pole,param);
-	double C10=C0b[10]+alphas_mub/4./pi*C1b[10];
+	double C10=C0b[10]+alphas_mub/4./pi*C1b[10]+alphas_mub*alphas_mub/16./pi/pi*C2b[10];
 		
 	double complex CQ1=CQ0b[1]+alphas_mub/4./pi*CQ1b[1];
 	double complex CQ2=CQ0b[2]+alphas_mub/4./pi*CQ1b[2];
@@ -28,12 +28,12 @@ double Bsmumu(double C0b[], double C1b[], double complex CQ0b[], double complex 
 
 /*---------------------------------------------------------------------*/
 
-double Bsmumu_untag(double C0b[], double C1b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
+double Bsmumu_untag(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 /* computes the inclusive untagged branching ratio of Bs -> mu+ mu- */
 {
 	
 	double alphas_mub=alphas_running(mu_b,param->mass_top_pole,param->mass_b_pole,param);
-	double C10=C0b[10]+alphas_mub/4./pi*C1b[10];
+	double C10=C0b[10]+alphas_mub/4./pi*C1b[10]+alphas_mub*alphas_mub/16./pi/pi*C2b[10];
 		
 	double complex CQ1=CQ0b[1]+alphas_mub/4./pi*CQ1b[1];
 	double complex CQ2=CQ0b[2]+alphas_mub/4./pi*CQ1b[2];
@@ -49,21 +49,21 @@ double Bsmumu_untag(double C0b[], double C1b[], double complex CQ0b[], double co
 	
 	double phiP=carg(P);
 	
-	double ys=0.088; /* 1204.1734 */
+	double ys=0.088;
 	
 	double A_Dgamma=(pow(cabs(P),2.)*cos(2.*phiP)-pow(cabs(S),2.)*cos(2.*phiS))/(pow(cabs(P),2.)+pow(cabs(S),2.));
 	
-	return (1.+A_Dgamma*ys)/(1.-ys*ys)*Bsmumu(C0b,C1b,CQ0b,CQ1b,Cpb,CQpb,param,mu_b);
+	return (1.+A_Dgamma*ys)/(1.-ys*ys)*Bsmumu(C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,param,mu_b);
 }
 
 /*--------------------------------------------------------------------*/
 
-double Bdmumu(double C0b[], double C1b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double Bdmumu(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
 /* computes the inclusive branching ratio of Bd -> mu+ mu- */
 {
 	
 	double alphas_mub=alphas_running(mu_b,param->mass_top_pole,param->mass_b_pole,param);
-	double C10=C0b[10]+alphas_mub/4./pi*C1b[10];
+	double C10=C0b[10]+alphas_mub/4./pi*C1b[10]+alphas_mub*alphas_mub/16./pi/pi*C2b[10];
 	double complex CQ1=CQ0b[1]+alphas_mub/4./pi*CQ1b[1];
 	double complex CQ2=CQ0b[2]+alphas_mub/4./pi*CQ1b[2];
 	
@@ -83,7 +83,7 @@ double Bdmumu(double C0b[], double C1b[], double complex CQ0b[], double complex 
 double Bsmumu_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(Bs-> mu+ mu-) */
 {	
-	double C0b[11],C1b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
 	double complex CQ0b[3],CQ1b[3],CQpb[3];
 	struct parameters param;
 		
@@ -92,16 +92,15 @@ double Bsmumu_calculator(char name[])
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 	
 	double mu_W=2.*param.mass_W;
-	
-	double mu_b=param.mass_b;
+	double mu_b=param.mass_b_pole;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
-	C_calculator_base2(C0w,C1w,mu_W,C0b,C1b,mu_b,&param);
+	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
 	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
 
-	return Bsmumu(C0b,C1b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
+	return Bsmumu(C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
 }
 
 /*--------------------------------------------------------------------*/
@@ -109,7 +108,7 @@ double Bsmumu_calculator(char name[])
 double Bsmumu_untag_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating the untagged BR(Bs-> mu+ mu-) */
 {	
-	double C0b[11],C1b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
 	double complex CQ0b[3],CQ1b[3],CQpb[3];
 	struct parameters param;
 		
@@ -118,16 +117,15 @@ double Bsmumu_untag_calculator(char name[])
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 	
 	double mu_W=2.*param.mass_W;
-	
-	double mu_b=param.mass_b;
+	double mu_b=param.mass_b_pole;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
-	C_calculator_base2(C0w,C1w,mu_W,C0b,C1b,mu_b,&param);
+	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
 	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
 
-	return Bsmumu_untag(C0b,C1b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
+	return Bsmumu_untag(C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
 }
 
 /*--------------------------------------------------------------------*/
@@ -135,7 +133,7 @@ double Bsmumu_untag_calculator(char name[])
 double Bdmumu_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(Bd-> mu+ mu-) */
 {	
-	double C0b[11],C1b[11],C0w[11],C1w[11],C2w[11];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
 	double complex CQ0b[3],CQ1b[3];
 	struct parameters param;
 		
@@ -144,13 +142,12 @@ double Bdmumu_calculator(char name[])
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 	
 	double mu_W=2.*param.mass_W;
-	
 	double mu_b=param.mass_b_pole;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
-	C_calculator_base2(C0w,C1w,mu_W,C0b,C1b,mu_b,&param);
+	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
 
-	return Bdmumu(C0b,C1b,CQ0b,CQ1b,&param,mu_b);
+	return Bdmumu(C0b,C1b,C2b,CQ0b,CQ1b,&param,mu_b);
 }

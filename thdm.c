@@ -31,8 +31,8 @@ int main(int argc,char** argv)
 		sscanf(argv[2],"%lf",&tanb);
 		sscanf(argv[3],"%lf",&mA);
 
-		double g=6.48408288e-1;
-		double gp=3.58051564e-1;
+		double g=6.51908e-1;
+		double gp=3.57458e-1;
 
 		if(argc>4) sscanf(argv[4],"%lf",&lambda1); else lambda1=(g*g+gp*gp)/4.;   
 		if(argc>5) sscanf(argv[5],"%lf",&lambda2); else lambda2=lambda1;
@@ -62,7 +62,7 @@ int main(int argc,char** argv)
 	
 	printf("\n");
 	
-	printf("SuperIso v3.3 - F. Mahmoudi\n\n");
+	printf("SuperIso v3.4 - F. Mahmoudi\n\n");
 
 #ifdef USE_2HDMC
 	thdmc_types(lambda1,lambda2,lambda3,lambda4,lambda5,lambda6,lambda7,m12_2,tanb,type,name);
@@ -83,19 +83,23 @@ int main(int argc,char** argv)
 		printf("BR(B->K* mu mu)_low\t\t%.3e\n",BRobs_BKstarmumu_lowq2_calculator(name,obs));
 		printf("AFB(B->K* mu mu)_low\t\t%.3e\n",obs[1]);
 		printf("FL(B->K* mu mu)_low\t\t%.3e\n",obs[2]);
-		printf("AT1(B->K* mu mu)_low\t\t%.3e\n",obs[4]);
-		printf("AT2(B->K* mu mu)_low\t\t%.3e\n",obs[5]);
-		printf("AT3(B->K* mu mu)_low\t\t%.3e\n",obs[6]);
-		printf("AT4(B->K* mu mu)_low\t\t%.3e\n",obs[7]);
-		printf("AT5(B->K* mu mu)_low\t\t%.3e\n",obs[8]);
+		printf("P1(B->K* mu mu)_low\t\t%.3e\n",obs[5]);
+		printf("P2(B->K* mu mu)_low\t\t%.3e\n",obs[14]);
+		printf("P4'(B->K* mu mu)_low\t\t%.3e\n",obs[17]);
+		printf("P5'(B->K* mu mu)_low\t\t%.3e\n",obs[18]);
+		printf("P6'(B->K* mu mu)_low\t\t%.3e\n",obs[19]);
+		printf("P8'(B->K* mu mu)_low\t\t%.3e\n",obs[21]);
 		printf("AI(B->K* mu mu)_low\t\t%.3e\n\n",AI_BKstarmumu_lowq2_calculator(name));
 	
 		printf("BR(B->K* mu mu)_high\t\t%.3e\n",BRobs_BKstarmumu_highq2_calculator(name,obs));
 		printf("AFB(B->K* mu mu)_high\t\t%.3e\n",obs[1]);
 		printf("FL(B->K* mu mu)_high\t\t%.3e\n",obs[2]);
-		printf("HT1(B->K* mu mu)_high\t\t%.3e\n",obs[9]);
-		printf("HT2(B->K* mu mu)_high\t\t%.3e\n",obs[10]);
-		printf("HT3(B->K* mu mu)_high\t\t%.3e\n",obs[11]);
+		printf("P1(B->K* mu mu)_high\t\t%.3e\n",obs[5]);
+		printf("P2(B->K* mu mu)_high\t\t%.3e\n",obs[14]);
+		printf("P4'(B->K* mu mu)_high\t\t%.3e\n",obs[17]);
+		printf("P5'(B->K* mu mu)_high\t\t%.3e\n",obs[18]);
+		printf("P6'(B->K* mu mu)_high\t\t%.3e\n",obs[19]);
+		printf("P8'(B->K* mu mu)_high\t\t%.3e\n",obs[21]);
 		printf("AI(B->K* mu mu)_high\t\t%.3e\n\n",AI_BKstarmumu_highq2_calculator(name));
 
 		printf("q0^2(AFB(B->K* mu mu))\t\t%.3e\n",A_BKstarmumu_zero_calculator(name));

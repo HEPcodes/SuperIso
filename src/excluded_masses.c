@@ -1,7 +1,7 @@
 #include "include.h"
 
 int excluded_Higgs_masses(struct parameters* param)
-/* tests whether the SUSY point is excluded by the collider contraints */
+/* tests whether the SUSY point is excluded by the LEP and Tevatron Higgs contraints */
 /* if excluded, return 1, otherwise 0 */
 {
 	int excluded=0;
@@ -18,7 +18,7 @@ int excluded_Higgs_masses(struct parameters* param)
 /*--------------------------------------------------------------------*/
 
 int excluded_SUSY_masses(struct parameters* param)
-/* tests whether the SUSY point is excluded by the collider contraints */
+/* tests whether the SUSY point is excluded by the LEP and Tevatron SUSY mass contraints */
 /* if excluded, return 1, otherwise 0 */
 {
 	int excluded=0;
@@ -56,6 +56,8 @@ int excluded_SUSY_masses(struct parameters* param)
 /*--------------------------------------------------------------------*/
 
 int excluded_masses(struct parameters* param)
+/* tests whether the SUSY point is excluded by the LEP and Tevatron contraints */
+/* if excluded, return 1, otherwise 0 */
 {
 	return excluded_Higgs_masses(param)||excluded_SUSY_masses(param);
 }

@@ -296,23 +296,40 @@ double Re_b(double z)
 	+(-131317./11760.+887./84.*Lz+5.*Lz*Lz+5./3.*pi*pi)*pow(z,5.)+(-2807617./97200.+16597./540.*Lz+14.*Lz*Lz+14./3.*pi*pi)*pow(z,6.));
 }
 
+/*---------------------------------------------------------------------*/
+
+double C_BXlnu(struct parameters* param)
+{
+	double mb_kin=param->mass_b+0.37;
+	double mc_3GeV=running_mass(param->mass_c,param->mass_c,3.,param->mass_top_pole,param->mass_b,param);
+	double rho=(mc_3GeV/mb_kin)*(mc_3GeV/mb_kin);
+	double delta_alphas=alphas_running(4.6,param->mass_top_pole,param->mass_b,param)-0.22;
+	double delta_b=mb_kin-4.55;
+	double mu_G2=0.336;
+	double rho_D3=0.153;
+	double rho_LS3=-0.145;
+	double g_rho=1.-8.*rho+8.*rho*rho*rho-rho*rho*rho*rho-12.*rho*rho*log(rho);
+	
+	return g_rho*(0.849-0.92*delta_alphas+0.0596*delta_b-0.2237*(mc_3GeV-1.)-0.0167*mu_G2-0.203*rho_D3+0.004*rho_LS3); 	
+}
+
 /*----------------------------------------------------------------------*/
 /*----------------------------------------------------------------------*/
 
-double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, struct parameters* param)
+double bsgamma(double C0[], double C1[], double C2[], double Cp[], double mu, double mu_W, struct parameters* param)
 /* computes the inclusive branching ratio of B -> Xs gamma */
 /* C0, C1, C2: respectively LO, NLO and NNLO contributions of the Wilson coefficients at scale mu=O(mb) */
+/* Cp: primed Wilson coefficients at scale mu=O(mb) */
 {
 	int ie,je;	
 	double alpha_em=1./137.036;
-	double BR_BXcenu_exp=0.1061;
-	double Cbr=0.580;
+	double Cbr=C_BXlnu(param);
 	double E0=1.6;
 	
 	double alphas_mu=alphas_running(mu,param->mass_top_pole,param->mass_b_pole,param);
 
 
-	double P0 = C0[7]*C0[7];
+	double P0 = C0[7]*C0[7] + Cp[7]*Cp[7];
 	double P1_1 = 2.*C0[7]*C1[7];
 	double P2_1 = C1[7]*C1[7] + 2.*C0[7]*C2[7];
 	
@@ -372,12 +389,11 @@ double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, st
 	double P2_3=0.;
 	for (ie=1;ie<=8;ie++) for (je=1;je<=8;je++)
 	{ 
-		P1_2+=C0[ie]*C0[je]*K1[ie][je];
+		P1_2+=(C0[ie]*C0[je]+Cp[ie]*Cp[je])*K1[ie][je];
 		P2_3+=2.*C0[ie]*C1[je]*K1[ie][je];
 	}
 	
 	
-
 	double Lz=log(z);
 
 	double Re_r2=
@@ -394,8 +410,25 @@ double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, st
 
 	double K2_beta[9][9], K2_rem[9][9],phi2_beta[9][9];
 	for (ie=1;ie<=8;ie++) for (je=1;je<=8;je++) K2_beta[ie][je]=K2_rem[ie][je]=phi2_beta[ie][je]=0.;
-	
+
+
+	double h2_22=0.01370+0.3357*delta-0.08668*delta*delta+(0.3575+1.825*delta-0.3743*delta*delta)*sqrt(z)+(-2.306-5.8*delta-6.226*delta*delta)*z+(3.449-0.548*delta+17.27*delta*delta)*pow(z,1.5);
+
+	double h2_27= -0.1755-1.455*delta+1.119*delta*delta+(0.7260-7.23*delta+5.977*delta*delta)*sqrt(z)+(13.79+113.7*delta-100.4*delta*delta)*z+(-145.1-307.1*delta+388.5*delta*delta)*pow(z,1.5)+(475.2+313.*delta-775.8*delta*delta)*z*z+(-509.7-126.1*delta+646.2*delta*delta)*pow(z,2.5);
+
+	double h2_28=0.02605+0.1679*delta-0.197*delta*delta+(-0.03801+0.6017*delta-0.7558*delta*delta)*sqrt(z)+(2.755-10.03*delta+11.27*delta*delta)*z+(-27.05+68.47*delta-72.51*delta*delta)*pow(z,1.5)+(85.87-289.3*delta+297.7*delta*delta)*z*z+(-91.53+399.8*delta-399.9*delta*delta)*pow(z,2.5);
+
+	double h2_88=4./27.*(((1.+0.5*delta)*delta*log(delta)-6.*log(1.-delta)-2.*Li2(1.-delta)+pi*pi/3.-16./3.*delta-5./3.*delta*delta+delta*delta*delta/9.)*log(param->mass_b_1S/param->mass_s)-2.*Li3(delta)+(5.-2.*log(delta))*(Li2(1.-delta)-pi*pi/6.)-pi*pi/12.*delta*(2.+delta)+(0.5*delta+0.25*delta*delta-log(1.-delta))*pow(log(delta),2.)+(151./18.-pi*pi/3.)*log(1.-delta)+(-53./12.-19./12.*delta+2./9.*delta*delta)*delta*log(delta)+787./72.*delta+227./72.*delta*delta-41./72.*delta*delta*delta);
+
+
+	phi2_beta[2][2]=beta0*(phi1[2][2]*Lb+h2_22);
+	phi2_beta[1][1]=phi2_beta[2][2]/36.;
+	phi2_beta[1][2]=-phi2_beta[2][2]/6.*4./2.;
+	phi2_beta[2][7]=beta0*(phi1[2][7]*Lb+h2_27);
 	phi2_beta[7][7]=phi77_2beta(delta,mu,param);
+	phi2_beta[2][8]=beta0*(phi1[2][8]*Lb+h2_28);
+	phi2_beta[1][8]=-phi2_beta[2][8]/6.;
+	phi2_beta[8][8]=beta0*(phi1[8][8]*Lb+h2_88);
 	
 	for (ie=1;ie<=8;ie++) for (je=1;je<=8;je++) K2_beta[ie][je]=2.*phi2_beta[ie][je]; 
 	
@@ -410,7 +443,7 @@ double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, st
 	for(je=1;je<=8;je++) for(ie=1;ie<=8;ie++) K2_beta[ie][je]=K2_beta[je][ie];
    
 	double P2_2_beta=0.;
-	for (ie=1;ie<=8;ie++) for (je=1;je<=8;je++) P2_2_beta+=C0[ie]*C0[je]*K2_beta[ie][je];
+	for (ie=1;ie<=8;ie++) for (je=1;je<=8;je++) P2_2_beta+=(C0[ie]*C0[je]+Cp[ie]*Cp[je])*K2_beta[ie][je];
 	
 	
 
@@ -679,7 +712,7 @@ double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, st
 	printf("C2[7]=%f\n\n",C2[7]);
 #endif
 
-	double BRinc=BR_BXcenu_exp*pow(cabs(conj(param->Vts)*param->Vtb/param->Vcb),2.)*6.*alpha_em/pi/Cbr*(P_E0+P_em+N_E0);
+	double BRinc=param->BR_BXclnu_exp*pow(cabs(conj(param->Vts)*param->Vtb/param->Vcb),2.)*6.*alpha_em/pi/Cbr*(P_E0+P_em+N_E0);
 
 	return BRinc;
 }
@@ -689,18 +722,20 @@ double bsgamma(double C0[], double C1[], double C2[], double mu, double mu_W, st
 double bsgamma_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating the inclusive branching ratio of b -> s gamma */
 {
-	double C0w[11],C1w[11],C2w[11],C0b[11],C1b[11],C2b[11];
+	double C0w[11],C1w[11],C2w[11],C0b[11],C1b[11],C2b[11],Cpb[11];
+	double complex CQpb[3];
 	struct parameters param;
 		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 	
-	double mu_W=2.*param.mass_W;
-		
-	double mu_b=param.mass_b_1S/2.;
+	double mu_W=2.*param.mass_W;		
+	double mu_b=param.mass_b_pole/2.;
 
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
-	return bsgamma(C0b,C1b,C2b,mu_b,mu_W,&param);
+	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
+
+	return bsgamma(C0b,C1b,C2b,Cpb,mu_b,mu_W,&param);
 }

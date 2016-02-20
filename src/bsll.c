@@ -73,9 +73,9 @@ double complex g_bsll_parametrized(double z, double s, struct parameters* param)
 	double integ1=0.;
 	double integ2=0.;
 	int ie;
-	int nb0=100;
-	int nb1=1000;
-	int nb2=1000;
+	int nb0=10;
+	int nb1=10;
+	int nb2=50;
 	
 	double sp=4.*param->m_D*param->m_D/param->mass_b_1S/param->mass_b_1S;
 	double dsp=(10.-sp)/nb0;
@@ -100,7 +100,7 @@ double complex g_bsll_parametrized(double z, double s, struct parameters* param)
 	integ1+=Rcchad(s,param)/(sp-s)/2.;
 	integ1*=dsp/s;
 	
-	sp=s*1.01;
+	sp=s*1.04;
 	dsp=(10.-sp)/nb2;
 	integ2+=Rcchad(s,param)/(sp-s)/2.;
 	for(ie=1;ie<nb2;ie++)
@@ -608,11 +608,8 @@ double complex w210em(double s, double L, double a, double mub)
 
 /*----------------------------------------------------------------------*/
 
-double dBR_BXsmumu_dshat(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double dBR_BXsmumu_dshat(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 {
-	double BR_BXclnu=0.1064;
-	double Cbr=0.580;
-		
 	double alphas_mub=alphas_running(mu_b,param->mass_top_pole,param->mass_b_pole,param);
 	
 	int ie;
@@ -631,28 +628,41 @@ double dBR_BXsmumu_dshat(double shat, double C0b[], double C1b[], double C2b[], 
 	
 	double sw=sin(atan(param->gp/param->g2));
 
+	double complex g_bsll_mchat=g_bsll_parametrized(mchat,shat,param);
+	double complex g_bsll_1=g_bsll(1.,shat);
+	double complex g_bsll_0=g_bsll(0.,shat);
+	
 	double complex C9eff=Cmub[9]
-		+(-32./27.*Cmub[1]-8./9.*Cmub[2]-16./9.*Cmub[3]+32./27.*Cmub[4]-112./9.*Cmub[5]+512./27.*Cmub[6])*log(param->mass_b_1S/mu_b)
+	+(-32./27.*Cmub[1]-8./9.*Cmub[2]-16./9.*Cmub[3]+32./27.*Cmub[4]-112./9.*Cmub[5]+512./27.*Cmub[6])*log(param->mass_b_1S/mu_b)
 	+4./3.*Cmub[3]+64./9.*Cmub[5]+64./27.*Cmub[6]
-	+g_bsll_parametrized(mchat,shat,param)*(4./3.*Cmub[1]+Cmub[2]+6.*Cmub[3]+60.*Cmub[5])
-	+g_bsll(1.,shat)*(-7./2.*Cmub[3]-2./3.*Cmub[4]-38.*Cmub[5]-32./3.*Cmub[6])
-	+g_bsll(0.,shat)*(-1./2.*Cmub[3]-2./3.*Cmub[4]-8.*Cmub[5]-32./3.*Cmub[6]);
+	+g_bsll_mchat*(4./3.*Cmub[1]+Cmub[2]+6.*Cmub[3]+60.*Cmub[5])
+	+g_bsll_1*(-7./2.*Cmub[3]-2./3.*Cmub[4]-38.*Cmub[5]-32./3.*Cmub[6])
+	+g_bsll_0*(-1./2.*Cmub[3]-2./3.*Cmub[4]-8.*Cmub[5]-32./3.*Cmub[6]);
 	
 	double complex C90eff=C0b[9] +(-32./27.*C0b[1]-8./9.*C0b[2]-16./9.*C0b[3]+32./27.*C0b[4]-112./9.*C0b[5]+512./27.*C0b[6])*log(param->mass_b_1S/mu_b)
 	+4./3.*C0b[3]+64./9.*C0b[5]+64./27.*C0b[6]
-	+g_bsll_parametrized(mchat,shat,param)*(4./3.*C0b[1]+C0b[2]+6.*C0b[3]+60.*C0b[5])
-	+g_bsll(1.,shat)*(-7./2.*C0b[3]-2./3.*C0b[4]-38.*C0b[5]-32./3.*C0b[6])
-	+g_bsll(0.,shat)*(-1./2.*C0b[3]-2./3.*C0b[4]-8.*C0b[5]-32./3.*C0b[6]);
+	+g_bsll_mchat*(4./3.*C0b[1]+C0b[2]+6.*C0b[3]+60.*C0b[5])
+	+g_bsll_1*(-7./2.*C0b[3]-2./3.*C0b[4]-38.*C0b[5]-32./3.*C0b[6])
+	+g_bsll_0*(-1./2.*C0b[3]-2./3.*C0b[4]-8.*C0b[5]-32./3.*C0b[6]);
 	
 	double C10eff=Cmub[10];
 
- 	double complex C7new=(1.+alphas_mub/pi*sigma7_bsll(shat,log(mu_b/param->mass_b_1S)))*C7eff
-	-alphas_mub/4./pi*(C0b[1]*F17_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[2]*F27_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[8]*F87_bsll(shat,log(mu_b/param->mass_b_1S)));
+	double complex sigma7=sigma7_bsll(shat,log(mu_b/param->mass_b_1S));
+	double complex F17=F17_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F27=F27_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F87=F87_bsll(shat,log(mu_b/param->mass_b_1S));
+	double complex sigma9=sigma9_bsll(shat);
+	double complex F19=F19_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F29=F29_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F89=F89_bsll(shat);
 	
-	double complex C9new=(1.+alphas_mub/pi*sigma9_bsll(shat))*C9eff
-	-alphas_mub/4./pi*(C0b[1]*F19_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[2]*F29_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[8]*F89_bsll(shat));
-;
-	double C10new=(1.+alphas_mub/pi*sigma9_bsll(shat))*C10eff;
+ 	double complex C7new=(1.+alphas_mub/pi*sigma7)*C7eff
+	-alphas_mub/4./pi*(C0b[1]*F17+C0b[2]*F27+C0b[8]*F87);
+	
+	double complex C9new=(1.+alphas_mub/pi*sigma9)*C9eff
+	-alphas_mub/4./pi*(C0b[1]*F19+C0b[2]*F29+C0b[8]*F89);
+
+	double C10new=(1.+alphas_mub/pi*sigma9)*C10eff;
  
 	double complex CQ1=CQ0b[1]+alphas_mub/4./pi*CQ1b[1];
 	double complex CQ2=CQ0b[2]+alphas_mub/4./pi*CQ1b[2];
@@ -660,8 +670,11 @@ double dBR_BXsmumu_dshat(double shat, double C0b[], double C1b[], double C2b[], 
 	double t=param->mass_mu/param->mass_b_1S;
 	
 	double lambda2=param->lambda2;
+	
+	double f=f_bsll(param->mass_c/param->mass_b_1S);
+	double kappa=kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub);
 
-	double dR_mb2=3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*pow(cabs(param->Vts/param->Vcb),2.)/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*(-(6.+3.*shat-5.*shat*shat*shat)*4.*C7new*conj(C7new)/shat
+	double dR_mb2=3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*pow(cabs(param->Vts/param->Vcb),2.)/f/kappa*(-(6.+3.*shat-5.*shat*shat*shat)*4.*C7new*conj(C7new)/shat
 	+(1.-15.*shat*shat+10.*shat*shat*shat)*(C9new*conj(C9new)+C10new*conj(C10new))
 	-4.*(5.+6.*shat-7.*shat*shat)*creal(C7new*conj(C9new))));
 	
@@ -669,19 +682,29 @@ double dBR_BXsmumu_dshat(double shat, double C0b[], double C1b[], double C2b[], 
 	
 	double dR_mb3=0.;
 
-	if(shat<0.4) dR_mb3=-rho1/pow(param->mass_b_1S,3.)*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*pow(cabs(param->Vts/param->Vcb),2.)/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*(
+	if(shat<0.4) dR_mb3=-rho1/pow(param->mass_b_1S,3.)*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*pow(cabs(param->Vts/param->Vcb),2.)/f/kappa*(
 	(5.*pow(shat,4.)+19.*pow(shat,3.)+9.*shat*shat-7.*shat+22.)/6./(1.-shat)*4.*C7new*conj(C7new)/shat
 	+(10.*pow(shat,4.)+23.*pow(shat,3.)-9.*shat*shat+13.*shat+11.)/6./(1.-shat)*(C9new*conj(C9new)+C10new*conj(C10new))
 	+4.*(-3.*pow(shat,3.)+17.*shat*shat-shat+3.)/2./(1.-shat)*creal(C7new*conj(C9new))));
 	
-	double dR_mc2=8.*lambda2/9./param->mass_c/param->mass_c/param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*cabs(param->Vts*conj(param->Vcs)/param->Vtb/conj(param->Vcb))/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*(1.-shat)*(1.-shat)
-	*creal((1.+6.*shat-shat*shat)/shat*F_bsll(shat/4./z)*Cmub[2]*conj(C7new)+(2.+shat)*F_bsll(shat/4./z)*Cmub[2]*conj(C9new));
+	double Fbsll=F_bsll(shat/4./z);
+	
+	double dR_mc2=8.*lambda2/9./param->mass_c/param->mass_c/param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*cabs(param->Vts*conj(param->Vcs)/param->Vtb/conj(param->Vcb))/f/kappa*(1.-shat)*(1.-shat)
+	*creal((1.+6.*shat-shat*shat)/shat*Fbsll*Cmub[2]*conj(C7new)+(2.+shat)*Fbsll*Cmub[2]*conj(C9new));
 	
 	double complex c78=4./3.*C0b[7]*conj(C0b[8]);
 	double complex c89=4./3.*C0b[8]*conj(C90eff);
 	double complex c88=4./3.*C0b[8]*conj(C0b[8]);
-		
-	double dR_bremA=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(2.*creal(c78*tau78_bsll(shat)+c89*tau89_bsll(shat))+c88*tau88_bsll(shat));	
+	
+	double tau78=tau78_bsll(shat);
+	double tau89=tau89_bsll(shat);
+	double tau88=tau88_bsll(shat);
+	double integtau22=integ_tau22(shat,z);
+	double complex integtau27=integ_tau27(shat,z);
+	double complex integtau28=integ_tau28(shat,z);
+	double complex integtau29=integ_tau29(shat,z);
+	
+	double dR_bremA=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(2.*creal(c78*tau78+c89*tau89)+c88*tau88);	
 
 	double c11=C0b[1]*C0b[1]/27.;
 	double c12=-4./9.*C0b[1]*C0b[2];
@@ -693,11 +716,11 @@ double dBR_BXsmumu_dshat(double shat, double C0b[], double C1b[], double C2b[], 
 	double complex c19=-2./9.*C0b[1]*conj(C90eff);
 	double complex c29=4./3.*C0b[2]*conj(C90eff);
 	
-	double dR_bremB=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*	((c11+c12+c22)*integ_tau22(shat,z)+2.*creal((c17+c27)*integ_tau27(shat,z)+(c18+c28)*integ_tau28(shat,z)+(c19+c29)*integ_tau29(shat,z)));
+	double dR_bremB=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*	((c11+c12+c22)*integtau22+2.*creal((c17+c27)*integtau27+(c18+c28)*integtau28+(c19+c29)*integtau29));
 
 	double L=2.*log(param->mass_b_1S/param->mass_mu);
 
-	double dR_em=pow(1./param->inv_alpha_em/4./pi,3.)*4.*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*
+	double dR_em=pow(1./param->inv_alpha_em/4./pi,3.)*4.*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f/kappa*
 	(8.*(1.+2.*shat)*(Cmub[9]*Cmub[9]*w99em(shat,L)+Cmub[10]*Cmub[10]*w1010em(shat,L)
 	+creal((Cmub[2]+4./3.*Cmub[1])*Cmub[9]*w29em(shat,L,mu_b))
 	+pow(Cmub[2]+4./3.*Cmub[1],2.)*w22em(shat,L,mu_b))
@@ -705,44 +728,118 @@ double dBR_BXsmumu_dshat(double shat, double C0b[], double C1b[], double C2b[], 
 	+creal((Cmub[2]+4./3.*Cmub[1])*Cmub[7]*w27em(shat,L,mu_b)))
 	+8.*(4.+8./shat)*Cmub[7]*Cmub[7]*w77em(shat,L));
 
-	return BR_BXclnu*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*(1.-shat)*(1.-shat)*sqrt(1.-4.*t*t/shat)*
+
+	double C7effp=Cpb[7];
+		
+	double C8effp=Cpb[8];
+
+	double complex C9effp=Cpb[9]
+	+(-32./27.*Cpb[1]-8./9.*Cpb[2]-16./9.*Cpb[3]+32./27.*Cpb[4]-112./9.*Cpb[5]+512./27.*Cpb[6])*log(param->mass_b_1S/mu_b)
+	+4./3.*Cpb[3]+64./9.*Cpb[5]+64./27.*Cpb[6]
+	+g_bsll_mchat*(4./3.*Cpb[1]+Cpb[2]+6.*Cpb[3]+60.*Cpb[5])
+	+g_bsll_1*(-7./2.*Cpb[3]-2./3.*Cpb[4]-38.*Cpb[5]-32./3.*Cpb[6])
+	+g_bsll_0*(-1./2.*Cpb[3]-2./3.*Cpb[4]-8.*Cpb[5]-32./3.*Cpb[6]);
+	
+	double C10effp=Cpb[10];
+
+	double complex C7newp=(1.+alphas_mub/pi*sigma7)*C7effp
+	-alphas_mub/4./pi*(Cpb[1]*F17+Cpb[2]*F27+Cpb[8]*F87);
+	
+	double complex C9newp=(1.+alphas_mub/pi*sigma9)*C9effp
+	-alphas_mub/4./pi*(Cpb[1]*F19+Cpb[2]*F29+Cpb[8]*F89);
+
+	double C10newp=(1.+alphas_mub/pi*sigma9)*C10effp;
+ 
+	double complex CQ1p=CQpb[1];
+	double complex CQ2p=CQpb[2];
+
+	double dR_mb2p=3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*pow(cabs(param->Vts/param->Vcb),2.)/f/kappa*(-(6.+3.*shat-5.*shat*shat*shat)*4.*C7newp*conj(C7newp)/shat
+	+(1.-15.*shat*shat+10.*shat*shat*shat)*(C9newp*conj(C9newp)+C10newp*conj(C10newp))
+	-4.*(5.+6.*shat-7.*shat*shat)*creal(C7newp*conj(C9newp))));
+	
+	double dR_mb3p=0.;
+
+	if(shat<0.4) dR_mb3p=-rho1/pow(param->mass_b_1S,3.)*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*pow(cabs(param->Vts/param->Vcb),2.)/f/kappa*(
+	(5.*pow(shat,4.)+19.*pow(shat,3.)+9.*shat*shat-7.*shat+22.)/6./(1.-shat)*4.*C7newp*conj(C7newp)/shat
+	+(10.*pow(shat,4.)+23.*pow(shat,3.)-9.*shat*shat+13.*shat+11.)/6./(1.-shat)*(C9newp*conj(C9newp)+C10newp*conj(C10newp))
+	+4.*(-3.*pow(shat,3.)+17.*shat*shat-shat+3.)/2./(1.-shat)*creal(C7newp*conj(C9newp))));
+	
+	double dR_mc2p=8.*lambda2/9./param->mass_c/param->mass_c/param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*cabs(param->Vts*conj(param->Vcs)/param->Vtb/conj(param->Vcb))/f/kappa*(1.-shat)*(1.-shat)
+	*creal((1.+6.*shat-shat*shat)/shat*Fbsll*Cpb[2]*conj(C7newp)+(2.+shat)*Fbsll*Cpb[2]*conj(C9newp));
+	
+	double complex c78p=4./3.*Cpb[7]*conj(Cpb[8]);
+	double complex c89p=4./3.*Cpb[8]*conj(C9effp);
+	double complex c88p=4./3.*Cpb[8]*conj(Cpb[8]);
+		
+	double dR_bremAp=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(2.*creal(c78p*tau78+c89p*tau89)+c88p*tau88);	
+
+	double c11p=Cpb[1]*Cpb[1]/27.;
+	double c12p=-4./9.*Cpb[1]*Cpb[2];
+	double c22p=4./3.*Cpb[2]*Cpb[2];
+	double c17p=-2./9.*Cpb[1]*Cpb[7];
+	double c27p=4./3.*Cpb[2]*Cpb[7];
+	double c18p=-2./9.*Cpb[1]*Cpb[8];
+	double c28p=4./3.*Cpb[2]*Cpb[8];
+	double complex c19p=-2./9.*Cpb[1]*conj(C9effp);
+	double complex c29p=4./3.*Cpb[2]*conj(C9effp);
+	
+	double dR_bremBp=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*((c11p+c12p+c22p)*integtau22+2.*creal((c17p+c27p)*integtau27+(c18p+c28p)*integtau28+(c19p+c29p)*integtau29));
+
+	double dR_emp=pow(1./param->inv_alpha_em/4./pi,3.)*4.*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f/kappa*
+	(8.*(1.+2.*shat)*(Cpb[9]*Cpb[9]*w99em(shat,L)+Cpb[10]*Cpb[10]*w1010em(shat,L)
+	+creal((Cpb[2]+4./3.*Cpb[1])*Cpb[9]*w29em(shat,L,mu_b))
+	+pow(Cpb[2]+4./3.*Cpb[1],2.)*w22em(shat,L,mu_b))
+	+96.*(creal(Cpb[7]*Cpb[9])*w79em(shat,L)
+	+creal((Cpb[2]+4./3.*Cpb[1])*Cpb[7]*w27em(shat,L,mu_b)))
+	+8.*(4.+8./shat)*Cpb[7]*Cpb[7]*w77em(shat,L));
+
+	return param->BR_BXclnu_exp*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi/f/kappa*(1.-shat)*(1.-shat)*sqrt(1.-4.*t*t/shat)*
 	pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*
 	(
 	pow(cabs(C9new),2.)*(1.+2.*t*t/shat)*(1.+2.*shat)*(1.+alphas_mub/pi*tau99_bsll(shat))
 	+4.*pow(cabs(C7new),2.)*(1.+2.*t*t/shat)*(1.+2./shat)*(1.+alphas_mub/pi*tau77_bsll(shat))
 	+pow(cabs(C10new),2.)*((1.+2.*shat)+2.*t*t/shat*(1.-4.*shat))*(1.+alphas_mub/pi*tau99_bsll(shat))
 	+12.*creal(C7new*conj(C9new))*(1.+2.*t*t/shat)*(1.+alphas_mub/pi*tau79_bsll(shat))
-	+1.5*pow(cabs(CQ1),2.)*(shat-4.*t*t)+1.5*pow(cabs(CQ2),2.)*shat+6.*creal(C10new*conj(CQ2))*t))
-	*(1.			+3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*glambda_bsll(z)/f_bsll(param->mass_c/param->mass_b_1S)	-rho1/pow(param->mass_b_1S,3.)/6.*grho_bsll(z)/f_bsll(param->mass_c/param->mass_b_1S))
+	+1.5*pow(cabs(CQ1),2.)*(shat-4.*t*t)+1.5*pow(cabs(CQ2),2.)*shat+6.*creal(C10new*conj(CQ2))*t
 	
-	+(dR_mb2+dR_mb3+dR_mc2+dR_bremA+dR_bremB+dR_em)*BR_BXclnu;
+	+pow(cabs(C9newp),2.)*(1.+2.*t*t/shat)*(1.+2.*shat)*(1.+alphas_mub/pi*tau99_bsll(shat))
+	+4.*pow(cabs(C7newp),2.)*(1.+2.*t*t/shat)*(1.+2./shat)*(1.+alphas_mub/pi*tau77_bsll(shat))
+	+pow(cabs(C10newp),2.)*((1.+2.*shat)+2.*t*t/shat*(1.-4.*shat))*(1.+alphas_mub/pi*tau99_bsll(shat))
+	+12.*creal(C7newp*conj(C9newp))*(1.+2.*t*t/shat)*(1.+alphas_mub/pi*tau79_bsll(shat))
+	+1.5*pow(cabs(CQ1p),2.)*(shat-4.*t*t)+1.5*pow(cabs(CQ2p),2.)*shat+6.*creal(C10newp*conj(CQ2p))*t
+	))
+	*(1.+3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*glambda_bsll(z)/f	-rho1/pow(param->mass_b_1S,3.)/6.*grho_bsll(z)/f)
+	
+	+(dR_mb2+dR_mb3+dR_mc2+dR_bremA+dR_bremB+dR_em)*param->BR_BXclnu_exp;
+	+(dR_mb2p+dR_mb3p+dR_mc2p+dR_bremAp+dR_bremBp+dR_emp)*param->BR_BXclnu_exp;
 }
 
 /*----------------------------------------------------------------------*/
 
 double dBR_BXsmumu_dshat_calculator(double shat, char name[])
 {
-	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11];
-	double complex CQ0b[3],CQ1b[3];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
+	double complex CQ0b[3],CQ1b[3],CQpb[3];
 	struct parameters param;
 		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 
-	double mu_W=120.;
-	double mu_b=5.;
+	double mu_W=2.*param.mass_W;
+	double mu_b=param.mass_b;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
+	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
 
-	return dBR_BXsmumu_dshat(shat,C0b,C1b,C2b,CQ0b,CQ1b,&param,mu_b);
+	return dBR_BXsmumu_dshat(shat,C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
 }
 
 /*----------------------------------------------------------------------*/
 
-double BRBXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double BRBXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 /* "container" function scanning the SLHA file "name" and calculating BR(B->Xs mu+ mu-) */
 {
 	int ie;
@@ -756,7 +853,7 @@ double BRBXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex 
 	for(ie=1;ie<=nmax;ie++)
 	{
 		s=smin+(smax-smin)*ie/nmax;
-		BR+=dBR_BXsmumu_dshat(s,C0b,C1b,C2b,CQ0b,CQ1b,param,mu_b);
+		BR+=dBR_BXsmumu_dshat(s,C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,param,mu_b);
 	}
 	BR*=(smax-smin)/nmax;
 
@@ -765,7 +862,7 @@ double BRBXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex 
 
 /*----------------------------------------------------------------------*/
 
-double BRBXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double BRBXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 /* "container" function scanning the SLHA file "name" and calculating BR(B->Xs mu+ mu-) */
 {
 	int ie;
@@ -779,7 +876,7 @@ double BRBXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex
 	for(ie=1;ie<=nmax;ie++)
 	{
 		s=smin+(smax-smin)*ie/nmax;
-		BR+=dBR_BXsmumu_dshat(s,C0b,C1b,C2b,CQ0b,CQ1b,param,mu_b);
+		BR+=dBR_BXsmumu_dshat(s,C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,param,mu_b);
 	}
 	BR*=(smax-smin)/nmax;
 
@@ -791,22 +888,23 @@ double BRBXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex
 double BRBXsmumu_lowq2_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(B->Xs mu+ mu-) */
 {
-	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11];
-	double complex CQ0b[3],CQ1b[3];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
+	double complex CQ0b[3],CQ1b[3],CQpb[3];
 	struct parameters param;
 		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 
-	double mu_W=120.;
-	double mu_b=5.;
+	double mu_W=2.*param.mass_W;
+	double mu_b=param.mass_b;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
+	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
 
-	return BRBXsmumu_lowq2(C0b,C1b,C2b,CQ0b,CQ1b,&param,mu_b);
+	return BRBXsmumu_lowq2(C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
 }
 
 /*----------------------------------------------------------------------*/
@@ -814,31 +912,29 @@ double BRBXsmumu_lowq2_calculator(char name[])
 double BRBXsmumu_highq2_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(B->Xs mu+ mu-) */
 {
-	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11];
-	double complex CQ0b[3],CQ1b[3];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
+	double complex CQ0b[3],CQ1b[3],CQpb[3];
 	struct parameters param;
 		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 
-	double mu_W=120.;
-	double mu_b=5.;
+	double mu_W=2.*param.mass_W;
+	double mu_b=param.mass_b;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
+	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
 
-	return BRBXsmumu_highq2(C0b,C1b,C2b,CQ0b,CQ1b,&param,mu_b);
+	return BRBXsmumu_highq2(C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
 }
 
 /*----------------------------------------------------------------------*/
 
-double A_BXsmumu(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double A_BXsmumu(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 {
-	double BR_BXclnu=0.1064;
-	double Cbr=0.580;
-		
 	double alphas_mub=alphas_running(mu_b,param->mass_top_pole,param->mass_b_pole,param);
 	
 	double mchat=param->mass_c/param->mass_b_1S;
@@ -853,20 +949,33 @@ double A_BXsmumu(double shat, double C0b[], double C1b[], double C2b[], double c
  	double C7eff=Cmub[7];
 		
 	double C8eff=Cmub[8];
+
+	double complex g_bsll_mchat=g_bsll_parametrized(mchat,shat,param);
+	double complex g_bsll_1=g_bsll(1.,shat);
+	double complex g_bsll_0=g_bsll(0.,shat);
 	
 	double complex C9eff=Cmub[9] +(-32./27.*Cmub[1]-8./9.*Cmub[2]-16./9.*Cmub[3]+32./27.*Cmub[4]-112./9.*Cmub[5]+512./27.*Cmub[6])*log(param->mass_b_1S/mu_b)
 	+4./3.*Cmub[3]+64./9.*Cmub[5]+64./27.*Cmub[6]
-	+g_bsll_parametrized(mchat,shat,param)*(4./3.*Cmub[1]+Cmub[2]+6.*Cmub[3]+60.*Cmub[5])
-	+g_bsll(1.,shat)*(-7./2.*Cmub[3]-2./3.*Cmub[4]-38.*Cmub[5]-32./3.*Cmub[6])
-	+g_bsll(0.,shat)*(-1./2.*Cmub[3]-2./3.*Cmub[4]-8.*Cmub[5]-32./3.*Cmub[6]);
+	+g_bsll_mchat*(4./3.*Cmub[1]+Cmub[2]+6.*Cmub[3]+60.*Cmub[5])
+	+g_bsll_1*(-7./2.*Cmub[3]-2./3.*Cmub[4]-38.*Cmub[5]-32./3.*Cmub[6])
+	+g_bsll_0*(-1./2.*Cmub[3]-2./3.*Cmub[4]-8.*Cmub[5]-32./3.*Cmub[6]);
 	
 	double C10eff=Cmub[10];
 
-  	double complex C7new=(1.+alphas_mub/pi*sigma7_bsll(shat,log(mu_b/param->mass_b_1S)))*C7eff	-alphas_mub/4./pi*(C0b[1]*F17_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[2]*F27_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[8]*F87_bsll(shat,log(mu_b/param->mass_b_1S)));
+	double complex sigma7=sigma7_bsll(shat,log(mu_b/param->mass_b_1S));
+	double complex F17=F17_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F27=F27_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F87=F87_bsll(shat,log(mu_b/param->mass_b_1S));
+	double complex sigma9=sigma9_bsll(shat);
+	double complex F19=F19_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F29=F29_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F89=F89_bsll(shat);
+
+  	double complex C7new=(1.+alphas_mub/pi*sigma7)*C7eff	-alphas_mub/4./pi*(C0b[1]*F17+C0b[2]*F27+C0b[8]*F87);
 		
-	double complex C9new=(1.+alphas_mub/pi*sigma9_bsll(shat))*C9eff	-alphas_mub/4./pi*(C0b[1]*F19_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[2]*F29_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[8]*F89_bsll(shat));
+	double complex C9new=(1.+alphas_mub/pi*sigma9)*C9eff	-alphas_mub/4./pi*(C0b[1]*F19+C0b[2]*F29+C0b[8]*F89);
 ;
-	double C10new=(1.+alphas_mub/pi*sigma9_bsll(shat))*C10eff;
+	double C10new=(1.+alphas_mub/pi*sigma9)*C10eff;
 
 	double complex CQ1=CQ0b[1]+alphas_mub/4./pi*CQ1b[1];
 	double complex CQ2=CQ0b[2]+alphas_mub/4./pi*CQ1b[2];
@@ -876,34 +985,83 @@ double A_BXsmumu(double shat, double C0b[], double C1b[], double C2b[], double c
 	double lambda1=-0.15;
 	double lambda2=param->lambda2;
 	
-	double dA_mb2=BR_BXclnu*3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*pow(cabs(param->Vts/param->Vcb),2.)/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*(shat*creal(C9new*conj(C10new))*(9.+14.*shat-15.*shat*shat)
-	+2.*creal(conj(C10new)*C7new)*(7.+10.*shat-9.*shat*shat)));
-	
-	double dA_mc2=-BR_BXclnu*lambda2/3./param->mass_c/param->mass_c/param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*cabs(param->Vts*conj(param->Vcs)/param->Vtb/conj(param->Vcb))/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*(1.-shat)*(1.-shat)*creal((1.+3.*shat)*F_bsll(shat/4./z)*Cmub[2]*conj(C10new));
+	double f=f_bsll(param->mass_c/param->mass_b_1S);
+	double kappa=kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub);
 
-	double dA_brems=BR_BXclnu/param->inv_alpha_em/param->inv_alpha_em/2./pi/pi*alphas_mub/3./pi/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)*(creal(C0b[8]*conj(C10eff))*tau810_bsll(shat)+creal((C0b[2]-C0b[1]/6.)*conj(C10eff))*tau210_bsll(shat,z));
+	double dA_mb2=param->BR_BXclnu_exp*3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*pow(cabs(param->Vts/param->Vcb),2.)/f/kappa*(shat*creal(C9new*conj(C10new))*(9.+14.*shat-15.*shat*shat)
+	+2.*creal(conj(C10new)*C7new)*(7.+10.*shat-9.*shat*shat)));
+
+	double Fbsll=F_bsll(shat/4./z);
+	
+	double dA_mc2=-param->BR_BXclnu_exp*lambda2/3./param->mass_c/param->mass_c/param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*cabs(param->Vts*conj(param->Vcs)/param->Vtb/conj(param->Vcb))/f/kappa*(1.-shat)*(1.-shat)*creal((1.+3.*shat)*Fbsll*Cmub[2]*conj(C10new));
 
 	double L=2.*log(param->mass_b_1S/param->mass_mu);
 
-	double dA_em=pow(1./param->inv_alpha_em/4./pi,3.)*4.*BR_BXclnu*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*
-	(-48.*creal(Cmub[7]*Cmub[10])*w710em(shat,L)
-	-24.*shat*(creal(Cmub[9]*Cmub[10])*w910em(shat,L)
-	+creal((Cmub[2]+4./3.*Cmub[1])*Cmub[10]*w210em(shat,L,pow(4.*param->mass_c*param->mass_c/param->mass_b_1S/param->mass_b_1S,2.),mu_b))));
+	double complex tau810=tau810_bsll(shat);
+	double complex tau210=tau210_bsll(shat,z);
+	double complex w710=w710em(shat,L);
+	double complex w910=w910em(shat,L);
+	double complex w210=w210em(shat,L,pow(4.*param->mass_c*param->mass_c/param->mass_b_1S/param->mass_b_1S,2.),mu_b);
 
-	return (-3.*BR_BXclnu/param->inv_alpha_em/param->inv_alpha_em/4./pi/pi/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*(1.-shat)*(1.-shat)*(1.-4.*t*t/shat)*
+	double dA_brems=param->BR_BXclnu_exp/param->inv_alpha_em/param->inv_alpha_em/2./pi/pi*alphas_mub/3./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)*(creal(C0b[8]*conj(C10eff))*tau810+creal((C0b[2]-C0b[1]/6.)*conj(C10eff))*tau210);
+
+	double dA_em=pow(1./param->inv_alpha_em/4./pi,3.)*4.*param->BR_BXclnu_exp*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f/kappa*
+	(-48.*creal(Cmub[7]*Cmub[10])*w710
+	-24.*shat*(creal(Cmub[9]*Cmub[10])*w910
+	+creal((Cmub[2]+4./3.*Cmub[1])*Cmub[10]*w210)));
+
+	double C7effp=Cpb[7];
+		
+	double C8effp=Cpb[8];
+	
+	double complex C9effp=Cpb[9] +(-32./27.*Cpb[1]-8./9.*Cpb[2]-16./9.*Cpb[3]+32./27.*Cpb[4]-112./9.*Cpb[5]+512./27.*Cpb[6])*log(param->mass_b_1S/mu_b)
+	+4./3.*Cpb[3]+64./9.*Cpb[5]+64./27.*Cpb[6]
+	+g_bsll_mchat*(4./3.*Cpb[1]+Cpb[2]+6.*Cpb[3]+60.*Cpb[5])
+	+g_bsll_1*(-7./2.*Cpb[3]-2./3.*Cpb[4]-38.*Cpb[5]-32./3.*Cpb[6])
+	+g_bsll_0*(-1./2.*Cpb[3]-2./3.*Cpb[4]-8.*Cpb[5]-32./3.*Cpb[6]);
+	
+	double C10effp=Cpb[10];
+
+  	double complex C7newp=(1.+alphas_mub/pi*sigma7)*C7effp-alphas_mub/4./pi*(Cpb[1]*F17+Cpb[2]*F27+Cpb[8]*F87);
+		
+	double complex C9newp=(1.+alphas_mub/pi*sigma9)*C9effp-alphas_mub/4./pi*(Cpb[1]*F19+Cpb[2]*F29+Cpb[8]*F89);
+;
+	double C10newp=(1.+alphas_mub/pi*sigma9)*C10effp;
+
+	double complex CQ1p=CQpb[1];
+	double complex CQ2p=CQpb[2];
+ 		
+	double dA_mb2p=param->BR_BXclnu_exp*3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*pow(cabs(param->Vts/param->Vcb),2.)/f/kappa*(shat*creal(C9newp*conj(C10newp))*(9.+14.*shat-15.*shat*shat)
+	+2.*creal(conj(C10newp)*C7newp)*(7.+10.*shat-9.*shat*shat)));
+	
+	double dA_mc2p=-param->BR_BXclnu_exp*lambda2/3./param->mass_c/param->mass_c/param->inv_alpha_em/param->inv_alpha_em/4./pi/pi*cabs(param->Vts*conj(param->Vcs)/param->Vtb/conj(param->Vcb))/f/kappa*(1.-shat)*(1.-shat)*creal((1.+3.*shat)*Fbsll*Cpb[2]*conj(C10newp));
+
+	double dA_bremsp=param->BR_BXclnu_exp/param->inv_alpha_em/param->inv_alpha_em/2./pi/pi*alphas_mub/3./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)*(creal(Cpb[8]*conj(C10effp))*tau810+creal((Cpb[2]-Cpb[1]/6.)*conj(C10effp))*tau210);
+
+	double dA_emp=pow(1./param->inv_alpha_em/4./pi,3.)*4.*param->BR_BXclnu_exp*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f/kappa*
+	(-48.*creal(Cpb[7]*Cpb[10])*w710
+	-24.*shat*(creal(Cpb[9]*Cpb[10])*w910
+	+creal((Cpb[2]+4./3.*Cpb[1])*Cpb[10]*w210)));
+
+	return (-3.*param->BR_BXclnu_exp/param->inv_alpha_em/param->inv_alpha_em/4./pi/pi/f/kappa*(1.-shat)*(1.-shat)*(1.-4.*t*t/shat)*
 	pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*
 	(creal(C9new*conj(C10new))*shat*(1.+alphas_mub/pi*tau910_bsll(shat)) 
 	+2.*creal(C7new*conj(C10new))*(1.+alphas_mub/pi*tau710_bsll(shat)) 
- 	+creal(C9new*conj(CQ1))*t+2.*creal(C7new*conj(CQ1))*t))
-	*(1.+3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*glambda_bsll(z)/f_bsll(param->mass_c/param->mass_b_1S)
+ 	+creal(C9new*conj(CQ1))*t+2.*creal(C7new*conj(CQ1))*t
+ 	
+ 	+creal(C9newp*conj(C10newp))*shat*(1.+alphas_mub/pi*tau910_bsll(shat)) 
+	+2.*creal(C7newp*conj(C10newp))*(1.+alphas_mub/pi*tau710_bsll(shat)) 
+ 	+creal(C9newp*conj(CQ1p))*t+2.*creal(C7newp*conj(CQ1p))*t))
+	*(1.+3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*glambda_bsll(z)/f
 	+4.*lambda1/3./param->mass_b_1S/param->mass_b_1S*shat/(1.-shat)/(1.-shat))
-	+dA_mb2+dA_mc2+dA_brems+dA_em;
+	+dA_mb2+dA_mc2+dA_brems+dA_em
+	+dA_mb2p+dA_mc2p+dA_bremsp+dA_emp;
 }
 
 
 /*----------------------------------------------------------------------*/
 
-double A_BXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double A_BXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 /* "container" function scanning the SLHA file "name" and calculating integrated AFB(B->Xs mu+ mu-) */
 {
 	int ie;
@@ -917,7 +1075,7 @@ double A_BXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex 
 	for(ie=1;ie<=nmax;ie++)
 	{
 		s=smin+(smax-smin)*ie/nmax;
-		AFB+=A_BXsmumu(s,C0b,C1b,C2b,CQ0b,CQ1b,param,mu_b);
+		AFB+=A_BXsmumu(s,C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,param,mu_b);
 	}
 	AFB*=(smax-smin)/nmax;
 
@@ -926,7 +1084,7 @@ double A_BXsmumu_lowq2(double C0b[], double C1b[], double C2b[], double complex 
 
 /*----------------------------------------------------------------------*/
 
-double A_BXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double A_BXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 /* "container" function scanning the SLHA file "name" and calculating integrated AFB(B->Xs mu+ mu-) */
 {
 	int ie;
@@ -940,7 +1098,7 @@ double A_BXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex
 	for(ie=1;ie<=nmax;ie++)
 	{
 		s=smin+(smax-smin)*ie/nmax;
-		AFB+=A_BXsmumu(s,C0b,C1b,C2b,CQ0b,CQ1b,param,mu_b);
+		AFB+=A_BXsmumu(s,C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,param,mu_b);
 	}
 	AFB*=(smax-smin)/nmax;
 
@@ -952,22 +1110,23 @@ double A_BXsmumu_highq2(double C0b[], double C1b[], double C2b[], double complex
 double A_BXsmumu_lowq2_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(B->Xs mu+ mu-) */
 {
-	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11];
-	double complex CQ0b[3],CQ1b[3];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
+	double complex CQ0b[3],CQ1b[3],CQpb[3];
 	struct parameters param;
 		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 
-	double mu_W=120.;
-	double mu_b=5.;
+	double mu_W=2.*param.mass_W;
+	double mu_b=param.mass_b;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
+	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
 
-	return A_BXsmumu_lowq2(C0b,C1b,C2b,CQ0b,CQ1b,&param,mu_b);
+	return A_BXsmumu_lowq2(C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
 }
 
 /*----------------------------------------------------------------------*/
@@ -975,27 +1134,28 @@ double A_BXsmumu_lowq2_calculator(char name[])
 double A_BXsmumu_highq2_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(B->Xs mu+ mu-) */
 {
-	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11];
-	double complex CQ0b[3],CQ1b[3];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
+	double complex CQ0b[3],CQ1b[3],CQpb[3];
 	struct parameters param;
 		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 
-	double mu_W=120.;
-	double mu_b=5.;
+	double mu_W=2.*param.mass_W;
+	double mu_b=param.mass_b;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
+	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
 
-	return A_BXsmumu_highq2(C0b,C1b,C2b,CQ0b,CQ1b,&param,mu_b);
+	return A_BXsmumu_highq2(C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
 }
 
 /*----------------------------------------------------------------------*/
 
-double A_BXsmumu_zero(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double A_BXsmumu_zero(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 {
 	double smin=0.05;
 	double smax=0.25;
@@ -1005,7 +1165,7 @@ double A_BXsmumu_zero(double C0b[], double C1b[], double C2b[], double complex C
 	while(fabs(1.-smin/smax)>1.e-4)
 	{
 		stemp=(smax+smin)/2.;
-		if(A_BXsmumu(stemp,C0b,C1b,C2b,CQ0b,CQ1b,param,mu_b)<0.) smin=stemp; else smax=stemp;
+		if(A_BXsmumu(stemp,C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,param,mu_b)<0.) smin=stemp; else smax=stemp;
 	}
 	return stemp*param->mass_b_1S*param->mass_b_1S;
 }
@@ -1014,31 +1174,29 @@ double A_BXsmumu_zero(double C0b[], double C1b[], double C2b[], double complex C
 
 double A_BXsmumu_zero_calculator(char name[])
 {
-	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11];
-	double complex CQ0b[3],CQ1b[3];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
+	double complex CQ0b[3],CQ1b[3],CQpb[3];
 	struct parameters param;
 		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 
-	double mu_W=120.;
-	double mu_b=5.;
+	double mu_W=2.*param.mass_W;
+	double mu_b=param.mass_b;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
+	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
 
-	return A_BXsmumu_zero(C0b,C1b,C2b,CQ0b,CQ1b,&param,mu_b);
+	return A_BXsmumu_zero(C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
 }
 
 /*----------------------------------------------------------------------*/
 
-double dBR_BXstautau_dshat(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double dBR_BXstautau_dshat(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 {
-	double BR_BXclnu=0.1064;
-	double Cbr=0.580;
-		
 	double alphas_mub=alphas_running(mu_b,param->mass_top_pole,param->mass_b_pole,param);
 	
 	int ie;
@@ -1057,44 +1215,65 @@ double dBR_BXstautau_dshat(double shat, double C0b[], double C1b[], double C2b[]
 	
 	double sw=sin(atan(param->gp/param->g2));
 
+	double complex g_bsll_mchat=g_bsll_parametrized(mchat,shat,param);
+	double complex g_bsll_1=g_bsll(1.,shat);
+	double complex g_bsll_0=g_bsll(0.,shat);
+	
 	double complex C9eff=Cmub[9]
-		+(-32./27.*Cmub[1]-8./9.*Cmub[2]-16./9.*Cmub[3]+32./27.*Cmub[4]-112./9.*Cmub[5]+512./27.*Cmub[6])*log(param->mass_b_1S/mu_b)
+	+(-32./27.*Cmub[1]-8./9.*Cmub[2]-16./9.*Cmub[3]+32./27.*Cmub[4]-112./9.*Cmub[5]+512./27.*Cmub[6])*log(param->mass_b_1S/mu_b)
 	+4./3.*Cmub[3]+64./9.*Cmub[5]+64./27.*Cmub[6]
-	+g_bsll_parametrized(mchat,shat,param)*(4./3.*Cmub[1]+Cmub[2]+6.*Cmub[3]+60.*Cmub[5])
-	+g_bsll(1.,shat)*(-7./2.*Cmub[3]-2./3.*Cmub[4]-38.*Cmub[5]-32./3.*Cmub[6])
-	+g_bsll(0.,shat)*(-1./2.*Cmub[3]-2./3.*Cmub[4]-8.*Cmub[5]-32./3.*Cmub[6]);
+	+g_bsll_mchat*(4./3.*Cmub[1]+Cmub[2]+6.*Cmub[3]+60.*Cmub[5])
+	+g_bsll_1*(-7./2.*Cmub[3]-2./3.*Cmub[4]-38.*Cmub[5]-32./3.*Cmub[6])
+	+g_bsll_0*(-1./2.*Cmub[3]-2./3.*Cmub[4]-8.*Cmub[5]-32./3.*Cmub[6]);
 	
 	double complex C90eff=C0b[9] +(-32./27.*C0b[1]-8./9.*C0b[2]-16./9.*C0b[3]+32./27.*C0b[4]-112./9.*C0b[5]+512./27.*C0b[6])*log(param->mass_b_1S/mu_b)
 	+4./3.*C0b[3]+64./9.*C0b[5]+64./27.*C0b[6]
-	+g_bsll_parametrized(mchat,shat,param)*(4./3.*C0b[1]+C0b[2]+6.*C0b[3]+60.*C0b[5])
-	+g_bsll(1.,shat)*(-7./2.*C0b[3]-2./3.*C0b[4]-38.*C0b[5]-32./3.*C0b[6])
-	+g_bsll(0.,shat)*(-1./2.*C0b[3]-2./3.*C0b[4]-8.*C0b[5]-32./3.*C0b[6]);
+	+g_bsll_mchat*(4./3.*C0b[1]+C0b[2]+6.*C0b[3]+60.*C0b[5])
+	+g_bsll_1*(-7./2.*C0b[3]-2./3.*C0b[4]-38.*C0b[5]-32./3.*C0b[6])
+	+g_bsll_0*(-1./2.*C0b[3]-2./3.*C0b[4]-8.*C0b[5]-32./3.*C0b[6]);
 	
 	double C10eff=Cmub[10];
 
- 	double complex C7new=(1.+alphas_mub/pi*sigma7_bsll(shat,log(mu_b/param->mass_b_1S)))*C7eff -alphas_mub/4./pi*(C0b[1]*F17_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[2]*F27_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[8]*F87_bsll(shat,log(mu_b/param->mass_b_1S)));
+	double complex sigma7=sigma7_bsll(shat,log(mu_b/param->mass_b_1S));
+	double complex F17=F17_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F27=F27_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F87=F87_bsll(shat,log(mu_b/param->mass_b_1S));
+	double complex sigma9=sigma9_bsll(shat);
+	double complex F19=F19_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F29=F29_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F89=F89_bsll(shat);
+	
+ 	double complex C7new=(1.+alphas_mub/pi*sigma7)*C7eff
+	-alphas_mub/4./pi*(C0b[1]*F17+C0b[2]*F27+C0b[8]*F87);
+	
+	double complex C9new=(1.+alphas_mub/pi*sigma9)*C9eff
+	-alphas_mub/4./pi*(C0b[1]*F19+C0b[2]*F29+C0b[8]*F89);
 
-	double complex C9new=(1.+alphas_mub/pi*sigma9_bsll(shat))*C9eff -alphas_mub/4./pi*(C0b[1]*F19_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[2]*F29_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[8]*F89_bsll(shat));
-
-	double C10new=(1.+alphas_mub/pi*sigma9_bsll(shat))*C10eff;
+	double C10new=(1.+alphas_mub/pi*sigma9)*C10eff;
  
 	double complex CQ1=CQ0b[1]+alphas_mub/4./pi*CQ1b[1];
 	double complex CQ2=CQ0b[2]+alphas_mub/4./pi*CQ1b[2];
 	
-	CQ1*=param->mass_tau_pole/param->mass_mu;
-	CQ2*=param->mass_tau_pole/param->mass_mu;
-	
-	double t=param->mass_tau_pole/param->mass_b_1S;
+	double t=param->mass_tau/param->mass_b_1S;
 	
 	double lambda2=param->lambda2;
 	
-	double rho1=param->rho1;
+	double f=f_bsll(param->mass_c/param->mass_b_1S);
+	double kappa=kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub);
 	
 	double complex c78=4./3.*C0b[7]*conj(C0b[8]);
 	double complex c89=4./3.*C0b[8]*conj(C90eff);
 	double complex c88=4./3.*C0b[8]*conj(C0b[8]);
-		
-	double dR_bremA=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(2.*creal(c78*tau78_bsll(shat)+c89*tau89_bsll(shat))+c88*tau88_bsll(shat));	
+
+	double tau78=tau78_bsll(shat);
+	double tau89=tau89_bsll(shat);
+	double tau88=tau88_bsll(shat);
+	double integtau22=integ_tau22(shat,z);
+	double complex integtau27=integ_tau27(shat,z);
+	double complex integtau28=integ_tau28(shat,z);
+	double complex integtau29=integ_tau29(shat,z);
+
+	double dR_bremA=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(2.*creal(c78*tau78+c89*tau89)+c88*tau88);	
 
 	double c11=C0b[1]*C0b[1]/27.;
 	double c12=-4./9.*C0b[1]*C0b[2];
@@ -1106,11 +1285,11 @@ double dBR_BXstautau_dshat(double shat, double C0b[], double C1b[], double C2b[]
 	double complex c19=-2./9.*C0b[1]*conj(C90eff);
 	double complex c29=4./3.*C0b[2]*conj(C90eff);
 	
-	double dR_bremB=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*	((c11+c12+c22)*integ_tau22(shat,z)+2.*creal((c17+c27)*integ_tau27(shat,z)+(c18+c28)*integ_tau28(shat,z)+(c19+c29)*integ_tau29(shat,z)));
+	double dR_bremB=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*	((c11+c12+c22)*integtau22+2.*creal((c17+c27)*integtau27+(c18+c28)*integtau28+(c19+c29)*integtau29));
 
-	double L=2.*log(param->mass_b_1S/param->mass_tau_pole);
+	double L=2.*log(param->mass_b_1S/param->mass_tau);
 
-	double dR_em=pow(1./param->inv_alpha_em/4./pi,3.)*4.*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*
+	double dR_em=pow(1./param->inv_alpha_em/4./pi,3.)*4.*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f/kappa*
 	(8.*(1.+2.*shat)*(Cmub[9]*Cmub[9]*w99em(shat,L)+Cmub[10]*Cmub[10]*w1010em(shat,L)
 	+creal((Cmub[2]+4./3.*Cmub[1])*Cmub[9]*w29em(shat,L,mu_b))
 	+pow(Cmub[2]+4./3.*Cmub[1],2.)*w22em(shat,L,mu_b))
@@ -1118,44 +1297,106 @@ double dBR_BXstautau_dshat(double shat, double C0b[], double C1b[], double C2b[]
 	+creal((Cmub[2]+4./3.*Cmub[1])*Cmub[7]*w27em(shat,L,mu_b)))
 	+8.*(4.+8./shat)*Cmub[7]*Cmub[7]*w77em(shat,L));
 
-	return BR_BXclnu*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*(1.-shat)*(1.-shat)*sqrt(1.-4.*t*t/shat)*
+
+	double C7effp=Cpb[7];
+		
+	double C8effp=Cpb[8];
+
+	double complex C9effp=Cpb[9]
+	+(-32./27.*Cpb[1]-8./9.*Cpb[2]-16./9.*Cpb[3]+32./27.*Cpb[4]-112./9.*Cpb[5]+512./27.*Cpb[6])*log(param->mass_b_1S/mu_b)
+	+4./3.*Cpb[3]+64./9.*Cpb[5]+64./27.*Cpb[6]
+	+g_bsll_mchat*(4./3.*Cpb[1]+Cpb[2]+6.*Cpb[3]+60.*Cpb[5])
+	+g_bsll_1*(-7./2.*Cpb[3]-2./3.*Cpb[4]-38.*Cpb[5]-32./3.*Cpb[6])
+	+g_bsll_0*(-1./2.*Cpb[3]-2./3.*Cpb[4]-8.*Cpb[5]-32./3.*Cpb[6]);
+	
+	double C10effp=Cpb[10];
+
+	double complex C7newp=(1.+alphas_mub/pi*sigma7)*C7effp
+	-alphas_mub/4./pi*(Cpb[1]*F17+Cpb[2]*F27+Cpb[8]*F87);
+	
+	double complex C9newp=(1.+alphas_mub/pi*sigma9)*C9effp
+	-alphas_mub/4./pi*(Cpb[1]*F19+Cpb[2]*F29+Cpb[8]*F89);
+
+	double C10newp=(1.+alphas_mub/pi*sigma9)*C10effp;
+ 
+	double complex CQ1p=CQpb[1];
+	double complex CQ2p=CQpb[2];
+	
+	double complex c78p=4./3.*Cpb[7]*conj(Cpb[8]);
+	double complex c89p=4./3.*Cpb[8]*conj(C9effp);
+	double complex c88p=4./3.*Cpb[8]*conj(Cpb[8]);
+		
+	double dR_bremAp=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(2.*creal(c78p*tau78+c89p*tau89)+c88p*tau88);	
+
+	double c11p=Cpb[1]*Cpb[1]/27.;
+	double c12p=-4./9.*Cpb[1]*Cpb[2];
+	double c22p=4./3.*Cpb[2]*Cpb[2];
+	double c17p=-2./9.*Cpb[1]*Cpb[7];
+	double c27p=4./3.*Cpb[2]*Cpb[7];
+	double c18p=-2./9.*Cpb[1]*Cpb[8];
+	double c28p=4./3.*Cpb[2]*Cpb[8];
+	double complex c19p=-2./9.*Cpb[1]*conj(C9effp);
+	double complex c29p=4./3.*Cpb[2]*conj(C9effp);
+	
+	double dR_bremBp=4.*pow(1./(4.*pi*param->inv_alpha_em),2.)*alphas_mub/4./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*((c11p+c12p+c22p)*integtau22+2.*creal((c17p+c27p)*integtau27+(c18p+c28p)*integtau28+(c19p+c29p)*integtau29));
+
+	double dR_emp=pow(1./param->inv_alpha_em/4./pi,3.)*4.*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f/kappa*
+	(8.*(1.+2.*shat)*(Cpb[9]*Cpb[9]*w99em(shat,L)+Cpb[10]*Cpb[10]*w1010em(shat,L)
+	+creal((Cpb[2]+4./3.*Cpb[1])*Cpb[9]*w29em(shat,L,mu_b))
+	+pow(Cpb[2]+4./3.*Cpb[1],2.)*w22em(shat,L,mu_b))
+	+96.*(creal(Cpb[7]*Cpb[9])*w79em(shat,L)
+	+creal((Cpb[2]+4./3.*Cpb[1])*Cpb[7]*w27em(shat,L,mu_b)))
+	+8.*(4.+8./shat)*Cpb[7]*Cpb[7]*w77em(shat,L));
+
+	double rho1=param->rho1;
+
+	return param->BR_BXclnu_exp*(1./param->inv_alpha_em/param->inv_alpha_em/4./pi/pi/f/kappa*(1.-shat)*(1.-shat)*sqrt(1.-4.*t*t/shat)*
 	pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*
 	(
 	pow(cabs(C9new),2.)*(1.+2.*t*t/shat)*(1.+2.*shat)*(1.+alphas_mub/pi*tau99_bsll(shat))
 	+4.*pow(cabs(C7new),2.)*(1.+2.*t*t/shat)*(1.+2./shat)*(1.+alphas_mub/pi*tau77_bsll(shat))
 	+pow(cabs(C10new),2.)*((1.+2.*shat)+2.*t*t/shat*(1.-4.*shat))*(1.+alphas_mub/pi*tau99_bsll(shat))
 	+12.*creal(C7new*conj(C9new))*(1.+2.*t*t/shat)*(1.+alphas_mub/pi*tau79_bsll(shat))
-	+1.5*pow(cabs(CQ1),2.)*(shat-4.*t*t)+1.5*pow(cabs(CQ2),2.)*shat+6.*creal(C10new*conj(CQ2))*t))
-	*(1.			+3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*glambda_bsll(z)/f_bsll(param->mass_c/param->mass_b_1S)	-rho1/pow(param->mass_b_1S,3.)/6.*grho_bsll(z)/f_bsll(param->mass_c/param->mass_b_1S))
+	+1.5*pow(cabs(CQ1),2.)*(shat-4.*t*t)+1.5*pow(cabs(CQ2),2.)*shat+6.*creal(C10new*conj(CQ2))*t
 	
-	+(dR_bremA+dR_bremB+dR_em)*BR_BXclnu;
+	+pow(cabs(C9newp),2.)*(1.+2.*t*t/shat)*(1.+2.*shat)*(1.+alphas_mub/pi*tau99_bsll(shat))
+	+4.*pow(cabs(C7newp),2.)*(1.+2.*t*t/shat)*(1.+2./shat)*(1.+alphas_mub/pi*tau77_bsll(shat))
+	+pow(cabs(C10newp),2.)*((1.+2.*shat)+2.*t*t/shat*(1.-4.*shat))*(1.+alphas_mub/pi*tau99_bsll(shat))
+	+12.*creal(C7newp*conj(C9newp))*(1.+2.*t*t/shat)*(1.+alphas_mub/pi*tau79_bsll(shat))
+	+1.5*pow(cabs(CQ1p),2.)*(shat-4.*t*t)+1.5*pow(cabs(CQ2p),2.)*shat+6.*creal(C10newp*conj(CQ2p))*t
+	))
+	*(1.+3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*glambda_bsll(z)/f	-rho1/pow(param->mass_b_1S,3.)/6.*grho_bsll(z)/f)
+	
+	+(dR_bremA+dR_bremB+dR_em)*param->BR_BXclnu_exp;
+	+(dR_bremAp+dR_bremBp+dR_emp)*param->BR_BXclnu_exp;
 }
 
 /*----------------------------------------------------------------------*/
 
 double dBR_BXstautau_dshat_calculator(double shat, char name[])
 {
-	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11];
-	double complex CQ0b[3],CQ1b[3];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
+	double complex CQ0b[3],CQ1b[3],CQpb[3];
 	struct parameters param;
 		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 
-	double mu_W=120.;
-	double mu_b=5.;
+	double mu_W=2.*param.mass_W;
+	double mu_b=param.mass_b;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
+	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
 
-	return dBR_BXstautau_dshat(shat,C0b,C1b,C2b,CQ0b,CQ1b,&param,mu_b);
+	return dBR_BXstautau_dshat(shat,C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
 }
 
 /*----------------------------------------------------------------------*/
 
-double BRBXstautau_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double BRBXstautau_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 /* "container" function scanning the SLHA file "name" and calculating BR(B->Xs tau+ tau-) */
 {
 	int ie;
@@ -1169,7 +1410,7 @@ double BRBXstautau_highq2(double C0b[], double C1b[], double C2b[], double compl
 	for(ie=1;ie<=nmax;ie++)
 	{
 		s=smin+(smax-smin)*ie/nmax;
-		BR+=dBR_BXstautau_dshat(s,C0b,C1b,C2b,CQ0b,CQ1b,param,mu_b);
+		BR+=dBR_BXstautau_dshat(s,C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,param,mu_b);
 	}
 	BR*=(smax-smin)/nmax;
 
@@ -1181,31 +1422,29 @@ double BRBXstautau_highq2(double C0b[], double C1b[], double C2b[], double compl
 double BRBXstautau_highq2_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(B->Xs tau+ tau-) */
 {
-	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11];
-	double complex CQ0b[3],CQ1b[3];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
+	double complex CQ0b[3],CQ1b[3],CQpb[3];
 	struct parameters param;
 		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 
-	double mu_W=120.;
-	double mu_b=5.;
+	double mu_W=2.*param.mass_W;
+	double mu_b=param.mass_b;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
+	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
 
-	return BRBXstautau_highq2(C0b,C1b,C2b,CQ0b,CQ1b,&param,mu_b);
+	return BRBXstautau_highq2(C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
 }
 
 /*----------------------------------------------------------------------*/
 
-double A_BXstautau(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double A_BXstautau(double shat, double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 {
-	double BR_BXclnu=0.1064;
-	double Cbr=0.580;
-		
 	double alphas_mub=alphas_running(mu_b,param->mass_top_pole,param->mass_b_pole,param);
 	
 	double mchat=param->mass_c/param->mass_b_1S;
@@ -1220,20 +1459,33 @@ double A_BXstautau(double shat, double C0b[], double C1b[], double C2b[], double
  	double C7eff=Cmub[7];
 		
 	double C8eff=Cmub[8];
+
+	double complex g_bsll_mchat=g_bsll_parametrized(mchat,shat,param);
+	double complex g_bsll_1=g_bsll(1.,shat);
+	double complex g_bsll_0=g_bsll(0.,shat);
 	
 	double complex C9eff=Cmub[9] +(-32./27.*Cmub[1]-8./9.*Cmub[2]-16./9.*Cmub[3]+32./27.*Cmub[4]-112./9.*Cmub[5]+512./27.*Cmub[6])*log(param->mass_b_1S/mu_b)
 	+4./3.*Cmub[3]+64./9.*Cmub[5]+64./27.*Cmub[6]
-	+g_bsll_parametrized(mchat,shat,param)*(4./3.*Cmub[1]+Cmub[2]+6.*Cmub[3]+60.*Cmub[5])
-	+g_bsll(1.,shat)*(-7./2.*Cmub[3]-2./3.*Cmub[4]-38.*Cmub[5]-32./3.*Cmub[6])
-	+g_bsll(0.,shat)*(-1./2.*Cmub[3]-2./3.*Cmub[4]-8.*Cmub[5]-32./3.*Cmub[6]);
+	+g_bsll_mchat*(4./3.*Cmub[1]+Cmub[2]+6.*Cmub[3]+60.*Cmub[5])
+	+g_bsll_1*(-7./2.*Cmub[3]-2./3.*Cmub[4]-38.*Cmub[5]-32./3.*Cmub[6])
+	+g_bsll_0*(-1./2.*Cmub[3]-2./3.*Cmub[4]-8.*Cmub[5]-32./3.*Cmub[6]);
 	
 	double C10eff=Cmub[10];
 
-  	double complex C7new=(1.+alphas_mub/pi*sigma7_bsll(shat,log(mu_b/param->mass_b_1S)))*C7eff	-alphas_mub/4./pi*(C0b[1]*F17_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[2]*F27_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[8]*F87_bsll(shat,log(mu_b/param->mass_b_1S)));
+	double complex sigma7=sigma7_bsll(shat,log(mu_b/param->mass_b_1S));
+	double complex F17=F17_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F27=F27_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F87=F87_bsll(shat,log(mu_b/param->mass_b_1S));
+	double complex sigma9=sigma9_bsll(shat);
+	double complex F19=F19_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F29=F29_bsll(shat,z,log(mu_b/param->mass_b_1S));
+	double complex F89=F89_bsll(shat);
+
+  	double complex C7new=(1.+alphas_mub/pi*sigma7)*C7eff	-alphas_mub/4./pi*(C0b[1]*F17+C0b[2]*F27+C0b[8]*F87);
 		
-	double complex C9new=(1.+alphas_mub/pi*sigma9_bsll(shat))*C9eff	-alphas_mub/4./pi*(C0b[1]*F19_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[2]*F29_bsll(shat,z,log(mu_b/param->mass_b_1S))+C0b[8]*F89_bsll(shat));
+	double complex C9new=(1.+alphas_mub/pi*sigma9)*C9eff	-alphas_mub/4./pi*(C0b[1]*F19+C0b[2]*F29+C0b[8]*F89);
 ;
-	double C10new=(1.+alphas_mub/pi*sigma9_bsll(shat))*C10eff;
+	double C10new=(1.+alphas_mub/pi*sigma9)*C10eff;
 
 	double complex CQ1=CQ0b[1]+alphas_mub/4./pi*CQ1b[1];
 	double complex CQ2=CQ0b[2]+alphas_mub/4./pi*CQ1b[2];
@@ -1242,29 +1494,71 @@ double A_BXstautau(double shat, double C0b[], double C1b[], double C2b[], double
 		
 	double lambda1=-0.15;
 	double lambda2=param->lambda2;
-		
-	double dA_brems=BR_BXclnu/param->inv_alpha_em/param->inv_alpha_em/2./pi/pi*alphas_mub/3./pi/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)*(creal(C0b[8]*conj(C10eff))*tau810_bsll(shat)+creal((C0b[2]-C0b[1]/6.)*conj(C10eff))*tau210_bsll(shat,z));
+	
+	double f=f_bsll(param->mass_c/param->mass_b_1S);
+	double kappa=kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub);
 
 	double L=2.*log(param->mass_b_1S/param->mass_tau);
 
-	double dA_em=pow(1./param->inv_alpha_em/4./pi,3.)*4.*BR_BXclnu*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*
-	(-48.*creal(Cmub[7]*Cmub[10])*w710em(shat,L)
-	-24.*shat*(creal(Cmub[9]*Cmub[10])*w910em(shat,L)
-	+creal((Cmub[2]+4./3.*Cmub[1])*Cmub[10]*w210em(shat,L,pow(4.*param->mass_c*param->mass_c/param->mass_b_1S/param->mass_b_1S,2.),mu_b))));
+	double complex tau810=tau810_bsll(shat);
+	double complex tau210=tau210_bsll(shat,z);
+	double complex w710=w710em(shat,L);
+	double complex w910=w910em(shat,L);
+	double complex w210=w210em(shat,L,pow(4.*param->mass_c*param->mass_c/param->mass_b_1S/param->mass_b_1S,2.),mu_b);
 
-	return (-3.*BR_BXclnu/param->inv_alpha_em/param->inv_alpha_em/4./pi/pi/f_bsll(param->mass_c/param->mass_b_1S)/kappa_bsll(param->mass_c/param->mass_b_1S,alphas_mub)*(1.-shat)*(1.-shat)*(1.-4.*t*t/shat)*
+	double dA_brems=param->BR_BXclnu_exp/param->inv_alpha_em/param->inv_alpha_em/2./pi/pi*alphas_mub/3./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)*(creal(C0b[8]*conj(C10eff))*tau810+creal((C0b[2]-C0b[1]/6.)*conj(C10eff))*tau210);
+
+	double dA_em=pow(1./param->inv_alpha_em/4./pi,3.)*4.*param->BR_BXclnu_exp*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f/kappa*
+	(-48.*creal(Cmub[7]*Cmub[10])*w710
+	-24.*shat*(creal(Cmub[9]*Cmub[10])*w910
+	+creal((Cmub[2]+4./3.*Cmub[1])*Cmub[10]*w210)));
+
+	double C7effp=Cpb[7];
+		
+	double C8effp=Cpb[8];
+	
+	double complex C9effp=Cpb[9] +(-32./27.*Cpb[1]-8./9.*Cpb[2]-16./9.*Cpb[3]+32./27.*Cpb[4]-112./9.*Cpb[5]+512./27.*Cpb[6])*log(param->mass_b_1S/mu_b)
+	+4./3.*Cpb[3]+64./9.*Cpb[5]+64./27.*Cpb[6]
+	+g_bsll_mchat*(4./3.*Cpb[1]+Cpb[2]+6.*Cpb[3]+60.*Cpb[5])
+	+g_bsll_1*(-7./2.*Cpb[3]-2./3.*Cpb[4]-38.*Cpb[5]-32./3.*Cpb[6])
+	+g_bsll_0*(-1./2.*Cpb[3]-2./3.*Cpb[4]-8.*Cpb[5]-32./3.*Cpb[6]);
+	
+	double C10effp=Cpb[10];
+
+  	double complex C7newp=(1.+alphas_mub/pi*sigma7)*C7effp-alphas_mub/4./pi*(Cpb[1]*F17+Cpb[2]*F27+Cpb[8]*F87);
+		
+	double complex C9newp=(1.+alphas_mub/pi*sigma9)*C9effp-alphas_mub/4./pi*(Cpb[1]*F19+Cpb[2]*F29+Cpb[8]*F89);
+;
+	double C10newp=(1.+alphas_mub/pi*sigma9)*C10effp;
+
+	double complex CQ1p=CQpb[1];
+	double complex CQ2p=CQpb[2];
+ 		
+	double dA_bremsp=param->BR_BXclnu_exp/param->inv_alpha_em/param->inv_alpha_em/2./pi/pi*alphas_mub/3./pi/f/kappa*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)*(creal(Cpb[8]*conj(C10effp))*tau810+creal((Cpb[2]-Cpb[1]/6.)*conj(C10effp))*tau210);
+
+	double dA_emp=pow(1./param->inv_alpha_em/4./pi,3.)*4.*param->BR_BXclnu_exp*pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*(1.-shat)*(1.-shat)/f/kappa*
+	(-48.*creal(Cpb[7]*Cpb[10])*w710
+	-24.*shat*(creal(Cpb[9]*Cpb[10])*w910
+	+creal((Cpb[2]+4./3.*Cpb[1])*Cpb[10]*w210)));
+
+	return (-3.*param->BR_BXclnu_exp/param->inv_alpha_em/param->inv_alpha_em/4./pi/pi/f/kappa*(1.-shat)*(1.-shat)*(1.-4.*t*t/shat)*
 	pow(cabs(param->Vtb*conj(param->Vts)/param->Vcb),2.)*
 	(creal(C9new*conj(C10new))*shat*(1.+alphas_mub/pi*tau910_bsll(shat)) 
 	+2.*creal(C7new*conj(C10new))*(1.+alphas_mub/pi*tau710_bsll(shat)) 
- 	+creal(C9new*conj(CQ1))*t+2.*creal(C7new*conj(CQ1))*t))
-	*(1.+3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*glambda_bsll(z)/f_bsll(param->mass_c/param->mass_b_1S)
+ 	+creal(C9new*conj(CQ1))*t+2.*creal(C7new*conj(CQ1))*t
+ 	
+ 	+creal(C9newp*conj(C10newp))*shat*(1.+alphas_mub/pi*tau910_bsll(shat)) 
+	+2.*creal(C7newp*conj(C10newp))*(1.+alphas_mub/pi*tau710_bsll(shat)) 
+ 	+creal(C9newp*conj(CQ1p))*t+2.*creal(C7newp*conj(CQ1p))*t))
+	*(1.+3.*lambda2/2./param->mass_b_1S/param->mass_b_1S*glambda_bsll(z)/f
 	+4.*lambda1/3./param->mass_b_1S/param->mass_b_1S*shat/(1.-shat)/(1.-shat))
-	+dA_brems+dA_em;
+	+dA_brems+dA_em
+	+dA_bremsp+dA_emp;
 }
 
 /*----------------------------------------------------------------------*/
 
-double A_BXstautau_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], struct parameters* param, double mu_b)
+double A_BXstautau_highq2(double C0b[], double C1b[], double C2b[], double complex CQ0b[], double complex CQ1b[], double Cpb[], double complex CQpb[], struct parameters* param, double mu_b)
 /* "container" function scanning the SLHA file "name" and calculating integrated AFB(B->Xs tau+ tau-) */
 {
 	int ie;
@@ -1278,7 +1572,7 @@ double A_BXstautau_highq2(double C0b[], double C1b[], double C2b[], double compl
 	for(ie=1;ie<=nmax;ie++)
 	{
 		s=smin+(smax-smin)*ie/nmax;
-		AFB+=A_BXstautau(s,C0b,C1b,C2b,CQ0b,CQ1b,param,mu_b);
+		AFB+=A_BXstautau(s,C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,param,mu_b);
 	}
 	AFB*=(smax-smin)/nmax;
 
@@ -1290,20 +1584,21 @@ double A_BXstautau_highq2(double C0b[], double C1b[], double C2b[], double compl
 double A_BXstautau_highq2_calculator(char name[])
 /* "container" function scanning the SLHA file "name" and calculating BR(B->Xs tau+ tau-) */
 {
-	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11];
-	double complex CQ0b[3],CQ1b[3];
+	double C0b[11],C1b[11],C2b[11],C0w[11],C1w[11],C2w[11],Cpb[11];
+	double complex CQ0b[3],CQ1b[3],CQpb[3];
 	struct parameters param;
 		
 	Init_param(&param);
 	
 	if(!Les_Houches_Reader(name,&param)) return 0.;
 
-	double mu_W=120.;
-	double mu_b=5.;
+	double mu_W=2.*param.mass_W;
+	double mu_b=param.mass_b;
 				
 	CW_calculator(C0w,C1w,C2w,mu_W,&param);
 	C_calculator_base1(C0w,C1w,C2w,mu_W,C0b,C1b,C2b,mu_b,&param);
 	CQ_calculator(CQ0b,CQ1b,mu_W,mu_b,&param);
+	Cprime_calculator(Cpb,CQpb,mu_W,mu_b,&param);
 
-	return A_BXstautau_highq2(C0b,C1b,C2b,CQ0b,CQ1b,&param,mu_b);
+	return A_BXstautau_highq2(C0b,C1b,C2b,CQ0b,CQ1b,Cpb,CQpb,&param,mu_b);
 }

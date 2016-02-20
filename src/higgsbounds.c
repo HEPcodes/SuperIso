@@ -119,7 +119,8 @@ double higgsbounds(char name[], struct parameters* param)
 	
 	output=fopen(namemod2,"r");
 	
-	while((EOF != fscanf(output,"%s",dummy))&&(strcasecmp("of",dummy)));
+	while((EOF != fscanf(output,"%s",dummy))&&(strcasecmp("limit",dummy)));
+	fscanf(output,"%s",dummy);
 	
 	if(!strcasecmp("of",dummy)) 
 	{
@@ -148,6 +149,7 @@ double higgsbounds_calculator(char name[])
 	if(!Les_Houches_Reader(name,&param)) return -1.;
 	return higgsbounds(name, &param);
 }
+
 
 
 

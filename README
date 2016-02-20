@@ -1,4 +1,4 @@
-SuperIso Version 3.3 (16 June 2012)
+SuperIso Version 3.4 (28 October 2014)
 -----------------------------------
 By Farvah Nazila Mahmoudi (mahmoudi@in2p3.fr)
 
@@ -30,19 +30,20 @@ Installation and Compilation
 - in Makefile, first define your C compiler, and the path to Isajet, Softsusy, SPheno, SuSpect, NMSSMTools, HiggsBounds (HBwithFH, see below) or 2HDMC, if you want to use them. If not, you must comment them in the main programs.
 - compile with: make
 
-12 programs are available:
-- sm.c: Standard Model
-- cmssm.c: cmssm parameter space, linked to isajet, softsusy, spheno or suspect
-- amsb.c: amsb parameter space, linked to isajet (>=7.80), softsusy, spheno or suspect
-- hcamsb.c: hypercharged amsb parameter space, linked to isajet (>=7.80)
-- mmamsb.c: mixed moduli amsb parameter space, linked to isajet (>=7.80)
-- gmsb.c: gmsb parameter space, linked to isajet (>=7.80), softsusy, spheno or suspect
-- nuhm.c: nuhm parameter space, linked to isajet (>=7.80), softsusy or suspect
-- thdm.c: 2HDM types I-IV parameter space, linked to 2HDMC
-- slha.c: scans the user provided SLHA file
-- cnmssm.c: semi constrained NMSSM parameter space, linked to NMSSMTools
-- ngmsb.c: NMSSM GMSB parameter space, linked to NMSSMTools
-- nnuhm.c: NMSSM NUHM parameter space, linked to NMSSMTools
+13 main programs are available:
+- sm.c: calculation of the observables in the SM
+- cmssm.c: calculation of the observables for a CMSSM point, linked to isajet, softsusy, spheno or suspect
+- amsb.c: calculation of the observables for an AMSB point, linked to isajet (>=7.80), softsusy, spheno or suspect
+- hcamsb.c: calculation of the observables for a hypercharged AMSB point, linked to isajet (>=7.80)
+- mmamsb.c: calculation of the observables for a mixed moduli AMSB point, linked to isajet (>=7.80)
+- gmsb.c: calculation of the observables for a GMSB point, linked to isajet (>=7.80), softsusy, spheno or suspect
+- nuhm.c: calculation of the observables for a NUHM point, linked to isajet (>=7.80), softsusy or suspect
+- thdm.c: calculation of the observables for a 2HDM type I-IV point, linked to 2HDMC
+- slha.c: scan of the user provided SLHA file and calculation of the observables
+- flha.c: scan of the user provided FLHA file and calculation of the observables
+- cnmssm.c: calculation of the observables for a semi constrained NMSSM point, linked to NMSSMTools
+- ngmsb.c: calculation of the observables for a NMSSM GMSB point, linked to NMSSMTools
+- nnuhm.c: calculation of the observables for a NMSSM NUHM point, linked to NMSSMTools
 
 They can be compiled with: make name (or make name.c), where "name" stands for sm, cmssm, amsb, gmsb, nuhm, ...
 
@@ -50,11 +51,11 @@ They can be run with: ./name.x
 Note that an example of SLHA file is also provided: example.lha
 
 To use Higgsbounds limits when using SuperIso, the user has to have compiled HBwithFH (provided in the Higgsbound package) as well as FeynHiggs. More details are given in the following:
-- In HiggsBounds-f90/configure choose the same compiler as the one with which FeynHiggs is compiled. Also, provide the link to FHINCLUDE and FHLIBS. For example 
-FHINCLUDE = -I/path/FeynHiggs-2.8.6/build/include
-FHLIBS = -L/path/FeynHiggs-2.8.6/build/ -lFH
-- In HiggsBounds-f90/example_programs/HBwithFH.F comment "call setPara" and uncomment "call setSLHA("tmp.slha")" instead.
-- In HiggsBounds-f90/example_programs, run: ./demonstrateHiggsBounds_HBwithFH.bat to compile HBwithFH.
+- In HiggsBounds-4.1.3/configure choose the same compiler as the one with which FeynHiggs is compiled. Also, provide the link to FHINCLUDE and FHLIBS. For example 
+FHINCLUDE = -I/path/FeynHiggs-2.10.2/build/include
+FHLIBS = -L/path/FeynHiggs-2.10.2/build/ -lFH
+- In HiggsBounds-4.1.3/example_programs/HBwithFH.F comment "call setPara" and uncomment "call setSLHA("tmp.slha")" instead.
+- In HiggsBounds-4.1.3/example_programs, run: ./demonstrateHiggsBounds_HBwithFH.bat to compile HBwithFH.
 - In the SuperIso Makefile, add the path to HBwithFH.
 
 
@@ -72,7 +73,7 @@ btaunu.c: calculation of the branching ratio of B-> tau nu
 dmunu.c: calculation of the branching ratios of D-> mu nu
 dslnu.c: calculation of the branching ratios of Ds-> tau nu and Ds-> mu nu
 excluded_masses.c: procedures which check the charge of the LSP, and the agreement with the collider lower mass limits (LEP and Tevatron)
-flha.c: generation of FLHA output files
+fleshouches.c: generation of FLHA output files
 general.c: some useful mathematical functions 
 gmuon.c: calculation of the muon anomalous magnetic moment
 higgsbounds.c: procedures calling HiggsBounds
@@ -88,20 +89,6 @@ suspect.c: procedures calling SuSpect
 2hdmc.c: procedures calling 2HDMC
 wilson.c: calculation of the Wilson coefficients and RGE runnings
 
-- Main programs
-sm.c: calculation of the observables in the SM
-cmssm.c: calculation of the observables for a CMSSM point
-amsb.c: calculation of the observables for an AMSB point
-hcamsb.c: calculation of the observables for an HC-AMSB point
-mmamsb.c: calculation of the observables for an MM-AMSB point
-gmsb.c: calculation of the observables for a GMSB point
-nuhm.c: calculation of the observables for a NUHM point
-thdm.c: calculation of the observables for a 2HDM type I-IV point
-slha.c: calculation of the observables using a given SLHA file
-cnmssm.c: calculation of the observables for a CNMSSM point
-ngmsb.c: calculation of the observables for a NMSSM GMSB point
-nnuhm.c: calculation of the observables for a NMSSM NUHM point
-
 - Headers in src
 include.h: definitions and prototypes
 
@@ -113,6 +100,13 @@ README
 
 History
 -------
+v3.4 - 10/27/2014 - 	Addition of more observables related to B->K* mu+ mu-.
+			Addition of three loop 2HDM corrections for b->s gamma.
+			Addition of three loop QCD corrections and NLO electroweak corrections for BR(Bs -> mu+ mu-).
+			Addition of an FLHA input file program.
+			Minor corrections and improvements.
+			Updated parameter values (PDG 14, HFAG, FLAG).
+
 v3.3 - 06/16/2012 - 	Addition of observables related to B->K* mu+ mu-.
 			Addition of observables related to B->Xs l+ l-.
 			Addition of untagged BR(Bs -> mu+ mu-).
@@ -175,7 +169,7 @@ v1.0 - 09/17/2007 - 	First public release.
 
 LICENSE
 -------
-    SuperIso Copyright (C) 2012 F. Mahmoudi
+    SuperIso Copyright (C) 2014 F. Mahmoudi
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

@@ -37,7 +37,7 @@ int main(int argc,char** argv)
      		sscanf(argv[2],"%lf",&m32);
      		sscanf(argv[3],"%lf",&tanb);
      		if(argc>4) sscanf(argv[4],"%lf",&sgnmu); else sgnmu=1;
-     		if(argc>5) sscanf(argv[5],"%lf",&mtop); else mtop=172.9;   
+     		if(argc>5) sscanf(argv[5],"%lf",&mtop); else mtop=173.34;   
   	}	
 
 
@@ -64,7 +64,7 @@ int main(int argc,char** argv)
 
 	printf("\n");
 	
-	printf("SuperIso v3.3 - F. Mahmoudi\n\n");
+	printf("SuperIso v3.4 - F. Mahmoudi\n\n");
 
 #ifdef USE_ISAJET
 	sprintf(name,"mmamsb_isajet%d.tmplha",getpid());
@@ -86,19 +86,23 @@ int main(int argc,char** argv)
 		printf("BR(B->K* mu mu)_low\t\t%.3e\n",BRobs_BKstarmumu_lowq2_calculator(name,obs));
 		printf("AFB(B->K* mu mu)_low\t\t%.3e\n",obs[1]);
 		printf("FL(B->K* mu mu)_low\t\t%.3e\n",obs[2]);
-		printf("AT1(B->K* mu mu)_low\t\t%.3e\n",obs[4]);
-		printf("AT2(B->K* mu mu)_low\t\t%.3e\n",obs[5]);
-		printf("AT3(B->K* mu mu)_low\t\t%.3e\n",obs[6]);
-		printf("AT4(B->K* mu mu)_low\t\t%.3e\n",obs[7]);
-		printf("AT5(B->K* mu mu)_low\t\t%.3e\n",obs[8]);
+		printf("P1(B->K* mu mu)_low\t\t%.3e\n",obs[5]);
+		printf("P2(B->K* mu mu)_low\t\t%.3e\n",obs[14]);
+		printf("P4'(B->K* mu mu)_low\t\t%.3e\n",obs[17]);
+		printf("P5'(B->K* mu mu)_low\t\t%.3e\n",obs[18]);
+		printf("P6'(B->K* mu mu)_low\t\t%.3e\n",obs[19]);
+		printf("P8'(B->K* mu mu)_low\t\t%.3e\n",obs[21]);
 		printf("AI(B->K* mu mu)_low\t\t%.3e\n\n",AI_BKstarmumu_lowq2_calculator(name));
 	
 		printf("BR(B->K* mu mu)_high\t\t%.3e\n",BRobs_BKstarmumu_highq2_calculator(name,obs));
 		printf("AFB(B->K* mu mu)_high\t\t%.3e\n",obs[1]);
 		printf("FL(B->K* mu mu)_high\t\t%.3e\n",obs[2]);
-		printf("HT1(B->K* mu mu)_high\t\t%.3e\n",obs[9]);
-		printf("HT2(B->K* mu mu)_high\t\t%.3e\n",obs[10]);
-		printf("HT3(B->K* mu mu)_high\t\t%.3e\n",obs[11]);
+		printf("P1(B->K* mu mu)_high\t\t%.3e\n",obs[5]);
+		printf("P2(B->K* mu mu)_high\t\t%.3e\n",obs[14]);
+		printf("P4'(B->K* mu mu)_high\t\t%.3e\n",obs[17]);
+		printf("P5'(B->K* mu mu)_high\t\t%.3e\n",obs[18]);
+		printf("P6'(B->K* mu mu)_high\t\t%.3e\n",obs[19]);
+		printf("P8'(B->K* mu mu)_high\t\t%.3e\n",obs[21]);
 		printf("AI(B->K* mu mu)_high\t\t%.3e\n\n",AI_BKstarmumu_highq2_calculator(name));
 
 		printf("q0^2(AFB(B->K* mu mu))\t\t%.3e\n",A_BKstarmumu_zero_calculator(name));
@@ -124,10 +128,8 @@ int main(int argc,char** argv)
 
 #ifdef USE_HIGGSBOUNDS
 		printf("excluded_HiggsBounds\t\t%d\n",(higgsbounds_calculator(name)>1.));
-#else
- 		printf("excluded_Higgs_mass\t\t%d\n",excluded_Higgs_mass_calculator(name));
 #endif
- 		printf("excluded_SUSY_mass\t\t%d\n",excluded_SUSY_mass_calculator(name));
+ 		printf("excluded_LEP/Tevatron_mass\t%d\n",excluded_mass_calculator(name));
 		
 		printf("charged_LSP\t\t\t%d\n\n",charged_LSP_calculator(name));
 		

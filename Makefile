@@ -1,7 +1,7 @@
 .KEEP_STATE:
 
 #
-VERSION = v2.8
+VERSION = v3.0
 
 # Choose your compilers here (in general gcc/gfortran on Linux systems):
 CC = gcc
@@ -16,13 +16,14 @@ AR = ar
 .SUFFIXES:	.o .c .h
 .PRECIOUS:	.c .h libisospin.a librelic.a
 
-# Add the link to Softsusy, Isajet, SuSpect and SPheno main programs, if available.
+# Add the link to Softsusy, Isajet, SuSpect, SPheno and NMSSMTools main programs, if available.
 # Otherwise, comment them in the main programs */
 # If you change the path, you must "make distclean" first.
 SOFTSUSY = ~/softsusy/softpoint.x
 ISAJET = ~/isajet/isasugra.x
 SUSPECT = ~/suspect/suspect2
 SPHENO = ~/spheno/bin/SPheno
+NMSSMTOOLS = ~/nmssmtools/main
 # Add the link to 2HDMC directory, if available.
 THDMC = ~/2HDMC
 # Add the links to Hdecay and HiggsBounds, if available.
@@ -78,7 +79,8 @@ libisospin.a:
 	echo THDMC = $(THDMC) >> src/FlagsForMake;\
         echo FEYNHIGGS = $(FEYNHIGGS)/build/FeynHiggs >> src/FlagsForMake;\
  	echo HDECAY = $(HDECAY)/run >> src/FlagsForMake;\
- 	echo HIGGSBOUNDS = $(HIGGSBOUNDS) >> src/FlagsForMake;
+ 	echo HIGGSBOUNDS = $(HIGGSBOUNDS) >> src/FlagsForMake;\
+ 	echo NMSSMTools = $(NMSSMTOOLS) >> src/FlagsForMake;
 	$(MAKE) -C src/ libisospin.a
 
 save: 
@@ -95,6 +97,9 @@ save:
 	cp -p slha.c superiso_$(VERSION)/;\
 	cp -p sm.c superiso_$(VERSION)/;\
 	cp -p thdm.c superiso_$(VERSION)/;\
+	cp -p cnmssm.c superiso_$(VERSION)/;\
+	cp -p ngmsb.c superiso_$(VERSION)/;\
+	cp -p nnuhm.c superiso_$(VERSION)/;\
 	cp -p Makefile superiso_$(VERSION)/;\
 	mkdir superiso_$(VERSION)/src;\
 	cp -p src/*.h superiso_$(VERSION)/src/;\

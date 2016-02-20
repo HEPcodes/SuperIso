@@ -101,6 +101,9 @@ typedef struct parameters
 	double g2H03Zh0,g2H03ZH0,g2H03ZA0,g2H03ZA02,g2H03ZH03,BRH03h0h0,BRH03H0H0,BRH03A0A0,BRH03A02A02;
 	double BRh0invisible,BRH0invisible,BRA0invisible,BRA02invisible,BRH03invisible;
 	double BRHcs,BRHcb,BRHtaunu,BRtWb,BRtHb;
+
+	/* NMSSMTools */
+	int NMSSMcoll,NMSSMtheory,NMSSMups1S,NMSSMetab1S;
 }
 parameters;
 
@@ -322,6 +325,9 @@ double F2C(double x);
 double fPS(double x);
 double fS(double x);
 double fft(double x);
+double muonI1(double a);
+double muonI2(double a);
+double muonI3(double a);
 double muonf(double z);
 double muong(double z);
 double muon_gm2_calculator(char name[]);
@@ -388,3 +394,12 @@ int higgsbounds_calculator(char name[]);
 
 /* flha.c */
 void flha_generator(char name[], char name_output[]);
+
+/* nmssmtools.c */
+int nmssmtools_cnmssm(double m0, double m12, double tanb, double A0, double lambda, double AK, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int nmssmtools_nnuhm(double m0, double m12, double tanb, double A0, double MHDGUT, double MHUGUT, double lambda, double AK, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int nmssmtools_ngmsb(double Lambda, double Mmess, double tanb, int N5, double lambda, double AK, double Del_h, double sgnmu, double mtop, double mbot, double alphas_mz, char name[]);
+int NMSSM_collider_excluded(char name[]);
+int NMSSM_theory_excluded(char name[]);
+int NMSSM_upsilon_excluded(char name[]);
+int NMSSM_etab_excluded(char name[]);

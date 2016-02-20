@@ -216,6 +216,10 @@ void Init_param(struct parameters* param)
 	param->TU_Q=0.;
 	param->TD_Q=0.;
 	param->TE_Q=0.;
+	param->NMSSMcoll=0;
+	param->NMSSMtheory=0;
+	param->NMSSMups1S=0;
+	param->NMSSMetab1S=0;
 	
 	for(ie=1;ie<=6;ie++) for(je=1;je<=6;je++)
 	{
@@ -397,7 +401,7 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 	}
 	fclose(lecture);		
 
-	if(param->NMSSM != 0) param->model=-2; 
+	if(param->NMSSM != 0) param->model=param->NMSSM; 
 	if(param->RV != 0) param->model=-2;
 	if(param->CPV != 0) param->model=-2;
 	if(param->THDM_model !=0) param->model=param->THDM_model;
@@ -429,6 +433,26 @@ int Les_Houches_Reader(char name[], struct parameters* param)
 						{
 							fscanf(lecture,"%lf",&version); 
 							if(version>=7.80) param->generator=2;
+						}
+						break;
+						
+					case 3: if(param->generator==6)
+						{
+							if(EOF!=fscanf(lecture,"%s",dummy)) sprintf(dummy2,"%s",dummy);									while ((EOF!=fscanf(lecture,"%c",dummy))&&(strncasecmp("\n",dummy,1))) sprintf(dummy2,"%s%s",dummy2,dummy);
+							if(!strcasecmp("# Chargino too light",dummy2)) {param->NMSSMcoll=1; break;}
+							if(!strcasecmp("# Neutralinos too light",dummy2)) {param->NMSSMcoll=1; break;}
+							if(!strcasecmp("# Charged Higgs too light",dummy2)) {param->NMSSMcoll=1; break;}
+							if(!strncasecmp("# Excluded by ee",dummy2,16)) {param->NMSSMcoll=1; break;}
+							if(!strncasecmp("# Excluded by stop",dummy2,18)) {param->NMSSMcoll=1; break;}
+							if(!strncasecmp("# Excluded by sbottom",dummy2,21)) {param->NMSSMcoll=1; break;}
+							if(!strcasecmp("# Squark/gluino too light",dummy2)) {param->NMSSMcoll=1; break;}
+							if(!strcasecmp("# Selectron/smuon too light",dummy2)) {param->NMSSMcoll=1; break;}
+							if(!strcasecmp("# Stau too light",dummy2)) {param->NMSSMcoll=1; break;}
+							if(!strcasecmp("# Landau Pole below MGUT",dummy2)) {param->NMSSMtheory=1; break;}
+							if(!strcasecmp("# Unphysical global minimum",dummy2)) {param->NMSSMtheory=1; break;}
+							if(!strcasecmp("# Higgs soft masses >> Msusy",dummy2)) {param->NMSSMtheory=1; break;}
+							if(!strncasecmp("# Excluded by Upsilon",dummy2,21)) {param->NMSSMups1S=1; break;}
+							if(!strncasecmp("# Excluded etab(1S)",dummy2,19)) {param->NMSSMetab1S=1; break;}
 						}
 						break;
 						

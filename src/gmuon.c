@@ -439,7 +439,24 @@ double muon_gm2(struct parameters* param)
 	double S22=cos(param->alpha);
 	double P12=1.;
 	double mA=param->mass_A0;
-			
+	double a_HiggsNMSSM=0.;
+	
+	if((param->mass_A02!=0.)&&(param->mass_H03!=0.))
+	{
+		mA=param->mass_A02;
+		S12=param->H0_mix[1][2];
+		S22=param->H0_mix[2][2];
+		double S23=param->H0_mix[2][3];
+		double P11=param->A0_mix[1][1];
+		P12=param->A0_mix[1][2];
+		
+		double a_H03=c*S23*S23*(1.+param->tan_beta*param->tan_beta)*muonI1(param->mass_H03*param->mass_H03/param->mass_mu/param->mass_mu);
+		
+		double a_a1=-c*P11*P11*param->tan_beta*param->tan_beta*muonI2(param->mass_A0*param->mass_A0/param->mass_mu/param->mass_mu);
+		
+		a_HiggsNMSSM+=a_H03+a_a1;
+	}
+		
 	double a_h0=c*S12*S12*(1.+param->tan_beta*param->tan_beta)*muonI1(param->mass_h0*param->mass_h0/param->mass_mu/param->mass_mu);
 		
 	double a_H0=c*S22*S22*(1.+param->tan_beta*param->tan_beta)*muonI1(param->mass_H0*param->mass_H0/param->mass_mu/param->mass_mu);
@@ -450,17 +467,19 @@ double muon_gm2(struct parameters* param)
 
 	/* --- */
 
-	double a_SUSYQED=(a_neut+a_charg+a_h0+a_H0+a_A0+a_Hpm)*(1.-4./param->inv_alpha_em/pi*log(param->MSOFT_Q/param->mass_mu));
+	double a_SUSYQED=(a_neut+a_charg+a_h0+a_H0+a_A0+a_Hpm+a_HiggsNMSSM)*(1.-4./param->inv_alpha_em/pi*log(param->MSOFT_Q/param->mass_mu));
 	
 	/* --- */
 
-	double mass_stop[3],mass_sbot[3],mass_stau[3],mass_H[3],mass_A[2];
+	double mass_stop[3],mass_sbot[3],mass_stau[3],mass_H[4],mass_A[3];
 	double sw=sin(atan(param->gp/param->g2));
 
 	mass_H[1]=param->mass_h0;
 	mass_H[2]=param->mass_H0;
+	mass_H[3]=param->mass_H03;
 	
 	mass_A[1]=param->mass_A0;
+	mass_A[2]=param->mass_A02;
 
 	mass_stop[1]=param->mass_t1;
 	mass_stop[2]=param->mass_t2;
@@ -478,6 +497,8 @@ double muon_gm2(struct parameters* param)
 	
 	double beta=atan(param->tan_beta);
 	
+	if((param->mass_A02==0.)&&(param->mass_H03==0.))
+	{
 		double lmu[4],lcharg[4][3],lst[3][3],lsb[3][3],lstau[3][3];
 		double sa=sin(param->alpha);
 		double ca=cos(param->alpha);
@@ -530,6 +551,86 @@ double muon_gm2(struct parameters* param)
 		a_sfH*=const1;
 		
 		c_Lh=cos(2.*beta)*param->mass_Z*param->mass_Z/cb*(ca*cos(param->alpha+beta)/param->mass_H0/param->mass_H0+sa*sin(param->alpha+beta)/param->mass_h0/param->mass_h0);
+		
+	}
+	else
+	{
+		double lmuh[4],lmua[3],lchargh[4][3],lcharga[3][3],lsth[4][3],lsbh[4][3],lstauh[4][3];
+		double cb=cos(beta);
+		double sb=sin(beta);
+		double s=param->lambdaSNMSSM/param->lambdaNMSSM;
+		double vu=sqrt(sb*sb/sqrt(2.)/param->Gfermi);
+		double vd=vu/param->tan_beta;
+	
+		for(ie=1;ie<=3;ie++) lmuh[ie]=param->H0_mix[ie][2]/cb;
+		for(ie=1;ie<=2;ie++) lmua[ie]=param->A0_mix[ie][2]*param->tan_beta;
+		
+	
+		for(ke=1;ke<=2;ke++) for(ie=1;ie<=3;ie++)
+		{
+			lchargh[ie][ke] = sqrt(2.)*param->mass_W/mass_charg[ke]/param->g2*
+			(param->lambdaNMSSM*param->charg_Umix[ke][2]*param->charg_Vmix[ke][2]*param->H0_mix[ie][3]
+			+param->g2*(param->charg_Umix[ke][1]*param->charg_Vmix[ke][2]*param->H0_mix[ie][1]
+			+param->charg_Umix[ke][2]*param->charg_Vmix[ke][1]*param->H0_mix[ie][2]));
+			
+		
+			lsth[ie][ke] = 2.*sqrt(2.)*param->mass_W/param->g2/mass_stop[ke]/mass_stop[ke]*(
+				      param->yut[3]*(param->A_t*param->H0_mix[ie][1]-param->lambdaNMSSM*(s*param->H0_mix[ie][2]+vd*param->H0_mix[ie][3]))*param->stop_mix[ke][1]*param->stop_mix[ke][2]
+				      + (param->yut[3]*param->yut[3]*vu*param->H0_mix[ie][1]-param->gp*param->gp/3.*(vu*param->H0_mix[ie][1]-vd*param->H0_mix[ie][2]))*param->stop_mix[ke][2]*param->stop_mix[ke][2]
+				      +(param->yut[3]*param->yut[3]*vu*param->H0_mix[ie][1]-(3.*param->g2*param->g2-param->gp*param->gp)/12.*(vu*param->H0_mix[ie][1]-vd*param->H0_mix[ie][2]))*param->stop_mix[ke][1]*param->stop_mix[ke][1]);
+
+			
+			 				
+			lsbh[ie][ke] = 2.*sqrt(2.)*param->mass_W/param->g2/mass_sbot[ke]/mass_sbot[ke]*(
+				      param->yub[3]*(param->A_b*param->H0_mix[ie][2]-param->lambdaNMSSM*(s*param->H0_mix[ie][1]+vu*param->H0_mix[ie][3]))*param->sbot_mix[ke][1]*param->sbot_mix[ke][2]
+				      + (param->yub[3]*param->yub[3]*vd*param->H0_mix[ie][2]+param->gp*param->gp/6.*(vu*param->H0_mix[ie][1]-vd*param->H0_mix[ie][2]))*param->sbot_mix[ke][2]*param->sbot_mix[ke][2]
+				      +(param->yub[3]*param->yub[3]*vd*param->H0_mix[ie][2]+(3.*param->g2*param->g2+param->gp*param->gp)/12.*(vu*param->H0_mix[ie][1]-vd*param->H0_mix[ie][2]))*param->sbot_mix[ke][1]*param->sbot_mix[ke][1]);
+			
+			
+			lstauh[ie][ke] = 2.*sqrt(2.)*param->mass_W/param->g2/mass_stau[ke]/mass_stau[ke]*(
+				      param->yutau[3]*(param->A_tau*param->H0_mix[ie][2]-param->lambdaNMSSM*(s*param->H0_mix[ie][1]+vu*param->H0_mix[ie][3]))*param->stau_mix[ke][1]*param->stau_mix[ke][2]
+				      + (param->yutau[3]*param->yutau[3]*vd*param->H0_mix[ie][2]+param->gp*param->gp/2.*(vu*param->H0_mix[ie][1]-vd*param->H0_mix[ie][2]))*param->stau_mix[ke][2]*param->stau_mix[ke][2]
+				      +(param->yutau[3]*param->yutau[3]*vd*param->H0_mix[ie][2]+(param->g2*param->g2-param->gp*param->gp)/4.*(vu*param->H0_mix[ie][1]-vd*param->H0_mix[ie][2]))*param->stau_mix[ke][1]*param->stau_mix[ke][1]);
+			
+		}
+		
+		for(ke=1;ke<=2;ke++) for(ie=1;ie<=2;ie++) lcharga[ie][ke] =
+			sqrt(2.)*param->mass_W/mass_charg[ke]/param->g2*
+			(param->lambdaNMSSM*param->charg_Umix[ke][2]*param->charg_Vmix[ke][2]*param->A0_mix[ie][2]
+			-param->g2*(param->charg_Umix[ke][1]*param->charg_Vmix[ke][2]*cos(beta)
+			+param->charg_Umix[ke][2]*param->charg_Vmix[ke][1]*sin(beta))*param->A0_mix[ie][1]);
+
+	
+	/* --- */
+
+		for(ke=1;ke<=2;ke++)
+		{
+			for(je=1;je<=3;je++) a_charH+=lmuh[je]*lchargh[je][ke] *fS(mass_charg[ke]*mass_charg[ke]/mass_H[je]/mass_H[je]);
+		
+			for(je=1;je<=2;je++) a_charH += lmua[je]*lcharga[je][ke]*fPS(mass_charg[ke]*mass_charg[ke]/mass_A[je]/mass_A[je]);	
+		}
+		
+		double const1=param->mass_mu*param->mass_mu/8./pi/pi/param->inv_alpha_em/param->inv_alpha_em/param->mass_W/param->mass_W/sw/sw;
+		a_charH*=const1;
+	
+	/* --- */
+
+
+		for(ie=1;ie<=2;ie++) for(ke=1;ke<=3;ke++)
+		{
+			a_sfH+=4./3.*lmuh[ke]*lsth[ke][ie]*fft(mass_stop[ie]*mass_stop[ie]/mass_H[ke]/mass_H[ke]);
+			a_sfH+=1./3.*lmuh[ke]*lsbh[ke][ie]*fft(mass_sbot[ie]*mass_sbot[ie]/mass_H[ke]/mass_H[ke]);
+			a_sfH+=lmuh[ke]*lstauh[ke][ie]*fft(mass_stau[ie]*mass_stau[ie]/mass_H[ke]/mass_H[ke]);
+		}
+		a_sfH*=const1;
+		
+	/* --- */
+	
+		for(ie=1;ie<=3;ie++) c_Lh+=param->H0_mix[ie][2]*(param->H0_mix[ie][2]-param->tan_beta*param->H0_mix[ie][1])/mass_H[ie]/mass_H[ie];
+
+		c_Lh*=cos(2.*beta)*param->mass_Z*param->mass_Z;
+	
+	}
 	
 	/* --- */
 	

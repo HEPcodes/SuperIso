@@ -13,7 +13,6 @@ int main(int argc,char** argv)
 {
 	char name[50];
 	int test;
-	double omega;
 
   	if(argc<2) 
   	{ 

@@ -11,7 +11,7 @@
 #define USE_SOFTSUSY /* to be commented if SOFTSUSY is unavailable */
 #define USE_SUSPECT /* to be commented if SUSPECT is unavailable */
 #define USE_SPHENO /* to be commented if SPHENO is unavailable */
- 
+
 #define USE_HIGGSBOUNDS /* to be commented if HIGGSBOUNDS or HDECAY is unavailable */
 
 /*--------------------------------------------------------------------*/
@@ -21,7 +21,7 @@
 int main(int argc,char** argv)
 {
 	char name[50];
-	double m0,m12,tanb,A0,sgnmu,mtop,mbot,alphas_mz,delta0,omega;
+	double m0,m12,tanb,A0,sgnmu,mtop,mbot,alphas_mz,delta0;
 
   	if(argc<5) 
   	{ 

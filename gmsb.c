@@ -21,7 +21,7 @@
 int main(int argc,char** argv)
 {
 	char name[50];
-	double Lambda,Mmess,tanb,cGrav,sgnmu,mtop,mbot,alphas_mz,delta0,omega;
+	double Lambda,Mmess,tanb,cGrav,sgnmu,mtop,mbot,alphas_mz,delta0;
 	int N5;
 
   	if(argc<5) 
@@ -217,9 +217,6 @@ int main(int argc,char** argv)
 		delta0=delta0_calculator(name);
 		if(delta0 !=0.)
 		{
-#if LOOPCOMP!=0
-			omega=relic_calculator(name);
-#endif
 			printf("delta0=%.3e\n",delta0);
        			printf("BR_bsgamma=%.3e\n",bsgamma_calculator(name));
       			printf("BR_Btaunu=%.3e\n",Btaunu_calculator(name));

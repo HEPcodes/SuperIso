@@ -15,7 +15,7 @@ void flha_generator(char name[], char name_output[])
 	fprintf(output,"# SuperIso output in Flavour Les Houches Accord format\n");
 	fprintf(output,"Block FCINFO  # Program information\n");
 	fprintf(output,"     1     SUPERISO         # flavour calculator\n");
-	fprintf(output,"     2     2.8              # version number\n");
+	fprintf(output,"     2     3.0              # version number\n");
 	
 	fprintf(output,"Block MODSEL  # Model selection\n");
 

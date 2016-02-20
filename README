@@ -1,4 +1,4 @@
-SuperIso Version 2.8 (2 November 2010)
+SuperIso Version 3.0 (23 December 2010)
 ---------------------------------------
 By Farvah Nazila Mahmoudi (mahmoudi@in2p3.fr)
 
@@ -8,7 +8,7 @@ INTRODUCTION
 The most recent version of this program can be obtained from: 
 http://superiso.in2p3.fr
 
-This C code (in C99 standard) provides the calculation of several flavor physics observables as well as the muon anomalous magnetic moment, for a set of supersymmetric or 2HDM parameters which can be either calculated within this program thanks to Isajet, Softsusy, SuSpect, SPheno or 2HDMC, or directly provided by user thanks to a SUSY Les Houches Accord (SLHA1 or SLHA2) file.
+This C code (in C99 standard) provides the calculation of several flavor physics observables as well as the muon anomalous magnetic moment, for a set of supersymmetric or 2HDM parameters which can be either calculated within this program thanks to Isajet, Softsusy, SuSpect, SPheno, NMSSMTools or 2HDMC, or directly provided by user thanks to a SUSY Les Houches Accord (SLHA1 or SLHA2) file.
 
 
 If you use this program to write a paper, please cite: 
@@ -16,6 +16,9 @@ If you use this program to write a paper, please cite:
 F. Mahmoudi, arXiv:0710.2067 [hep-ph], Comput. Phys. Commun. 178 (2008) 745
 AND
 F. Mahmoudi, arXiv:0808.3144 [hep-ph], Comput. Phys. Commun. 180 (2009) 1579.
+AND
+F. Mahmoudi, Comput. Phys. Commun. 180 (2009) 1579.
+
 
 The program has been tested on Linux and Mac machines with gcc and icc.
 
@@ -24,10 +27,10 @@ Installation and Compilation
 ----------------------------
 - tar xzvf superiso_vX.X.tgz
 - cd superiso_vX.X
-- in Makefile, first define your C compiler, and the path to Isajet, Softsusy, SPheno, SuSpect, Hdecay, HiggsBounds or 2HDMC, if you want to use them. If not, you must comment them in the main programs.
+- in Makefile, first define your C compiler, and the path to Isajet, Softsusy, SPheno, SuSpect, NMSSMTools, Hdecay, HiggsBounds or 2HDMC, if you want to use them. If not, you must comment them in the main programs.
 - compile with: make
 
-9 programs are available:
+12 programs are available:
 - sm.c: Standard Model
 - msugra.c: msugra parameter space, linked to isajet, softsusy, spheno or suspect
 - amsb.c: amsb parameter space, linked to isajet (>=7.80), softsusy, spheno or suspect
@@ -37,6 +40,9 @@ Installation and Compilation
 - nuhm.c: nuhm parameter space, linked to isajet (>=7.80) or softsusy
 - thdm.c: 2HDM types I-IV parameter space, linked to 2HDMC
 - slha.c: scans the user provided SLHA file
+- cnmssm.c: semi constrained NMSSM parameter space, linked to NMSSMTools
+- ngmsb.c: NMSSM GMSB parameter space, linked to NMSSMTools
+- nnuhm.c: NMSSM NUHM parameter space, linked to NMSSMTools
 
 They can be compiled with: make name (or make name.c), where "name" stands for sm, msugra, amsb, gmsb, nuhm, ...
 
@@ -63,6 +69,7 @@ isajet.c: procedures calling Isajet
 isospin.c: calculation of the isospin asymmetry in B-> K* gamma
 kmunu.c: calculation of the observables related to K-> mu nu
 leshouches.c: procedures reading files in the SLHA format
+nmssmtools.c: procedures calling NMSSMTools
 quark_masses.c: calculation of the quark masses
 spheno.c: procedures calling SPheno
 softsusy.c: procedures calling Softsusy
@@ -80,6 +87,9 @@ gmsb.c: calculation of the observables for a GMSB point
 nuhm.c: calculation of the observables for a NUHM point
 thdm.c: calculation of the observables for a 2HDM type I-IV point
 slha.c: calculation of the observables using a given SLHA file
+cnmssm.c: calculation of the observables for a CNMSSM point
+ngmsb.c: calculation of the observables for a NMSSM GMSB point
+nnuhm.c: calculation of the observables for a NMSSM NUHM point
 
 - Headers in src
 include.h: definitions and prototypes
@@ -92,6 +102,9 @@ README
 
 History
 -------
+v3.0 - 12/23/2010 - 	NMSSM calculations included.
+			Interface with NMSSMTools. 
+
 v2.8 - 11/02/2010 - 	FLHA compliant.
 			Interface with HiggsBounds v2 and HDECAY. 
 			Interface with SPheno.

@@ -1,0 +1,87 @@
+Supersymmetric Isospin asymmetry (SuperIso) v1.0
+-------------------------------------------------
+By Farvah Nazila Mahmoudi (nazila.mahmoudi@tsl.uu.se)
+
+
+INTRODUCTION
+------------
+
+The most recent version of this program can be obtained from: 
+http://www3.tsl.uu.se/~nazila/superiso/
+
+This C code (in C99 standard) provides a calculation of isospin asymmetry and inclusive branching ratio corresponding to b-> s gamma for a set of supersymmetric parameters, which can be either calculated within this program thanks to Isajet or Softsusy, or directly given thanks to a SUSY Les Houches Accord (SLHA) file.
+
+If you use this program to write a paper, please cite F. Mahmoudi, arXiv:0710.2067.
+
+The program have been tested on Linux and Mac machines with gcc and icc.
+
+
+Installation and Compilation
+----------------------------
+- tar xzvf superiso_vX.X.tgz
+- cd superiso_vX.X
+- in Makefile, first define your C compiler, and the path to Isajet or Softsusy, if you want to use them. If not, you should provide your SLHA file as input.
+- compile with: make
+
+5 programs are available:
+- msugra.c: msugra parameter space, linked to isajet or softsusy
+- amsb.c: amsb parameter space, linked to softsusy
+- gmsb.c: gmsb parameter space, linked to softsusy
+- main_example.c: test-program
+- slha.c: scans the SLHA file
+
+They can be compiled with: make name, where "name" stands for msugra, amsb, gmsb, main_example, or slha.
+
+
+Included Files
+--------------
+
+- Procedures in src/
+alphas.c: calculation of the strong coupling constant and quark running masses
+bsgamma.c: calculation of the inclusive branching ratio of B-> Xs gamma
+general.c: some useful mathematical functions 
+isajet.c: procedures calling Isajet
+isospin.c: calculation of the isospin asymmetry of B-> K* gamma
+leshouches.c: procedures reading files in the SLHA format
+masses.ce: procedures which check the charge of the LSP, and the agreement with the mass limits
+softsusy.c: procedures calling Softsusy
+wilson.c: calculation of the Wilson coefficients
+
+- Main programs
+amsb.c: calculation of isospin asymmetry and BR for an AMSB point
+gmsb.c: calculation of isospin asymmetry and BR for a GMSB point
+msugra.c: calculation of isospin asymmetry and BR for a mSUGRA point
+main_example.c: program example/test 
+slha.c: program calculating isospin asymmetry and BR from a SLHA file
+
+- Headers in src
+include.h: definitions and prototypes
+
+- Other
+example.lha: example of a SLHA file
+Makefile(s)
+README
+
+
+History
+-------
+
+v1.0 - 09/17/2007 - First public release
+
+
+LICENSE
+-------
+
+    SuperIso Copyright (C) 2007 F. Mahmoudi
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or any 
+    later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    See <http://www.gnu.org/licenses/>.  
